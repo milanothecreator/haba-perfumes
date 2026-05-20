@@ -15,8 +15,8 @@
       justify-content: center;
       background:
         radial-gradient(ellipse 80% 60% at 50% 0%,
-          rgba(201,168,76,0.12) 0%, transparent 60%),
-        #080808;
+          rgba(255,255,255,0.07) 0%, transparent 60%),
+        #0E0E12;
       padding: 24px;
     }
 
@@ -36,14 +36,14 @@
       font-size: 2.4rem;
       font-weight: 300;
       letter-spacing: 0.18em;
-      color: var(--gold-light);
+      color: #E8E8F0;
     }
 
     .auth-logo p {
       font-size: 0.65rem;
       letter-spacing: 0.20em;
       text-transform: uppercase;
-      color: var(--gold-dim);
+      color: #8A8A98;
       margin-top: 4px;
     }
 
@@ -53,7 +53,7 @@
       background: rgba(255,255,255,0.04);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(201,168,76,0.18);
+      border: 1px solid rgba(255,255,255,0.09);
       border-radius: var(--radius-lg);
       box-shadow: 0 8px 40px rgba(0,0,0,0.6);
     }
@@ -65,7 +65,7 @@
       border-radius: var(--radius-full);
       padding: 4px;
       margin-bottom: var(--space-xl);
-      border: 1px solid rgba(201,168,76,0.12);
+      border: 1px solid rgba(255,255,255,0.07);
     }
 
     .auth-tab {
@@ -81,13 +81,13 @@
       transition: var(--transition-smooth);
       border: none;
       background: transparent;
-      color: var(--cream-dim);
+      color: #8A8A98;
       text-align: center;
     }
 
     .auth-tab.active {
-      background: linear-gradient(135deg, var(--gold), var(--gold-light));
-      color: var(--black);
+      background: linear-gradient(135deg, #FFFFFF, #E8E8F0);
+      color: #0E0E12;
       font-weight: 700;
     }
 
@@ -104,7 +104,7 @@
       font-size: 0.63rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--gold-dim);
+      color: #8A8A98;
       margin-bottom: 8px;
     }
 
@@ -112,9 +112,9 @@
       width: 100%;
       padding: 14px 18px;
       background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(201,168,76,0.18);
+      border: 1px solid rgba(255,255,255,0.09);
       border-radius: var(--radius-full);
-      color: var(--cream);
+      color: #E8E8F0;
       font-family: var(--font-body);
       font-size: 0.82rem;
       outline: none;
@@ -122,9 +122,9 @@
     }
 
     .form-input:focus {
-      border-color: rgba(201,168,76,0.50);
+      border-color: rgba(255,255,255,0.40);
       background: rgba(255,255,255,0.08);
-      box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
     }
 
     .form-input::placeholder {
@@ -165,10 +165,10 @@
     .auth-btn {
       width: 100%;
       padding: 16px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      background: linear-gradient(135deg, #FFFFFF, #E8E8F0);
       border: none;
       border-radius: var(--radius-full);
-      color: var(--black);
+      color: #0E0E12;
       font-family: var(--font-body);
       font-size: 0.78rem;
       font-weight: 700;
@@ -176,7 +176,7 @@
       text-transform: uppercase;
       cursor: pointer;
       transition: var(--transition-smooth);
-      box-shadow: 0 4px 20px rgba(201,168,76,0.25);
+      box-shadow: 0 4px 20px rgba(255,255,255,0.14);
       margin-bottom: 16px;
       display: flex;
       align-items: center;
@@ -204,12 +204,12 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: rgba(201,168,76,0.15);
+      background: rgba(255,255,255,0.08);
     }
 
     .auth-divider span {
       font-size: 0.65rem;
-      color: var(--gold-dim);
+      color: #8A8A98;
       letter-spacing: 0.10em;
       text-transform: uppercase;
       white-space: nowrap;
@@ -220,9 +220,9 @@
       width: 100%;
       padding: 14px;
       background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(201,168,76,0.18);
+      border: 1px solid rgba(255,255,255,0.09);
       border-radius: var(--radius-full);
-      color: var(--cream);
+      color: #E8E8F0;
       font-family: var(--font-body);
       font-size: 0.78rem;
       font-weight: 500;
@@ -251,7 +251,7 @@
       width: 16px;
       height: 16px;
       border: 2px solid rgba(0,0,0,0.3);
-      border-top-color: var(--black);
+      border-top-color: #0E0E12;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       display: none;
@@ -267,18 +267,18 @@
       text-align: center;
       margin-top: var(--space-lg);
       font-size: 0.70rem;
-      color: var(--gold-dim);
+      color: #8A8A98;
       letter-spacing: 0.10em;
       text-decoration: none;
       transition: var(--transition-fast);
     }
 
-    .back-link:hover { color: var(--gold-light); }
+    .back-link:hover { color: #E8E8F0; }
 
     /* Terms */
     .terms-text {
       font-size: 0.62rem;
-      color: var(--cream-dim);
+      color: #8A8A98;
       text-align: center;
       margin-top: 12px;
       line-height: 1.6;
@@ -389,9 +389,9 @@
 
         <p class="terms-text">
           By creating an account you agree to our
-          <span style="color:var(--gold-dim);">Terms of Service</span>
+          <span style="color:#8A8A98;">Terms of Service</span>
           and
-          <span style="color:var(--gold-dim);">Privacy Policy</span>
+          <span style="color:#8A8A98;">Privacy Policy</span>
         </p>
 
       </div>
