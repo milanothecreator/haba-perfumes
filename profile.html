@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Haba Perfumes — My Profile</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ── PROFILE PAGE ── */
+    .profile-page {
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .profile-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%,
+          rgba(201,168,76,0.10) 0%, transparent 60%),
+        #080808;
+    }
+
+    /* ── HERO ── */
+    .profile-hero {
+      position: relative; z-index: 1;
+      padding: 90px var(--space-lg) var(--space-lg);
+      text-align: center;
+    }
+
+    .profile-avatar-wrap {
+      position: relative;
+      width: 90px; height: 90px;
+      margin: 0 auto var(--space-md);
+    }
+
+    .profile-avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+      border: 2px solid rgba(201,168,76,0.40);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 2rem; font-weight: 300;
+      color: var(--black);
+      overflow: hidden;
+    }
+
+    .profile-avatar img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    .profile-name {
+      font-family: var(--font-display);
+      font-size: 1.8rem; font-weight: 300;
+      color: var(--white); margin-bottom: 4px;
+    }
+
+    .profile-email {
+      font-size: 0.72rem; color: var(--gold-dim);
+      letter-spacing: 0.10em; margin-bottom: var(--space-sm);
+    }
+
+    .profile-joined {
+      font-size: 0.65rem; color: var(--cream-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .profile-method {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 14px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.18);
+      border-radius: var(--radius-full);
+      font-size: 0.62rem; color: var(--gold-dim);
+      letter-spacing: 0.10em; text-transform: uppercase;
+      margin-top: var(--space-sm);
+    }
+
+    /* ── STATS ROW ── */
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-sm);
+      padding: 0 var(--space-lg) var(--space-lg);
+      position: relative; z-index: 1;
+    }
+
+    .profile-stat {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-md) var(--space-sm);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+
+    .profile-stat::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.30), transparent);
+    }
+
+    .profile-stat-value {
+      font-family: var(--font-display);
+      font-size: 1.6rem; font-weight: 300;
+      color: var(--gold-light); line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .profile-stat-label {
+      font-size: 0.60rem; color: var(--cream-dim);
+      letter-spacing: 0.10em; text-transform: uppercase;
+    }
+
+    /* ── BODY ── */
+    .profile-body {
+      position: relative; z-index: 1;
+      padding: 0 var(--space-lg);
+      padding-bottom: 120px;
+    }
+
+    /* ── SECTION CARD ── */
+    .profile-card {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: var(--space-lg);
+      position: relative;
+    }
+
+    .profile-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.30), transparent);
+    }
+
+    .profile-card-header {
+      padding: var(--space-md) var(--space-lg);
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+
+    .profile-card-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem; font-weight: 300;
+      color: var(--white);
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .profile-card-title i { color: var(--gold); font-size: 0.85rem; }
+
+    .profile-card-body { padding: var(--space-lg); }
+
+    /* ── FORM FIELDS ── */
+    .field-group { margin-bottom: var(--space-md); }
+
+    .field-label {
+      display: block;
+      font-size: 0.62rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--gold-dim);
+      margin-bottom: 8px;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 13px 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: var(--radius-full);
+      color: var(--cream);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .field-input:focus {
+      border-color: rgba(201,168,76,0.45);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .field-input:disabled {
+      opacity: 0.5; cursor: not-allowed;
+    }
+
+    .field-input::placeholder { color: rgba(200,188,160,0.35); }
+
+    /* ── SAVE BUTTON ── */
+    .save-field-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      border: none; border-radius: var(--radius-full);
+      color: var(--black);
+      font-family: var(--font-body); font-size: 0.75rem;
+      font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      cursor: pointer; transition: var(--transition-smooth);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: var(--space-md);
+    }
+
+    .save-field-btn:hover { transform: scale(0.98); }
+    .save-field-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+    /* ── SUCCESS / ERROR ── */
+    .field-msg {
+      font-size: 0.68rem; letter-spacing: 0.08em;
+      margin-top: 8px; display: none; padding: 8px 14px;
+      border-radius: var(--radius-md);
+    }
+
+    .field-msg.success {
+      display: block; color: #4ecb9e;
+      background: rgba(40,180,120,0.08);
+      border: 1px solid rgba(40,180,120,0.20);
+    }
+
+    .field-msg.error {
+      display: block; color: #ff6b6b;
+      background: rgba(255,80,80,0.08);
+      border: 1px solid rgba(255,80,80,0.20);
+    }
+
+    /* ── ORDER HISTORY ── */
+    .order-item {
+      padding: var(--space-md);
+      border-bottom: 1px solid rgba(201,168,76,0.06);
+      display: flex; align-items: center;
+      justify-content: space-between; gap: var(--space-md);
+    }
+
+    .order-item:last-child { border-bottom: none; }
+
+    .order-item-id {
+      font-family: var(--font-display);
+      font-size: 0.95rem; color: var(--white);
+      margin-bottom: 3px;
+    }
+
+    .order-item-date {
+      font-size: 0.62rem; color: var(--cream-dim);
+      letter-spacing: 0.05em;
+    }
+
+    .order-item-total {
+      font-family: var(--font-display);
+      font-size: 1rem; color: var(--gold-light);
+      text-align: right; flex-shrink: 0;
+    }
+
+    .order-item-status {
+      font-size: 0.58rem; color: var(--gold-dim);
+      letter-spacing: 0.10em; text-transform: uppercase;
+      text-align: right; margin-top: 3px;
+    }
+
+    .no-orders {
+      text-align: center; padding: var(--space-xl);
+      color: var(--gold-dim); font-size: 0.78rem;
+    }
+
+    /* ── DANGER ZONE ── */
+    .logout-card-btn {
+      width: 100%; padding: 16px;
+      background: rgba(255,80,80,0.08);
+      border: 1px solid rgba(255,80,80,0.22);
+      border-radius: var(--radius-full);
+      color: rgba(255,120,120,0.90);
+      font-family: var(--font-body); font-size: 0.78rem;
+      font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; transition: var(--transition-smooth);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+
+    .logout-card-btn:hover {
+      background: rgba(255,80,80,0.15);
+      border-color: rgba(255,80,80,0.40);
+    }
+
+    /* ── TOAST ── */
+    .profile-toast {
+      position: fixed; bottom: 90px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(16,16,16,0.95);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid rgba(201,168,76,0.30);
+      border-radius: var(--radius-full);
+      padding: 12px 24px; font-size: 0.78rem;
+      color: var(--gold-light); letter-spacing: 0.06em;
+      z-index: 2000; opacity: 0;
+      transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      white-space: nowrap; pointer-events: none;
+    }
+
+    .profile-toast.show {
+      opacity: 1; transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" style="color:var(--cream-dim);font-size:1rem;">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    <div class="navbar-logo">HABA <span>perfumes</span></div>
+    <div style="width:24px;"></div>
+  </nav>
+
+  <!-- Toast -->
+  <div class="profile-toast" id="profileToast"></div>
+
+  <div class="profile-page">
+    <div class="profile-bg"></div>
+
+    <!-- HERO -->
+    <div class="profile-hero page-content">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="profileAvatar">
+          <span id="profileInitials">?</span>
+        </div>
+      </div>
+      <h1 class="profile-name" id="profileName">Loading...</h1>
+      <p class="profile-email" id="profileEmail"></p>
+      <p class="profile-joined" id="profileJoined"></p>
+      <div class="profile-method" id="profileMethod">
+        <i class="fa-solid fa-circle-user"></i>
+        <span>Email</span>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <div class="profile-stat-value" id="statOrders">0</div>
+        <div class="profile-stat-label">Orders</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-value" id="statWishlist">0</div>
+        <div class="profile-stat-label">Saved</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-value" id="statQuiz">—</div>
+        <div class="profile-stat-label">Quiz</div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="profile-body">
+
+      <!-- Edit Name -->
+      <div class="profile-card">
+        <div class="profile-card-header">
+          <div class="profile-card-title">
+            <i class="fa-solid fa-pen"></i> Edit Name
+          </div>
+        </div>
+        <div class="profile-card-body">
+          <div class="field-group">
+            <label class="field-label">Full Name</label>
+            <input type="text" class="field-input" id="editName" placeholder="Your full name" />
+          </div>
+          <div class="field-msg" id="nameMsg"></div>
+          <button class="save-field-btn" id="saveNameBtn">
+            <i class="fa-solid fa-floppy-disk"></i> Save Name
+          </button>
+        </div>
+      </div>
+
+      <!-- Change Password -->
+      <div class="profile-card">
+        <div class="profile-card-header">
+          <div class="profile-card-title">
+            <i class="fa-solid fa-lock"></i> Change Password
+          </div>
+        </div>
+        <div class="profile-card-body">
+          <div class="field-group">
+            <label class="field-label">Current Password</label>
+            <input type="password" class="field-input" id="currentPass" placeholder="••••••••" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">New Password</label>
+            <input type="password" class="field-input" id="newPass" placeholder="Min 6 characters" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Confirm New Password</label>
+            <input type="password" class="field-input" id="confirmPass" placeholder="••••••••" />
+          </div>
+          <div class="field-msg" id="passMsg"></div>
+          <button class="save-field-btn" id="savePassBtn">
+            <i class="fa-solid fa-key"></i> Update Password
+          </button>
+          <p id="googlePassNote" style="display:none;font-size:0.70rem;color:var(--gold-dim);text-align:center;margin-top:12px;">
+            Password change is not available for Google Sign-In accounts.
+          </p>
+        </div>
+      </div>
+
+      <!-- Order History -->
+      <div class="profile-card">
+       <div class="profile-card-header">
+  <div class="profile-card-title">
+    <i class="fa-solid fa-bag-shopping"></i> Order History
+  </div>
+  <a href="order-tracking.html"
+    style="font-size:0.68rem;color:var(--gold);letter-spacing:0.08em;text-decoration:none;">
+    Track Orders →
+  </a>
+</div>
+        <div id="orderHistory">
+          <div class="no-orders">
+            <div style="font-size:2rem;margin-bottom:12px;">🛍️</div>
+            <p>No orders yet</p>
+            <a href="shop.html" style="color:var(--gold);font-size:0.72rem;">Start Shopping →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sign Out -->
+      <div class="profile-card">
+        <div class="profile-card-header">
+          <div class="profile-card-title">
+            <i class="fa-solid fa-right-from-bracket"></i> Account
+          </div>
+        </div>
+        <div class="profile-card-body">
+          <button class="logout-card-btn" id="logoutBtn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Sign Out
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span class="nav-label">Home</span><div class="nav-dot"></div>
+    </a>
+    <a href="shop.html" class="nav-item">
+      <i class="fa-solid fa-store"></i>
+      <span class="nav-label">Shop</span><div class="nav-dot"></div>
+    </a>
+    <a href="quiz.html" class="nav-item">
+      <i class="fa-solid fa-flask"></i>
+      <span class="nav-label">Quiz</span><div class="nav-dot"></div>
+    </a>
+    <a href="cart.html" class="nav-item">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span class="nav-label">Bag</span><div class="nav-dot"></div>
+    </a>
+    <a href="profile.html" class="nav-item active">
+      <i class="fa-solid fa-circle-user"></i>
+      <span class="nav-label">Account</span><div class="nav-dot"></div>
+    </a>
+  </nav>
+
+  <script src="js/main.js"></script>
+
+  <script type="module">
+    import {
+      auth, db,
+      onAuthStateChanged, signOut,
+      updateProfile,
+      doc, getDoc, setDoc, onSnapshot,
+      collection
+    } from './js/firebase.js';
+
+    import {
+      EmailAuthProvider,
+      reauthenticateWithCredential,
+      updatePassword
+    } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    var toastTimer;
+    function showToast(msg, isError) {
+      var t = document.getElementById('profileToast');
+      t.textContent = isError ? '✕  ' + msg : '✓  ' + msg;
+      t.style.color = isError ? '#ff6b6b' : 'var(--gold-light)';
+      t.style.borderColor = isError ? 'rgba(255,80,80,0.30)' : 'rgba(201,168,76,0.30)';
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3000);
+    }
+
+    function showMsg(id, msg, isError) {
+      var el = document.getElementById(id);
+      el.textContent = msg;
+      el.className = 'field-msg ' + (isError ? 'error' : 'success');
+    }
+
+    function fmtUGX(n) { return 'UGX ' + Number(n).toLocaleString(); }
+
+    // ── Wait for auth ──
+    onAuthStateChanged(auth, async function(user) {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      loadProfile(user);
+      loadOrders(user);
+    });
+
+    function loadProfile(user) {
+      // Avatar
+      var avatarEl   = document.getElementById('profileAvatar');
+      var initialsEl = document.getElementById('profileInitials');
+      var nameEl     = document.getElementById('profileName');
+      var emailEl    = document.getElementById('profileEmail');
+      var joinedEl   = document.getElementById('profileJoined');
+      var methodEl   = document.getElementById('profileMethod');
+      var editNameEl = document.getElementById('editName');
+      var googleNote = document.getElementById('googlePassNote');
+      var savePassBtn= document.getElementById('savePassBtn');
+
+      // Check if Google user
+      var isGoogle = user.providerData.some(function(p) { return p.providerId === 'google.com'; });
+
+      // Set avatar
+      if (user.photoURL) {
+        avatarEl.innerHTML = '<img src="' + user.photoURL + '" alt="avatar" />';
+      } else {
+        var initials = (user.displayName || user.email || 'U').split(' ').map(function(w) { return w[0]; }).join('').toUpperCase().slice(0, 2);
+        initialsEl.textContent = initials;
+      }
+
+      nameEl.textContent  = user.displayName || 'Haba Customer';
+      emailEl.textContent = user.email || '';
+      editNameEl.value    = user.displayName || '';
+
+      // Method badge
+      if (isGoogle) {
+        methodEl.innerHTML = '<i class="fa-brands fa-google"></i><span>Google Account</span>';
+        googleNote.style.display = 'block';
+        savePassBtn.style.display = 'none';
+        document.getElementById('currentPass').disabled = true;
+        document.getElementById('newPass').disabled = true;
+        document.getElementById('confirmPass').disabled = true;
+      }
+
+      // Load Firestore user doc
+      getDoc(doc(db, 'users', user.uid)).then(function(snap) {
+        if (snap.exists()) {
+          var data = snap.data();
+          joinedEl.textContent = 'Member since ' + (data.joined || '');
+          document.getElementById('statOrders').textContent = data.orders || 0;
+          document.getElementById('statWishlist').textContent = (data.wishlist || []).length;
+          document.getElementById('statQuiz').textContent = data.quizDone ? '✓' : '✕';
+        }
+      });
+    }
+
+    // ── Load Orders ──
+    function loadOrders(user) {
+      var historyEl = document.getElementById('orderHistory');
+      var countEl   = document.getElementById('orderCountLabel');
+
+      onSnapshot(collection(db, 'orders'), function(snapshot) {
+        var orders = [];
+        snapshot.forEach(function(d) {
+          var data = d.data();
+          if (data.uid === user.uid) orders.push(data);
+        });
+
+        orders.sort(function(a, b) { return (b.id || '').localeCompare(a.id || ''); });
+        countEl.textContent = orders.length + ' order' + (orders.length !== 1 ? 's' : '');
+        document.getElementById('statOrders').textContent = orders.length;
+
+        // Update Firestore orders count
+        setDoc(doc(db, 'users', user.uid), { orders: orders.length }, { merge: true });
+
+        if (orders.length === 0) {
+          historyEl.innerHTML = '<div class="no-orders"><div style="font-size:2rem;margin-bottom:12px;">🛍️</div><p>No orders yet</p><a href="shop.html" style="color:var(--gold);font-size:0.72rem;">Start Shopping →</a></div>';
+          return;
+        }
+
+        historyEl.innerHTML = orders.map(function(o) {
+          var statusColor = o.status === 'new' ? 'var(--gold-dim)' : o.status === 'processing' ? '#60a5fa' : '#4ecb9e';
+          return '<div class="order-item">' +
+            '<div><div class="order-item-id">' + o.id + '</div><div class="order-item-date">' + (o.date || '') + '</div></div>' +
+            '<div><div class="order-item-total">' + fmtUGX(o.total || 0) + '</div><div class="order-item-status" style="color:' + statusColor + ';">' + (o.status || '') + '</div></div>' +
+          '</div>';
+        }).join('');
+      });
+    }
+
+    // ── Save Name ──
+    document.getElementById('saveNameBtn').addEventListener('click', async function() {
+      var user = auth.currentUser;
+      var newName = document.getElementById('editName').value.trim();
+
+      if (!newName) { showMsg('nameMsg', 'Please enter your name', true); return; }
+
+      this.disabled = true;
+      try {
+        await updateProfile(user, { displayName: newName });
+        await setDoc(doc(db, 'users', user.uid), { name: newName }, { merge: true });
+        document.getElementById('profileName').textContent = newName;
+        showMsg('nameMsg', 'Name updated successfully!', false);
+        showToast('Name saved!');
+      } catch (err) {
+        showMsg('nameMsg', 'Failed to update name. Try again.', true);
+      }
+      this.disabled = false;
+    });
+
+    // ── Change Password ──
+    document.getElementById('savePassBtn') && document.getElementById('savePassBtn').addEventListener('click', async function() {
+      var user     = auth.currentUser;
+      var current  = document.getElementById('currentPass').value;
+      var newPass  = document.getElementById('newPass').value;
+      var confirm  = document.getElementById('confirmPass').value;
+
+      if (!current || !newPass || !confirm) {
+        showMsg('passMsg', 'Please fill in all fields', true); return;
+      }
+      if (newPass.length < 6) {
+        showMsg('passMsg', 'New password must be at least 6 characters', true); return;
+      }
+      if (newPass !== confirm) {
+        showMsg('passMsg', 'Passwords do not match', true); return;
+      }
+
+      this.disabled = true;
+      try {
+        var credential = EmailAuthProvider.credential(user.email, current);
+        await reauthenticateWithCredential(user, credential);
+        await updatePassword(user, newPass);
+        showMsg('passMsg', 'Password updated successfully!', false);
+        showToast('Password changed!');
+        document.getElementById('currentPass').value = '';
+        document.getElementById('newPass').value = '';
+        document.getElementById('confirmPass').value = '';
+      } catch (err) {
+        if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+          showMsg('passMsg', 'Current password is incorrect', true);
+        } else {
+          showMsg('passMsg', 'Failed to update password. Try again.', true);
+        }
+      }
+      this.disabled = false;
+    });
+
+    // ── Logout ──
+    document.getElementById('logoutBtn').addEventListener('click', async function() {
+      await signOut(auth);
+      localStorage.removeItem('habaCart');
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

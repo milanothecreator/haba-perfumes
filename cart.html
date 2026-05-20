@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Haba Perfumes — My Bag</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .cart-page { min-height: 100vh; position: relative; }
+    .cart-bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 60%), linear-gradient(180deg, #090909 0%, #080808 100%); }
+    .cart-hero { position: relative; z-index: 1; padding: 100px var(--space-lg) var(--space-lg); display: flex; align-items: center; justify-content: space-between; }
+    .cart-hero-left h1 { font-family: var(--font-display); font-size: clamp(2rem, 8vw, 2.8rem); font-weight: 300; color: var(--white); line-height: 1; }
+    .cart-hero-left p { font-size: 0.72rem; color: var(--gold-dim); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 6px; }
+    .cart-item-count { width: 48px; height: 48px; border-radius: 50%; background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.25); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.3rem; color: var(--gold-light); }
+    .cart-body { position: relative; z-index: 1; padding: 0 var(--space-lg); padding-bottom: 320px; }
+    .cart-empty { text-align: center; padding: var(--space-2xl) var(--space-lg); display: none; }
+    .cart-empty.visible { display: block; }
+    .empty-icon { font-size: 3.5rem; display: block; margin-bottom: var(--space-lg); opacity: 0.5; }
+    .empty-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 300; color: var(--white); margin-bottom: var(--space-sm); }
+    .empty-sub { font-size: 0.80rem; color: var(--cream-dim); margin-bottom: var(--space-xl); }
+    .cart-items { display: flex; flex-direction: column; gap: var(--space-md); }
+    .cart-item { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); position: relative; overflow: hidden; transition: var(--transition-smooth); animation: fadeUp 0.5s ease forwards; }
+    .cart-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent); }
+    .cart-item.removing { opacity: 0; transform: translateX(100%); transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .item-img { width: 72px; height: 88px; border-radius: var(--radius-md); overflow: hidden; flex-shrink: 0; border: 1px solid rgba(201,168,76,0.15); }
+    .item-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); }
+    .item-details { flex: 1; min-width: 0; }
+    .item-category { font-size: 0.60rem; color: var(--gold-dim); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
+    .item-name { font-family: var(--font-display); font-size: 1.05rem; font-weight: 400; color: var(--white); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-size { font-size: 0.62rem; color: var(--cream-dim); letter-spacing: 0.06em; margin-bottom: var(--space-sm); }
+    .qty-controls { display: flex; align-items: center; gap: 10px; }
+    .qty-btn { width: 26px; height: 26px; border-radius: 50%; background: rgba(201,168,76,0.10); border: 1px solid rgba(201,168,76,0.25); color: var(--gold-light); font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); flex-shrink: 0; }
+    .qty-btn:hover { background: rgba(201,168,76,0.20); border-color: var(--gold); }
+    .qty-num { font-family: var(--font-display); font-size: 1rem; color: var(--white); min-width: 20px; text-align: center; }
+    .item-right { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-sm); flex-shrink: 0; }
+    .item-price { font-family: var(--font-display); font-size: 0.9rem; font-weight: 400; color: var(--gold-light); }
+    .item-remove { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.18); color: rgba(255,120,120,0.70); font-size: 0.70rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); }
+    .item-remove:hover { background: rgba(255,80,80,0.18); border-color: rgba(255,80,80,0.40); color: rgba(255,120,120,1); }
+    .order-summary { position: fixed; bottom: 0; left: 0; right: 0; z-index: 500; padding: var(--space-lg); background: rgba(8,8,8,0.96); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-top: 1px solid rgba(201,168,76,0.15); padding-bottom: 30px; }
+    .summary-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: var(--space-lg); }
+    .summary-row { display: flex; justify-content: space-between; align-items: center; }
+    .summary-label { font-size: 0.75rem; color: var(--cream-dim); letter-spacing: 0.06em; }
+    .summary-value { font-size: 0.80rem; color: var(--cream); font-weight: 400; }
+    .summary-divider { width: 100%; height: 1px; background: rgba(201,168,76,0.12); margin: var(--space-sm) 0; }
+    .summary-total-label { font-family: var(--font-display); font-size: 1rem; color: var(--white); }
+    .summary-total-value { font-family: var(--font-display); font-size: 1.4rem; color: var(--gold-light); }
+    .promo-wrap { display: flex; gap: var(--space-sm); margin-bottom: var(--space-md); }
+    .promo-input { flex: 1; padding: 12px 16px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-full); color: var(--cream); font-family: var(--font-body); font-size: 0.78rem; letter-spacing: 0.08em; outline: none; transition: var(--transition-smooth); }
+    .promo-input::placeholder { color: rgba(200,188,160,0.35); letter-spacing: 0.10em; }
+    .promo-input:focus { border-color: rgba(201,168,76,0.45); background: rgba(255,255,255,0.06); }
+    .promo-btn { padding: 12px 18px; background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.25); border-radius: var(--radius-full); color: var(--gold-light); font-family: var(--font-body); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.10em; cursor: pointer; transition: var(--transition-fast); white-space: nowrap; }
+    .promo-btn:hover { background: rgba(201,168,76,0.20); border-color: var(--gold); }
+    .promo-success { font-size: 0.68rem; color: #4ecb9e; letter-spacing: 0.08em; margin-top: -8px; margin-bottom: var(--space-sm); display: none; }
+    .promo-success.visible { display: block; }
+    .checkout-btn { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border: none; border-radius: var(--radius-full); color: var(--black); font-family: var(--font-body); font-size: 0.80rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: var(--transition-smooth); box-shadow: 0 4px 24px rgba(201,168,76,0.30); display: flex; align-items: center; justify-content: center; gap: var(--space-sm); }
+    .checkout-btn:hover { transform: scale(0.98); box-shadow: 0 4px 36px rgba(201,168,76,0.50); }
+    .continue-link { display: block; text-align: center; font-size: 0.70rem; color: var(--gold-dim); letter-spacing: 0.12em; text-transform: uppercase; margin-top: var(--space-md); cursor: pointer; transition: var(--transition-fast); text-decoration: none; }
+    .continue-link:hover { color: var(--gold-light); }
+    .checkout-modal { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+    .checkout-modal.active { opacity: 1; pointer-events: all; }
+    .modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+    .modal-sheet { position: relative; z-index: 1; width: 100%; background: #111111; border-top: 1px solid rgba(201,168,76,0.20); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: var(--space-xl) var(--space-lg) 50px; text-align: center; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .checkout-modal.active .modal-sheet { transform: translateY(0); }
+    .modal-icon { font-size: 3rem; display: block; margin-bottom: var(--space-md); }
+    .modal-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 300; color: var(--white); margin-bottom: var(--space-sm); }
+    .modal-sub { font-size: 0.78rem; color: var(--cream-dim); margin-bottom: var(--space-xl); max-width: 260px; margin-left: auto; margin-right: auto; }
+    .modal-close { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border: none; border-radius: var(--radius-full); color: var(--black); font-family: var(--font-body); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: var(--transition-smooth); }
+    .modal-close:hover { transform: scale(0.98); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="shop.html" style="color:var(--cream-dim);font-size:1rem;"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="navbar-logo">HABA <span>perfumes</span></div>
+    <div style="width:24px;"></div>
+  </nav>
+
+  <div class="cart-page">
+    <div class="cart-bg"></div>
+    <div class="cart-hero">
+      <div class="cart-hero-left">
+        <h1>My Bag</h1>
+        <p id="itemCountLabel">0 items</p>
+      </div>
+      <div class="cart-item-count" id="heroCount">0</div>
+    </div>
+    <div class="cart-body">
+      <div class="cart-empty visible" id="cartEmpty">
+        <span class="empty-icon">🛍️</span>
+        <h2 class="empty-title">Your bag is empty</h2>
+        <p class="empty-sub">Discover our premium fragrance collection and find your signature scent.</p>
+        <a href="shop.html" class="btn-gold"><i class="fa-solid fa-store"></i> Browse Shop</a>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+    </div>
+  </div>
+
+  <div class="order-summary" id="orderSummary" style="display:none;">
+    <div class="promo-wrap">
+      <input type="text" class="promo-input" id="promoInput" placeholder="Promo code" autocomplete="off" />
+      <button class="promo-btn" id="promoBtn">Apply</button>
+    </div>
+    <p class="promo-success" id="promoSuccess">✓ HABA10 applied — 10% off!</p>
+    <div class="summary-rows">
+      <div class="summary-row">
+        <span class="summary-label">Subtotal</span>
+        <span class="summary-value" id="subtotalVal">UGX 0</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Delivery</span>
+        <span class="summary-value" id="shippingVal">Free</span>
+      </div>
+      <div class="summary-row" id="discountRow" style="display:none;">
+        <span class="summary-label" style="color:#4ecb9e;">Discount (10%)</span>
+        <span class="summary-value" style="color:#4ecb9e;" id="discountVal">-UGX 0</span>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-row">
+        <span class="summary-total-label">Total</span>
+        <span class="summary-total-value" id="totalVal">UGX 0</span>
+      </div>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn"><i class="fa-solid fa-lock"></i> Secure Checkout</button>
+    <a href="shop.html" class="continue-link">← Continue Shopping</a>
+  </div>
+
+  <div class="checkout-modal" id="checkoutModal">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-sheet">
+      <span class="modal-icon">🎉</span>
+      <h2 class="modal-title">Order Placed!</h2>
+      <p class="modal-sub">Thank you for shopping with Haba Perfumes. Your signature scent is on its way.</p>
+<a href="order-tracking.html"
+  style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;margin-bottom:4px;font-size:0.72rem;color:var(--gold);letter-spacing:0.10em;text-decoration:none;">
+  <i class="fa-solid fa-truck"></i> Track Your Order
+</a>
+      <button class="modal-close" id="modalCloseBtn"><i class="fa-solid fa-check"></i> Continue Shopping</button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span><div class="nav-dot"></div></a>
+    <a href="shop.html" class="nav-item"><i class="fa-solid fa-store"></i><span class="nav-label">Shop</span><div class="nav-dot"></div></a>
+    <a href="quiz.html" class="nav-item"><i class="fa-solid fa-flask"></i><span class="nav-label">Quiz</span><div class="nav-dot"></div></a>
+    <a href="cart.html" class="nav-item active"><i class="fa-solid fa-bag-shopping"></i><span class="nav-label">Bag</span><div class="nav-dot"></div></a>
+   <a href="profile.html" class="nav-item nav-account"><i class="fa-regular fa-circle-user"></i><span class="nav-label nav-username">Account</span><div class="nav-dot"></div></a>
+  </nav>
+
+  <script src="js/main.js"></script>
+
+  <script type="module">
+    import { db, collection, addDoc, auth, onAuthStateChanged } from './js/firebase.js';
+
+    var showAuthPopup;
+    try {
+      var authModule = await import('./js/auth.js');
+      showAuthPopup = authModule.showAuthPopup;
+    } catch(e) {
+      showAuthPopup = function() { window.location.href = 'login.html'; };
+    }
+
+    var WHATSAPP = '256756373899';
+    var DELIVERY_THRESHOLD = 500000; // Free delivery over UGX 500,000
+    var DELIVERY_FEE = 5000; // UGX 5,000 delivery
+
+    var currentUser = null;
+    onAuthStateChanged(auth, function(user) {
+      currentUser = user;
+      document.querySelectorAll('.nav-account').forEach(function(el) {
+        if (user) {
+          var icon = el.querySelector('i');
+          if (icon) icon.className = 'fa-solid fa-circle-user';
+          var label = el.querySelector('.nav-username');
+          if (label) label.textContent = user.displayName ? user.displayName.split(' ')[0] : 'Account';
+        }
+      });
+    });
+
+    function fmtUGX(n) { return 'UGX ' + Number(n).toLocaleString(); }
+
+    // Load cart
+    var cartData = JSON.parse(localStorage.getItem('habaCart') || '[]').map(function(item, i) {
+      return Object.assign({}, item, { id: i + 1 });
+    });
+    var promoApplied = false;
+
+    function renderCart() {
+      var cartItems  = document.getElementById('cartItems');
+      var cartEmpty  = document.getElementById('cartEmpty');
+      var orderSum   = document.getElementById('orderSummary');
+      var heroCount  = document.getElementById('heroCount');
+      var countLabel = document.getElementById('itemCountLabel');
+
+      var totalItems = cartData.reduce(function(s, i) { return s + i.qty; }, 0);
+      heroCount.textContent  = totalItems;
+      countLabel.textContent = totalItems + ' item' + (totalItems !== 1 ? 's' : '');
+
+      if (cartData.length === 0) {
+        cartEmpty.classList.add('visible');
+        orderSum.style.display = 'none';
+        cartItems.innerHTML = '';
+        return;
+      }
+
+      cartEmpty.classList.remove('visible');
+      orderSum.style.display = 'block';
+
+      cartItems.innerHTML = cartData.map(function(item) {
+        return '<div class="cart-item" id="item-' + item.id + '">' +
+          '<div class="item-img"><img src="' + (item.img || 'assets/warm.jpg') + '" alt="' + item.name + '" onerror="this.src=\'assets/warm.jpg\'" /></div>' +
+          '<div class="item-details">' +
+            '<div class="item-category">' + (item.cat || 'Haba') + '</div>' +
+            '<div class="item-name">' + item.name + '</div>' +
+            '<div class="item-size">' + (item.size || '50ml EDP') + '</div>' +
+            '<div class="qty-controls">' +
+              '<button class="qty-btn" data-id="' + item.id + '" data-delta="-1"><i class="fa-solid fa-minus"></i></button>' +
+              '<span class="qty-num" id="qty-' + item.id + '">' + item.qty + '</span>' +
+              '<button class="qty-btn" data-id="' + item.id + '" data-delta="1"><i class="fa-solid fa-plus"></i></button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="item-right">' +
+            '<div class="item-price" id="price-' + item.id + '">' + fmtUGX(item.price * item.qty) + '</div>' +
+            '<button class="item-remove" data-remove="' + item.id + '"><i class="fa-solid fa-xmark"></i></button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      updateTotals();
+      saveCart();
+      attachCartListeners();
+    }
+
+    function attachCartListeners() {
+      document.querySelectorAll('.qty-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          changeQty(parseInt(btn.dataset.id), parseInt(btn.dataset.delta));
+        });
+      });
+      document.querySelectorAll('.item-remove').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          removeItem(parseInt(btn.dataset.remove));
+        });
+      });
+    }
+
+    function saveCart() {
+      localStorage.setItem('habaCart', JSON.stringify(cartData.map(function(item) {
+        var copy = Object.assign({}, item);
+        delete copy.id;
+        return copy;
+      })));
+    }
+
+    function changeQty(id, delta) {
+      var item = cartData.find(function(i) { return i.id === id; });
+      if (!item) return;
+      item.qty = Math.max(1, item.qty + delta);
+      document.getElementById('qty-' + id).textContent = item.qty;
+      document.getElementById('price-' + id).textContent = fmtUGX(item.price * item.qty);
+      updateTotals();
+      saveCart();
+      var total = cartData.reduce(function(s, i) { return s + i.qty; }, 0);
+      document.getElementById('heroCount').textContent = total;
+      document.getElementById('itemCountLabel').textContent = total + ' item' + (total !== 1 ? 's' : '');
+    }
+
+    function removeItem(id) {
+      var el = document.getElementById('item-' + id);
+      if (el) el.classList.add('removing');
+      setTimeout(function() {
+        cartData = cartData.filter(function(i) { return i.id !== id; });
+        renderCart();
+      }, 400);
+    }
+
+    function updateTotals() {
+      var subtotal = cartData.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
+      var discount = promoApplied ? Math.round(subtotal * 0.10) : 0;
+      var delivery = subtotal >= DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+      var total    = subtotal - discount + delivery;
+
+      document.getElementById('subtotalVal').textContent = fmtUGX(subtotal);
+      document.getElementById('shippingVal').textContent = delivery === 0 ? 'Free' : fmtUGX(delivery);
+      document.getElementById('totalVal').textContent = fmtUGX(total);
+
+      if (promoApplied) {
+        document.getElementById('discountRow').style.display = 'flex';
+        document.getElementById('discountVal').textContent = '-' + fmtUGX(discount);
+      }
+    }
+
+    // Promo
+    document.getElementById('promoBtn').addEventListener('click', function() {
+      var code = document.getElementById('promoInput').value.trim().toUpperCase();
+      if (code === 'HABA10' && !promoApplied) {
+        promoApplied = true;
+        document.getElementById('promoSuccess').classList.add('visible');
+        document.getElementById('promoInput').disabled = true;
+        updateTotals();
+      }
+    });
+
+    // Checkout
+    document.getElementById('checkoutBtn').addEventListener('click', async function() {
+      if (!currentUser) { showAuthPopup(); return; }
+      if (cartData.length === 0) return;
+
+      var subtotal = cartData.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
+      var discount = promoApplied ? Math.round(subtotal * 0.10) : 0;
+      var delivery = subtotal >= DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+      var total    = subtotal - discount + delivery;
+      var orderId  = '#ORD-' + Date.now().toString().slice(-5);
+
+      var customerName = currentUser.displayName || currentUser.email || 'Online Customer';
+
+      var order = {
+        id: orderId,
+        customer: customerName,
+        email: currentUser.email || '',
+        uid: currentUser.uid,
+        phone: '',
+        date: new Date().toLocaleString(),
+        items: cartData.map(function(i) { return { name: i.name, qty: i.qty, price: i.price }; }),
+        subtotal: subtotal,
+        discount: discount,
+        delivery: delivery,
+        total: total,
+        status: 'new',
+        promo: promoApplied ? 'HABA10' : ''
+      };
+
+      try {
+        await addDoc(collection(db, 'orders'), order);
+
+        var itemsList = cartData.map(function(i) { return i.name + ' x' + i.qty + ' (' + fmtUGX(i.price * i.qty) + ')'; }).join(', ');
+
+        var msg = encodeURIComponent(
+          '🛍️ *New Order — Haba Perfumes*\n' +
+          'Order: ' + orderId + '\n' +
+          'Customer: ' + customerName + '\n' +
+          'Items: ' + itemsList + '\n' +
+          'Subtotal: ' + fmtUGX(subtotal) + '\n' +
+          (promoApplied ? 'Discount: -' + fmtUGX(discount) + '\n' : '') +
+          'Delivery: ' + (delivery === 0 ? 'Free' : fmtUGX(delivery)) + '\n' +
+          '*Total: ' + fmtUGX(total) + '*\n' +
+          'Status: New Order 🆕'
+        );
+
+        window.open('https://wa.me/' + WHATSAPP + '?text=' + msg, '_blank');
+        document.getElementById('checkoutModal').classList.add('active');
+      } catch (err) {
+        console.error('Order error:', err);
+        alert('Something went wrong. Please try again.');
+      }
+    });
+
+    // Modal close
+    document.getElementById('modalCloseBtn').addEventListener('click', closeAndReset);
+    document.getElementById('modalBackdrop').addEventListener('click', closeAndReset);
+
+    function closeAndReset() {
+      document.getElementById('checkoutModal').classList.remove('active');
+      cartData = [];
+      localStorage.removeItem('habaCart');
+      renderCart();
+    }
+
+    // Init
+    renderCart();
+  </script>
+</body>
+</html>

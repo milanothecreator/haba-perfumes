@@ -1,0 +1,354 @@
+/* ============================================
+   HABA PERFUMES — Global CSS Foundation
+   style.css
+============================================ */
+
+/* --- Google Fonts Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap');
+
+/* --- CSS Variables (Design Tokens) --- */
+:root {
+  /* Colors */
+  --black:        #080808;
+  --black-soft:   #111111;
+  --black-card:   #161616;
+  --gold:         #C9A84C;
+  --gold-light:   #E8C97E;
+  --gold-dim:     #8A6E2F;
+  --cream:        #F5EDD6;
+  --cream-dim:    #C8BCA0;
+  --white:        #FFFFFF;
+
+  /* Glass Effect */
+  --glass-bg:         rgba(255, 255, 255, 0.05);
+  --glass-bg-strong:  rgba(255, 255, 255, 0.10);
+  --glass-border:     rgba(201, 168, 76, 0.25);
+  --glass-blur:       blur(20px);
+  --glass-blur-light: blur(10px);
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body:    'Montserrat', sans-serif;
+
+  /* Spacing */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+  --space-2xl: 64px;
+
+  /* Border Radius */
+  --radius-sm:   10px;
+  --radius-md:   18px;
+  --radius-lg:   28px;
+  --radius-full: 999px;
+
+  /* Transitions */
+  --transition-fast:   all 0.2s ease;
+  --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-slow:   all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Shadows */
+  --shadow-gold:  0 0 30px rgba(201, 168, 76, 0.15);
+  --shadow-card:  0 8px 40px rgba(0, 0, 0, 0.6);
+  --shadow-glow:  0 0 60px rgba(201, 168, 76, 0.10);
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--black);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+
+  /* Subtle noise texture for depth */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* --- Typography Scale --- */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+h1 { font-size: clamp(2.8rem, 10vw, 4.5rem); }
+h2 { font-size: clamp(2rem, 7vw, 3rem); }
+h3 { font-size: clamp(1.4rem, 5vw, 1.8rem); }
+h4 { font-size: clamp(1.1rem, 4vw, 1.3rem); }
+
+p {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--cream-dim);
+  letter-spacing: 0.03em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-fast);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* --- Glassmorphism Components --- */
+
+/* Glass Card */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Glass Card — Stronger */
+.glass-card-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card), var(--shadow-gold);
+}
+
+/* --- Buttons --- */
+
+/* Primary Gold Button */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 20px rgba(201, 168, 76, 0.3);
+}
+
+.btn-gold:hover, .btn-gold:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 30px rgba(201, 168, 76, 0.5);
+}
+
+/* Ghost Glass Button */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 13px 30px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-light);
+  -webkit-backdrop-filter: var(--glass-blur-light);
+  color: var(--gold-light);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-ghost:hover, .btn-ghost:active {
+  background: var(--glass-bg-strong);
+  border-color: var(--gold);
+  transform: scale(0.97);
+}
+
+/* --- Gold Text Gradient --- */
+.text-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* --- Gold Divider Line --- */
+.divider-gold {
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: var(--space-md) auto;
+}
+
+/* --- Navigation Bar (shared across pages) --- */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px var(--space-lg);
+  background: rgba(8, 8, 8, 0.7);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.10);
+}
+
+.navbar-logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--gold-light);
+}
+
+.navbar-logo span {
+  color: var(--cream-dim);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+.navbar-icons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.navbar-icons button {
+  background: none;
+  border: none;
+  color: var(--cream-dim);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: var(--space-xs);
+  transition: var(--transition-fast);
+}
+
+.navbar-icons button:hover {
+  color: var(--gold-light);
+}
+
+/* --- Page Padding (so content clears navbar) --- */
+.page-content {
+  padding-top: 70px;
+}
+
+/* --- Section Wrapper --- */
+.section {
+  padding: var(--space-xl) var(--space-lg);
+}
+
+/* --- Gold Tag / Badge --- */
+.badge {
+  display: inline-block;
+  padding: 4px 14px;
+  background: rgba(201, 168, 76, 0.12);
+  border: 1px solid rgba(201, 168, 76, 0.30);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+/* --- Scroll Bar Styling --- */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dim);
+  border-radius: var(--radius-full);
+}
+
+/* --- Utility Classes --- */
+.text-center { text-align: center; }
+.text-right  { text-align: right; }
+.mt-sm  { margin-top: var(--space-sm); }
+.mt-md  { margin-top: var(--space-md); }
+.mt-lg  { margin-top: var(--space-lg); }
+.mt-xl  { margin-top: var(--space-xl); }
+.mb-sm  { margin-bottom: var(--space-sm); }
+.mb-md  { margin-bottom: var(--space-md); }
+.mb-lg  { margin-bottom: var(--space-lg); }
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Page Fade-in Animation --- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.fade-up-delay-1 { animation-delay: 0.15s; opacity: 0; }
+.fade-up-delay-2 { animation-delay: 0.30s; opacity: 0; }
+.fade-up-delay-3 { animation-delay: 0.45s; opacity: 0; }
+.fade-up-delay-4 { animation-delay: 0.60s; opacity: 0; }
+
+/* --- Glow Orb Background Decoration --- */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-orb-gold {
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.18) 0%, transparent 70%);
+}
+
+.glow-orb-warm {
+  background: radial-gradient(circle, rgba(180, 100, 40, 0.12) 0%, transparent 70%);
+}

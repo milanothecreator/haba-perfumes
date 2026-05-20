@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Haba Perfumes — Order Tracking</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .tracking-page { min-height: 100vh; position: relative; }
+    .tracking-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%,
+          rgba(201,168,76,0.09) 0%, transparent 60%),
+        #080808;
+    }
+
+    /* ── HERO ── */
+    .tracking-hero {
+      position: relative; z-index: 1;
+      padding: 90px var(--space-lg) var(--space-lg);
+      text-align: center;
+    }
+    .tracking-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem,8vw,2.8rem);
+      font-weight: 300; color: var(--white);
+      margin-bottom: 6px;
+    }
+    .tracking-hero p {
+      font-size: 0.72rem; color: var(--gold-dim);
+      letter-spacing: 0.10em; text-transform: uppercase;
+    }
+
+    /* ── SEARCH BOX ── */
+    .tracking-search {
+      position: relative; z-index: 1;
+      padding: 0 var(--space-lg) var(--space-lg);
+    }
+    .tracking-input-wrap {
+      display: flex; gap: 10px;
+    }
+    .tracking-input {
+      flex: 1; padding: 14px 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,168,76,0.20);
+      border-radius: var(--radius-full);
+      color: var(--cream);
+      font-family: var(--font-body); font-size: 0.82rem;
+      outline: none; transition: var(--transition-smooth);
+      letter-spacing: 0.08em;
+    }
+    .tracking-input:focus {
+      border-color: rgba(201,168,76,0.50);
+      background: rgba(255,255,255,0.08);
+    }
+    .tracking-input::placeholder { color: rgba(200,188,160,0.35); }
+    .tracking-btn {
+      padding: 14px 20px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      border: none; border-radius: var(--radius-full);
+      color: var(--black); font-family: var(--font-body);
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.12em; cursor: pointer;
+      transition: var(--transition-smooth); white-space: nowrap;
+    }
+    .tracking-btn:hover { transform: scale(0.97); }
+
+    /* ── ORDERS LIST ── */
+    .tracking-body {
+      position: relative; z-index: 1;
+      padding: 0 var(--space-lg); padding-bottom: 120px;
+    }
+
+    .orders-label {
+      font-size: 0.65rem; color: var(--gold-dim);
+      letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: var(--space-md);
+    }
+
+    /* ── ORDER CARD ── */
+    .tracking-card {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-lg);
+      overflow: hidden;
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+    .tracking-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg,
+        transparent, rgba(201,168,76,0.35), transparent);
+    }
+
+    .card-top {
+      padding: var(--space-md) var(--space-lg);
+      display: flex; justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+    }
+    .card-order-id {
+      font-family: var(--font-display);
+      font-size: 1.2rem; color: var(--white);
+      margin-bottom: 4px;
+    }
+    .card-order-date {
+      font-size: 0.65rem; color: var(--cream-dim);
+      letter-spacing: 0.06em;
+    }
+
+    /* Status Badge */
+    .status-pill {
+      padding: 5px 14px; border-radius: var(--radius-full);
+      font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .status-new {
+      background: rgba(201,168,76,0.15);
+      color: #E8C97E;
+      border: 1px solid rgba(201,168,76,0.30);
+    }
+    .status-processing {
+      background: rgba(40,120,200,0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(40,120,200,0.30);
+    }
+    .status-delivered {
+      background: rgba(40,180,120,0.15);
+      color: #4ecb9e;
+      border: 1px solid rgba(40,180,120,0.30);
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      padding: var(--space-lg) var(--space-lg);
+      position: relative;
+    }
+    .timeline-step {
+      display: flex; gap: 16px;
+      position: relative; padding-bottom: var(--space-lg);
+    }
+    .timeline-step:last-child { padding-bottom: 0; }
+
+    /* Vertical line */
+    .timeline-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 15px; top: 32px;
+      width: 2px;
+      bottom: 0;
+      background: rgba(201,168,76,0.12);
+    }
+    .timeline-step.done:not(:last-child)::after {
+      background: rgba(201,168,76,0.35);
+    }
+
+    .step-icon {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; flex-shrink: 0;
+      position: relative; z-index: 1;
+      transition: var(--transition-smooth);
+    }
+    .step-icon-pending {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.15);
+      color: rgba(200,188,160,0.35);
+    }
+    .step-icon-done {
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+      border: none; color: var(--black);
+    }
+    .step-icon-active {
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.50);
+      color: var(--gold-light);
+      box-shadow: 0 0 12px rgba(201,168,76,0.20);
+      animation: stepPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes stepPulse {
+      0%,100% { box-shadow: 0 0 12px rgba(201,168,76,0.20); }
+      50%      { box-shadow: 0 0 22px rgba(201,168,76,0.45); }
+    }
+
+    .step-content { flex: 1; padding-top: 4px; }
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 1rem; font-weight: 400;
+      color: var(--white); margin-bottom: 3px;
+    }
+    .step-title.pending { color: rgba(200,188,160,0.40); }
+    .step-desc {
+      font-size: 0.68rem; color: var(--cream-dim);
+      letter-spacing: 0.04em; margin-bottom: 4px;
+    }
+    .step-date {
+      font-size: 0.62rem; color: var(--gold-dim);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── ESTIMATED DELIVERY ── */
+    .delivery-estimate {
+      margin: 0 var(--space-lg) var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      background: rgba(40,180,120,0.06);
+      border: 1px solid rgba(40,180,120,0.18);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .delivery-estimate i {
+      color: #4ecb9e; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .delivery-est-label {
+      font-size: 0.65rem; color: #4ecb9e;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .delivery-est-date {
+      font-family: var(--font-display);
+      font-size: 1rem; color: var(--white);
+    }
+
+    /* ── ORDER ITEMS ── */
+    .card-items {
+      padding: 0 var(--space-lg) var(--space-md);
+      border-top: 1px solid rgba(201,168,76,0.06);
+    }
+    .items-label {
+      font-size: 0.62rem; color: var(--gold-dim);
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: var(--space-sm) 0;
+    }
+    .order-item-row {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      font-size: 0.78rem;
+    }
+    .order-item-row:last-child { border-bottom: none; }
+    .order-item-name { color: var(--cream); }
+    .order-item-qty { color: var(--cream-dim); font-size: 0.68rem; }
+    .order-item-price { color: var(--gold-light); font-family: var(--font-display); }
+
+    .card-total {
+      padding: var(--space-sm) var(--space-lg) var(--space-md);
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(201,168,76,0.10);
+    }
+    .card-total-label {
+      font-size: 0.75rem; color: var(--cream-dim); letter-spacing: 0.08em;
+    }
+    .card-total-value {
+      font-family: var(--font-display);
+      font-size: 1.2rem; color: var(--gold-light);
+    }
+
+    /* ── EMPTY / LOADING ── */
+    .tracking-empty {
+      text-align: center; padding: 60px var(--space-lg);
+      color: var(--gold-dim);
+    }
+    .tracking-empty-icon { font-size: 3rem; margin-bottom: 16px; display: block; }
+    .tracking-empty h3 {
+      font-family: var(--font-display); font-size: 1.5rem;
+      font-weight: 300; color: var(--white); margin-bottom: 8px;
+    }
+    .tracking-empty p { font-size: 0.78rem; color: var(--cream-dim); margin-bottom: 24px; }
+
+    /* ── NOT LOGGED IN ── */
+    .login-prompt {
+      text-align: center; padding: 60px var(--space-lg);
+    }
+    .login-prompt-icon { font-size: 3rem; margin-bottom: 16px; display: block; }
+    .login-prompt h3 {
+      font-family: var(--font-display); font-size: 1.5rem;
+      font-weight: 300; color: var(--white); margin-bottom: 8px;
+    }
+    .login-prompt p { font-size: 0.78rem; color: var(--cream-dim); margin-bottom: 24px; }
+
+    /* ── TOAST ── */
+    .track-toast {
+      position: fixed; bottom: 90px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(16,16,16,0.95);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid rgba(201,168,76,0.30);
+      border-radius: var(--radius-full);
+      padding: 12px 24px; font-size: 0.78rem;
+      color: var(--gold-light); letter-spacing: 0.06em;
+      z-index: 2000; opacity: 0;
+      transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      white-space: nowrap; pointer-events: none;
+    }
+    .track-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="profile.html" style="color:var(--cream-dim);font-size:1rem;">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    <div class="navbar-logo">HABA <span>perfumes</span></div>
+    <div style="width:24px;"></div>
+  </nav>
+
+  <!-- Toast -->
+  <div class="track-toast" id="trackToast"></div>
+
+  <div class="tracking-page">
+    <div class="tracking-bg"></div>
+
+    <!-- HERO -->
+    <div class="tracking-hero">
+      <h1>Order Tracking</h1>
+      <p>Real-time updates on your orders</p>
+    </div>
+
+    <!-- SEARCH by Order ID -->
+    <div class="tracking-search">
+      <div class="tracking-input-wrap">
+        <input type="text" class="tracking-input"
+          id="trackInput"
+          placeholder="Search by Order ID e.g. #ORD-12345"
+          autocomplete="off" />
+        <button class="tracking-btn" id="trackSearchBtn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="tracking-body" id="trackingBody">
+      <!-- Content loads here -->
+      <div class="tracking-empty" id="loadingState">
+        <span class="tracking-empty-icon" style="animation:none;">⏳</span>
+        <h3>Loading Orders...</h3>
+        <p>Fetching your order history</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span><div class="nav-dot"></div></a>
+    <a href="shop.html" class="nav-item"><i class="fa-solid fa-store"></i><span class="nav-label">Shop</span><div class="nav-dot"></div></a>
+    <a href="quiz.html" class="nav-item"><i class="fa-solid fa-flask"></i><span class="nav-label">Quiz</span><div class="nav-dot"></div></a>
+    <a href="cart.html" class="nav-item"><i class="fa-solid fa-bag-shopping"></i><span class="nav-label">Bag</span><div class="nav-dot"></div></a>
+    <a href="profile.html" class="nav-item nav-account"><i class="fa-regular fa-circle-user"></i><span class="nav-label nav-username">Account</span><div class="nav-dot"></div></a>
+  </nav>
+
+  <script src="js/main.js"></script>
+
+  <script type="module">
+    import {
+      auth, onAuthStateChanged,
+      db, collection, onSnapshot
+    } from './js/firebase.js';
+
+    function fmtUGX(n) { return 'UGX ' + Number(n).toLocaleString(); }
+
+    var trackingBody  = document.getElementById('trackingBody');
+    var trackInput    = document.getElementById('trackInput');
+    var trackSearchBtn= document.getElementById('trackSearchBtn');
+    var toastTimer;
+
+    function showToast(msg) {
+      var t = document.getElementById('trackToast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3000);
+    }
+
+    // ── Auth guard ──
+    onAuthStateChanged(auth, function(user) {
+      if (!user) {
+        trackingBody.innerHTML = renderLoginPrompt();
+        return;
+      }
+
+      // Update nav
+      document.querySelectorAll('.nav-account').forEach(function(el) {
+        var icon = el.querySelector('i');
+        if (icon) icon.className = 'fa-solid fa-circle-user';
+        var label = el.querySelector('.nav-username');
+        if (label) label.textContent = user.displayName ? user.displayName.split(' ')[0] : 'Account';
+      });
+
+      // Listen to this user's orders real-time
+      listenOrders(user);
+    });
+
+    // ── Real-time orders listener ──
+    var allUserOrders = [];
+
+    function listenOrders(user) {
+      onSnapshot(collection(db, 'orders'), function(snapshot) {
+        allUserOrders = [];
+        snapshot.forEach(function(d) {
+          var data = d.data();
+          if (data.uid === user.uid) {
+            allUserOrders.push(Object.assign({ fireId: d.id }, data));
+          }
+        });
+
+        // Sort newest first
+        allUserOrders.sort(function(a, b) {
+          return (b.id || '').localeCompare(a.id || '');
+        });
+
+        renderAllOrders(allUserOrders);
+      });
+    }
+
+    // ── Render all orders ──
+    function renderAllOrders(orders) {
+      if (orders.length === 0) {
+        trackingBody.innerHTML =
+          '<div class="tracking-empty">' +
+            '<span class="tracking-empty-icon">🛍️</span>' +
+            '<h3>No Orders Yet</h3>' +
+            '<p>Your orders will appear here once you shop.</p>' +
+            '<a href="shop.html" class="btn-gold" style="display:inline-flex;"><i class="fa-solid fa-store"></i> Start Shopping</a>' +
+          '</div>';
+        return;
+      }
+
+      trackingBody.innerHTML =
+        '<p class="orders-label">' + orders.length + ' Order' + (orders.length !== 1 ? 's' : '') + ' Found</p>' +
+        orders.map(function(o) { return renderOrderCard(o); }).join('');
+    }
+
+    // ── Render single order card ──
+    function renderOrderCard(o) {
+      var status  = o.status || 'new';
+      var steps   = buildTimeline(status, o.date);
+      var estDate = getEstDelivery(status, o.date);
+
+      var statusClass = status === 'new' ? 'status-new' : status === 'processing' ? 'status-processing' : 'status-delivered';
+      var statusLabel = status === 'new' ? 'Order Placed' : status === 'processing' ? 'Processing' : 'Delivered';
+
+      // Items HTML
+      var itemsHTML = '';
+      if (o.items && o.items.length > 0) {
+        itemsHTML =
+          '<div class="card-items">' +
+            '<div class="items-label">Items Ordered</div>' +
+            o.items.map(function(item) {
+              return '<div class="order-item-row">' +
+                '<span class="order-item-name">' + item.name + '</span>' +
+                '<span class="order-item-qty">x' + (item.qty || 1) + '</span>' +
+                '<span class="order-item-price">' + fmtUGX((item.price || 0) * (item.qty || 1)) + '</span>' +
+              '</div>';
+            }).join('') +
+          '</div>';
+      }
+
+      // Estimate HTML
+      var estHTML = status !== 'delivered'
+        ? '<div class="delivery-estimate">' +
+            '<i class="fa-solid fa-truck"></i>' +
+            '<div>' +
+              '<div class="delivery-est-label">Estimated Delivery</div>' +
+              '<div class="delivery-est-date">' + estDate + '</div>' +
+            '</div>' +
+          '</div>'
+        : '<div class="delivery-estimate" style="background:rgba(40,180,120,0.10);border-color:rgba(40,180,120,0.30);">' +
+            '<i class="fa-solid fa-circle-check" style="color:#4ecb9e;"></i>' +
+            '<div>' +
+              '<div class="delivery-est-label">Delivered On</div>' +
+              '<div class="delivery-est-date" style="color:#4ecb9e;">Order Completed ✓</div>' +
+            '</div>' +
+          '</div>';
+
+      return '<div class="tracking-card">' +
+        '<div class="card-top">' +
+          '<div>' +
+            '<div class="card-order-id">' + (o.id || 'Order') + '</div>' +
+            '<div class="card-order-date">' + (o.date || '') + '</div>' +
+          '</div>' +
+          '<span class="status-pill ' + statusClass + '">' + statusLabel + '</span>' +
+        '</div>' +
+        '<div class="timeline">' + steps + '</div>' +
+        estHTML +
+        itemsHTML +
+        '<div class="card-total">' +
+          '<span class="card-total-label">Order Total</span>' +
+          '<span class="card-total-value">' + fmtUGX(o.total || 0) + '</span>' +
+        '</div>' +
+      '</div>';
+    }
+
+    // ── Build Timeline Steps ──
+    function buildTimeline(status, orderDate) {
+      var steps = [
+        {
+          key:   'placed',
+          icon:  'fa-solid fa-circle-check',
+          title: 'Order Placed',
+          desc:  'We received your order successfully',
+          done:  true
+        },
+        {
+          key:   'confirmed',
+          icon:  'fa-solid fa-bag-shopping',
+          title: 'Order Confirmed',
+          desc:  'Payment confirmed, preparing your fragrances',
+          done:  status === 'processing' || status === 'delivered'
+        },
+        {
+          key:   'processing',
+          icon:  'fa-solid fa-box',
+          title: 'Packaging',
+          desc:  'Your perfumes are being carefully packaged',
+          done:  status === 'processing' || status === 'delivered',
+          active: status === 'processing'
+        },
+        {
+          key:   'shipped',
+          icon:  'fa-solid fa-truck',
+          title: 'Out for Delivery',
+          desc:  'Your order is on its way to you',
+          done:  status === 'delivered',
+          active: status === 'processing'
+        },
+        {
+          key:   'delivered',
+          icon:  'fa-solid fa-house',
+          title: 'Delivered',
+          desc:  'Enjoy your signature scent!',
+          done:  status === 'delivered'
+        }
+      ];
+
+      return steps.map(function(step, i) {
+        var iconClass = step.done
+          ? 'step-icon-done'
+          : step.active
+          ? 'step-icon-active'
+          : 'step-icon-pending';
+
+        var titleClass = (!step.done && !step.active) ? 'pending' : '';
+        var stepClass  = step.done ? 'done' : '';
+
+        // Show date only for placed step
+        var dateHTML = (i === 0 && orderDate)
+          ? '<div class="step-date">' + orderDate + '</div>'
+          : (!step.done && !step.active)
+          ? '<div class="step-date" style="color:rgba(200,188,160,0.25);">Pending</div>'
+          : '';
+
+        return '<div class="timeline-step ' + stepClass + '">' +
+          '<div class="step-icon ' + iconClass + '">' +
+            '<i class="' + step.icon + '"></i>' +
+          '</div>' +
+          '<div class="step-content">' +
+            '<div class="step-title ' + titleClass + '">' + step.title + '</div>' +
+            '<div class="step-desc">' + step.desc + '</div>' +
+            dateHTML +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    // ── Estimated Delivery Date ──
+    function getEstDelivery(status, orderDate) {
+      if (status === 'delivered') return 'Delivered';
+      try {
+        var base = orderDate ? new Date(orderDate) : new Date();
+        if (isNaN(base.getTime())) base = new Date();
+        var days = status === 'processing' ? 2 : 4;
+        base.setDate(base.getDate() + days);
+        var options = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+        return base.toLocaleDateString('en-UG', options);
+      } catch(e) {
+        return status === 'processing' ? 'Within 2 days' : 'Within 4 days';
+      }
+    }
+
+    // ── Search by Order ID ──
+    trackSearchBtn.addEventListener('click', function() {
+      doSearch();
+    });
+
+    trackInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') doSearch();
+    });
+
+    function doSearch() {
+      var q = trackInput.value.trim().toUpperCase();
+      if (!q) {
+        renderAllOrders(allUserOrders);
+        return;
+      }
+
+      var found = allUserOrders.filter(function(o) {
+        return (o.id || '').toUpperCase().includes(q);
+      });
+
+      if (found.length === 0) {
+        showToast('No order found with ID: ' + q);
+        renderAllOrders(allUserOrders);
+      } else {
+        trackingBody.innerHTML =
+          '<p class="orders-label">Search result for "' + q + '"</p>' +
+          found.map(function(o) { return renderOrderCard(o); }).join('') +
+          '<button onclick="renderAllOrders(allUserOrders)" style="width:100%;margin-top:16px;padding:12px;background:rgba(201,168,76,0.10);border:1px solid rgba(201,168,76,0.20);border-radius:999px;color:var(--gold-light);font-size:0.75rem;letter-spacing:0.10em;cursor:pointer;">← Show All Orders</button>';
+      }
+    }
+
+    // Login prompt
+    function renderLoginPrompt() {
+      return '<div class="login-prompt">' +
+        '<span class="login-prompt-icon">🔐</span>' +
+        '<h3>Sign In Required</h3>' +
+        '<p>Please sign in to track your orders.</p>' +
+        '<a href="login.html" class="btn-gold" style="display:inline-flex;">' +
+          '<i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In' +
+        '</a>' +
+      '</div>';
+    }
+  </script>
+</body>
+</html>

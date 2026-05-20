@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Haba Perfumes — Scent Quiz</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .quiz-page { min-height: 100vh; position: relative; overflow: hidden; }
+    .quiz-bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse 80% 60% at 20% 20%, rgba(201,168,76,0.10) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(120,40,120,0.08) 0%, transparent 60%), linear-gradient(180deg, #090909 0%, #080808 100%); }
+    .quiz-hero { position: relative; z-index: 1; padding: 100px var(--space-lg) var(--space-xl); text-align: center; }
+    .quiz-hero-icon { font-size: 3rem; display: block; margin-bottom: var(--space-md); animation: float 3s ease-in-out infinite; }
+    .quiz-hero h1 { font-family: var(--font-display); font-size: clamp(2.2rem, 8vw, 3rem); font-weight: 300; color: var(--white); margin-bottom: var(--space-sm); line-height: 1.1; }
+    .quiz-hero p { font-size: 0.82rem; color: var(--cream-dim); max-width: 280px; margin: 0 auto var(--space-xl); }
+    .start-card { margin: 0 var(--space-lg); padding: var(--space-xl) var(--space-lg); text-align: center; position: relative; z-index: 1; }
+    .start-features { display: flex; justify-content: center; gap: var(--space-lg); margin-bottom: var(--space-xl); }
+    .start-feat { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .start-feat-icon { width: 44px; height: 44px; border-radius: var(--radius-md); background: rgba(201,168,76,0.10); border: 1px solid rgba(201,168,76,0.20); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--gold); }
+    .start-feat-label { font-size: 0.65rem; color: var(--cream-dim); letter-spacing: 0.08em; text-align: center; }
+    .quiz-container { display: none; position: relative; z-index: 1; padding: var(--space-lg); padding-bottom: 120px; }
+    .quiz-container.active { display: block; }
+    .progress-wrap { margin-bottom: var(--space-xl); }
+    .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm); }
+    .progress-label { font-size: 0.68rem; color: var(--gold-dim); letter-spacing: 0.12em; text-transform: uppercase; }
+    .progress-count { font-family: var(--font-display); font-size: 1rem; color: var(--gold-light); }
+    .progress-bar-track { width: 100%; height: 2px; background: rgba(201,168,76,0.12); border-radius: var(--radius-full); overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold-light)); border-radius: var(--radius-full); transition: width 0.5s cubic-bezier(0.25,0.46,0.45,0.94); width: 0%; }
+    .question-slide { display: none; animation: fadeUp 0.5s ease forwards; }
+    .question-slide.active { display: block; }
+    .question-number { font-size: 0.65rem; color: var(--gold-dim); letter-spacing: 0.20em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+    .question-text { font-family: var(--font-display); font-size: clamp(1.5rem, 6vw, 2rem); font-weight: 300; color: var(--white); line-height: 1.2; margin-bottom: var(--space-xl); }
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+    .option-card { padding: var(--space-md); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); cursor: pointer; transition: var(--transition-smooth); text-align: center; position: relative; overflow: hidden; }
+    .option-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent); }
+    .option-card:hover { border-color: rgba(201,168,76,0.40); background: rgba(255,255,255,0.07); transform: translateY(-2px); }
+    .option-card.selected { background: rgba(201,168,76,0.14); border-color: var(--gold); box-shadow: 0 0 20px rgba(201,168,76,0.15); }
+    .option-card.selected::after { content: '✓'; position: absolute; top: 8px; right: 10px; font-size: 0.65rem; color: var(--gold); font-weight: 700; }
+    .option-emoji { font-size: 1.8rem; display: block; margin-bottom: var(--space-sm); }
+    .option-label { font-family: var(--font-display); font-size: 0.95rem; font-weight: 400; color: var(--white); margin-bottom: 4px; }
+    .option-sub { font-size: 0.62rem; color: var(--cream-dim); letter-spacing: 0.05em; }
+    .quiz-nav { display: flex; gap: var(--space-md); margin-top: var(--space-xl); align-items: center; }
+    .btn-back { width: 48px; height: 48px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--cream-dim); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); flex-shrink: 0; }
+    .btn-back:hover { border-color: var(--gold-dim); color: var(--gold-light); }
+    .btn-next { flex: 1; padding: 16px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border: none; border-radius: var(--radius-full); color: var(--black); font-family: var(--font-body); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: var(--transition-smooth); opacity: 0.4; pointer-events: none; }
+    .btn-next.enabled { opacity: 1; pointer-events: all; }
+    .btn-next.enabled:hover { transform: scale(0.98); box-shadow: 0 4px 24px rgba(201,168,76,0.40); }
+    .results-screen { display: none; position: relative; z-index: 1; padding: var(--space-lg); padding-bottom: 120px; }
+    .results-screen.active { display: block; }
+    .results-hero { text-align: center; padding: var(--space-xl) 0 var(--space-lg); }
+    .results-icon { font-size: 3rem; display: block; margin-bottom: var(--space-md); animation: float 3s ease-in-out infinite; }
+    .results-title { font-family: var(--font-display); font-size: clamp(1.8rem, 7vw, 2.5rem); font-weight: 300; color: var(--white); margin-bottom: var(--space-sm); }
+    .results-sub { font-size: 0.80rem; color: var(--cream-dim); max-width: 260px; margin: 0 auto var(--space-md); }
+    .match-banner { padding: var(--space-lg); margin-bottom: var(--space-lg); text-align: center; border-radius: var(--radius-lg); position: relative; overflow: hidden; }
+    .match-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .match-category-label { font-size: 0.65rem; color: var(--gold-dim); letter-spacing: 0.20em; text-transform: uppercase; margin-bottom: var(--space-sm); }
+    .match-category-name { font-family: var(--font-display); font-size: 2rem; font-weight: 300; margin-bottom: var(--space-sm); }
+    .match-category-desc { font-size: 0.78rem; color: var(--cream-dim); max-width: 240px; margin: 0 auto; }
+    .results-label { font-size: 0.65rem; color: var(--gold-dim); letter-spacing: 0.20em; text-transform: uppercase; margin-bottom: var(--space-md); }
+    .result-card { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); margin-bottom: var(--space-md); position: relative; overflow: hidden; transition: var(--transition-smooth); }
+    .result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.30), transparent); }
+    .result-card:hover { border-color: rgba(201,168,76,0.40); transform: translateY(-2px); }
+    .rank-badge { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 0.95rem; font-weight: 400; flex-shrink: 0; }
+    .rank-1 { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--black); }
+    .rank-2 { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.30); color: var(--gold-light); }
+    .rank-3 { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.18); color: var(--gold-dim); }
+    .result-img-wrap { flex-shrink: 0; }
+    .result-info { flex: 1; }
+    .result-name { font-family: var(--font-display); font-size: 1.05rem; font-weight: 400; color: var(--white); margin-bottom: 3px; }
+    .result-notes { font-size: 0.65rem; color: var(--cream-dim); letter-spacing: 0.05em; margin-bottom: 4px; }
+    .result-match { font-size: 0.62rem; color: var(--gold); letter-spacing: 0.10em; text-transform: uppercase; }
+    .result-price { font-family: var(--font-display); font-size: 1.1rem; color: var(--gold-light); flex-shrink: 0; }
+    .results-actions { display: flex; flex-direction: column; gap: var(--space-md); margin-top: var(--space-xl); }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-logo">HABA <span>perfumes</span></div>
+    <div class="navbar-icons">
+      <a href="cart.html" style="color:var(--cream-dim);font-size:1rem;">
+        <i class="fa-solid fa-bag-shopping"></i>
+      </a>
+    </div>
+  </nav>
+
+  <div class="quiz-page">
+    <div class="quiz-bg"></div>
+
+    <!-- START SCREEN -->
+    <div id="startScreen">
+      <section class="quiz-hero page-content">
+        <span class="quiz-hero-icon">🧬</span>
+        <span class="badge">Scent DNA Quiz</span>
+        <h1 class="mt-md">Discover Your<br><em style="font-style:italic;color:var(--gold-light);">Signature</em> Scent</h1>
+        <p class="mt-md">7 questions. Personalised results. Your perfect fragrance awaits.</p>
+      </section>
+      <div class="start-card glass-card fade-up">
+        <div class="start-features">
+          <div class="start-feat">
+            <div class="start-feat-icon">⚡</div>
+            <div class="start-feat-label">2 Min<br>Quiz</div>
+          </div>
+          <div class="start-feat">
+            <div class="start-feat-icon">🎯</div>
+            <div class="start-feat-label">Top 3<br>Matches</div>
+          </div>
+          <div class="start-feat">
+            <div class="start-feat-icon">✨</div>
+            <div class="start-feat-label">Premium<br>Picks</div>
+          </div>
+        </div>
+        <button class="btn-gold" style="width:100%" id="startBtn">
+          <i class="fa-solid fa-flask"></i> Begin Quiz
+        </button>
+        <p style="font-size:0.68rem;color:var(--gold-dim);margin-top:var(--space-md);text-align:center;letter-spacing:0.08em;">
+          Sign in required · Free · Instant results
+        </p>
+      </div>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div class="quiz-container page-content" id="quizContainer">
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <span class="progress-label">Your Scent Profile</span>
+          <span class="progress-count" id="progressCount">1 / 7</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="question-slide active" id="q1">
+        <div class="question-number">Question 01</div>
+        <h2 class="question-text">What time of day feels most like <em style="font-style:italic;color:var(--gold-light);">you?</em></h2>
+        <div class="options-grid">
+          <div class="option-card" data-q="1" data-val="warm" onclick="selectOption(this)"><span class="option-emoji">🌅</span><div class="option-label">Golden Hour</div><div class="option-sub">Warm & glowing</div></div>
+          <div class="option-card" data-q="1" data-val="fresh" onclick="selectOption(this)"><span class="option-emoji">🌤️</span><div class="option-label">Early Morning</div><div class="option-sub">Crisp & bright</div></div>
+          <div class="option-card" data-q="1" data-val="oriental" onclick="selectOption(this)"><span class="option-emoji">🌙</span><div class="option-label">Midnight</div><div class="option-sub">Deep & mysterious</div></div>
+          <div class="option-card" data-q="1" data-val="woody" onclick="selectOption(this)"><span class="option-emoji">🌲</span><div class="option-label">Late Afternoon</div><div class="option-sub">Earthy & calm</div></div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn-back" style="opacity:0.3;pointer-events:none"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn-next" id="next1" onclick="nextQuestion(2)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question-slide" id="q2">
+        <div class="question-number">Question 02</div>
+        <h2 class="question-text">Pick your ideal <em style="font-style:italic;color:var(--gold-light);">weekend.</em></h2>
+        <div class="options-grid">
+          <div class="option-card" data-q="2" data-val="fresh" onclick="selectOption(this)"><span class="option-emoji">🏖️</span><div class="option-label">Beach Day</div><div class="option-sub">Sun & sea breeze</div></div>
+          <div class="option-card" data-q="2" data-val="woody" onclick="selectOption(this)"><span class="option-emoji">🏕️</span><div class="option-label">Forest Hike</div><div class="option-sub">Nature & trails</div></div>
+          <div class="option-card" data-q="2" data-val="warm" onclick="selectOption(this)"><span class="option-emoji">☕</span><div class="option-label">Cosy at Home</div><div class="option-sub">Warm & relaxed</div></div>
+          <div class="option-card" data-q="2" data-val="oriental" onclick="selectOption(this)"><span class="option-emoji">🏙️</span><div class="option-label">City Night Out</div><div class="option-sub">Bold & social</div></div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn-next" id="next2" onclick="nextQuestion(3)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question-slide" id="q3">
+        <div class="question-number">Question 03</div>
+        <h2 class="question-text">How would friends describe your <em style="font-style:italic;color:var(--gold-light);">personality?</em></h2>
+        <div class="options-grid">
+          <div class="option-card" data-q="3" data-val="fresh" onclick="selectOption(this)"><span class="option-emoji">😄</span><div class="option-label">Fun & Outgoing</div><div class="option-sub">Always energetic</div></div>
+          <div class="option-card" data-q="3" data-val="warm" onclick="selectOption(this)"><span class="option-emoji">🤗</span><div class="option-label">Warm & Caring</div><div class="option-sub">People love you</div></div>
+          <div class="option-card" data-q="3" data-val="oriental" onclick="selectOption(this)"><span class="option-emoji">🎭</span><div class="option-label">Mysterious</div><div class="option-sub">Hard to read</div></div>
+          <div class="option-card" data-q="3" data-val="woody" onclick="selectOption(this)"><span class="option-emoji">🧘</span><div class="option-label">Calm & Grounded</div><div class="option-sub">Steady & reliable</div></div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn-next" id="next3" onclick="nextQuestion(4)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-slide" id="q4">
+        <div class="question-number">Question 04</div>
+        <h2 class="question-text">Which season speaks to your <em style="font-style:italic;color:var(--gold-light);">soul?</em></h2>
+        <div class="options-grid">
+          <div class="option-card" data-q="4" data-val="fresh" onclick="selectOption(this)"><span class="option-emoji">🌸</span><div class="option-label">Spring</div><div class="option-sub">Fresh & blooming</div></div>
+          <div class="option-card" data-q="4" data-val="warm" onclick="selectOption(this)"><span class="option-emoji">☀️</span><div class="option-label">Summer</div><div class="option-sub">Hot & vibrant</div></div>
+          <div class="option-card" data-q="4" data-val="woody" onclick="selectOption(this)"><span class="option-emoji">🍂</span><div class="option-label">Autumn</div><div class="option-sub">Rich & earthy</div></div>
+          <div class="option-card" data-q="4" data-val="oriental" onclick="selectOption(this)"><span class="option-emoji">❄️</span><div class="option-label">Winter</div><div class="option-sub">Deep & intense</div></div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn-next" id="next4" onclick="nextQuestion(5)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question-slide" id="q5">
+        <div class="question-number">Question 05</div>
+        <h2 class="question-text">How do you want to be <em style="font-style:italic;color:var(--gold-light);">remembered?</em></h2>
+        <div class="options-grid">
+          <div class="option-card" data-q="5" data-val="fresh" onclick="selectOption(this)"><span class="option-emoji">🌊</span><div class="option-label">Refreshing</div><div class="option-sub">Light & uplifting</div></div>
+          <div class="option-card" data-q="5" data-val="warm" onclick="selectOption(this)"><span class="option-emoji">🕯️</span><div class="option-label">Comforting</div><div class="option-sub">Warm & familiar</div></div>
+          <div class="option-card" data-q="5" data-val="oriental" onclick="selectOption(this)"><span class="option-emoji">💫</span><div class="option-label">Unforgettable</div><div class="option-sub">Powerful & bold</div></div>
+          <div class="option-card" data-q="5" data-val="woody" onclick="selectOption(this)"><span class="option-emoji">🏔️</span><div class="option-label">Sophisticated</div><div class="option-sub">Strong & timeless</div></div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn-next" id="next5" onclick="nextQuestion(6)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="question-slide" id="q6">
+        <div class="question-number">Question 06</div>
+        <h2 class="question-text">A scent memory that takes you <em style="font-style:italic;color:var(--gold-light);">back...</em></h2>
+        <div class="options-grid">
+          <div class="option-card" data-q="6" data-val="fresh" onclick="selectOption(this)"><span class="option-emoji">🌧️</span><div class="option-label">Rain on Grass</div><div class="option-sub">Clean & natural</div></div>
+          <div class="option-card" data-q="6" data-val="warm" onclick="selectOption(this)"><span class="option-emoji">🍪</span><div class="option-label">Baking at Home</div><div class="option-sub">Sweet & cosy</div></div>
+          <div class="option-card" data-q="6" data-val="woody" onclick="selectOption(this)"><span class="option-emoji">🪵</span><div class="option-label">Campfire Night</div><div class="option-sub">Smoky & warm</div></div>
+          <div class="option-card" data-q="6" data-val="oriental" onclick="selectOption(this)"><span class="option-emoji">🕌</span><div class="option-label">Incense & Spice</div><div class="option-sub">Rich & exotic</div></div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn-next" id="next6" onclick="nextQuestion(7)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="question-slide" id="q7">
+        <div class="question-number">Question 07</div>
+        <h2 class="question-text">When do you wear <em style="font-style:italic;color:var(--gold-light);">perfume most?</em></h2>
+        <div class="options-grid">
+          <div class="option-card" data-q="7" data-val="fresh" onclick="selectOption(this)"><span class="option-emoji">💼</span><div class="option-label">Daily Work</div><div class="option-sub">Clean & subtle</div></div>
+          <div class="option-card" data-q="7" data-val="oriental" onclick="selectOption(this)"><span class="option-emoji">🥂</span><div class="option-label">Special Events</div><div class="option-sub">Bold & memorable</div></div>
+          <div class="option-card" data-q="7" data-val="warm" onclick="selectOption(this)"><span class="option-emoji">🏠</span><div class="option-label">Everyday Life</div><div class="option-sub">Cosy & personal</div></div>
+          <div class="option-card" data-q="7" data-val="woody" onclick="selectOption(this)"><span class="option-emoji">🌆</span><div class="option-label">Nights Out</div><div class="option-sub">Dark & intense</div></div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn-next enabled" id="next7" onclick="showResults()">See My Matches ✨</button>
+        </div>
+      </div>
+
+    </div><!-- end quiz-container -->
+
+    <!-- RESULTS SCREEN -->
+    <div class="results-screen page-content" id="resultsScreen">
+      <div class="results-hero">
+        <span class="results-icon">✨</span>
+        <span class="badge">Your Scent Profile</span>
+        <h2 class="results-title mt-md">Your Perfect<br><em style="font-style:italic;color:var(--gold-light);">Matches</em></h2>
+        <p class="results-sub mt-sm">Based on your answers, here are your top 3 signature scents.</p>
+      </div>
+      <div class="match-banner glass-card" id="matchBanner">
+        <div class="match-category-label">Your Scent Family</div>
+        <div class="match-category-name" id="matchCatName"></div>
+        <div class="match-category-desc" id="matchCatDesc"></div>
+      </div>
+      <div class="results-label">Top 3 Recommendations</div>
+      <div id="resultsList"></div>
+      <div class="results-actions">
+        <a href="shop.html" class="btn-gold" style="text-align:center;">
+          <i class="fa-solid fa-store"></i> Shop My Matches
+        </a>
+        <button class="btn-ghost" onclick="retakeQuiz()">
+          <i class="fa-solid fa-rotate-left"></i> Retake Quiz
+        </button>
+      </div>
+    </div>
+
+  </div><!-- end quiz-page -->
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span><div class="nav-dot"></div></a>
+    <a href="shop.html" class="nav-item"><i class="fa-solid fa-store"></i><span class="nav-label">Shop</span><div class="nav-dot"></div></a>
+    <a href="quiz.html" class="nav-item active"><i class="fa-solid fa-flask"></i><span class="nav-label">Quiz</span><div class="nav-dot"></div></a>
+    <a href="cart.html" class="nav-item"><i class="fa-solid fa-bag-shopping"></i><span class="nav-label">Bag</span><div class="nav-dot"></div></a>
+    <a href="profile.html" class="nav-item nav-account"><i class="fa-regular fa-circle-user"></i><span class="nav-label nav-username">Account</span><div class="nav-dot"></div></a>
+  </nav>
+
+  <script src="js/main.js"></script>
+
+  <!-- ONE CLEAN SCRIPT — NO DUPLICATES -->
+  <script>
+    var currentQ = 1;
+    var totalQ   = 7;
+    var answers  = {};
+
+    function startQuiz() {
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('quizContainer').classList.add('active');
+      updateProgress();
+    }
+
+    function selectOption(el) {
+      var q = el.dataset.q;
+      document.querySelectorAll('[data-q="' + q + '"]').forEach(function(o) { o.classList.remove('selected'); });
+      el.classList.add('selected');
+      answers[q] = el.dataset.val;
+      var nextBtn = document.getElementById('next' + q);
+      if (nextBtn) nextBtn.classList.add('enabled');
+    }
+
+    function nextQuestion(n) {
+      document.getElementById('q' + currentQ).classList.remove('active');
+      currentQ = n;
+      document.getElementById('q' + n).classList.add('active');
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBack() {
+      if (currentQ <= 1) return;
+      document.getElementById('q' + currentQ).classList.remove('active');
+      currentQ--;
+      document.getElementById('q' + currentQ).classList.add('active');
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateProgress() {
+      var pct = ((currentQ - 1) / totalQ) * 100;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressCount').textContent = currentQ + ' / ' + totalQ;
+    }
+
+    function retakeQuiz() {
+      currentQ = 1;
+      answers  = {};
+      document.querySelectorAll('.option-card').forEach(function(o) { o.classList.remove('selected'); });
+      document.querySelectorAll('.btn-next').forEach(function(b) { b.classList.remove('enabled'); });
+      document.querySelectorAll('.question-slide').forEach(function(s) { s.classList.remove('active'); });
+      document.getElementById('q1').classList.add('active');
+      document.getElementById('resultsScreen').classList.remove('active');
+      document.getElementById('quizContainer').classList.add('active');
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+  <!-- FIREBASE MODULE — handles auth guard + results from Firebase -->
+  <script type="module">
+    import { auth, onAuthStateChanged } from './js/firebase.js';
+    import { db, collection, getDocs }  from './js/firebase.js';
+
+    var showAuthPopup;
+    try {
+      var m = await import('./js/auth.js');
+      showAuthPopup = m.showAuthPopup;
+    } catch(e) {
+      showAuthPopup = function() { window.location.href = 'login.html'; };
+    }
+
+    var catInfo = {
+      warm:     { emoji:'🔥', name:'Warm & Sensual',    desc:'You gravitate toward rich, cosy scents with amber, vanilla, and spice. Your fragrance wraps people in warmth and comfort.' },
+      woody:    { emoji:'🌿', name:'Woody & Earthy',    desc:'Grounded and confident, you love deep cedar, vetiver, and oud. Your scent is bold, natural, and unforgettable.' },
+      oriental: { emoji:'🌙', name:'Oriental & Exotic', desc:'Mysterious and alluring, you\'re drawn to rich florals, incense, and oud. Your fragrance leaves a powerful, lasting impression.' },
+      fresh:    { emoji:'💨', name:'Fresh & Vibrant',   desc:'Bright and energetic, you love clean citrus, aquatic, and green notes. Your scent is uplifting and effortlessly modern.' }
+    };
+
+    // Auth state — update nav
+    onAuthStateChanged(auth, function(user) {
+      document.querySelectorAll('.nav-account').forEach(function(el) {
+        if (user) {
+          var icon = el.querySelector('i');
+          if (icon) icon.className = 'fa-solid fa-circle-user';
+          var label = el.querySelector('.nav-username');
+          if (label) label.textContent = user.displayName ? user.displayName.split(' ')[0] : 'Account';
+        }
+      });
+    });
+
+    // Auth guard on Start button
+    document.getElementById('startBtn').addEventListener('click', function() {
+      var user = auth.currentUser;
+      if (user) {
+        window.startQuiz();
+      } else {
+        showAuthPopup();
+      }
+    });
+
+    // showResults — called from HTML onclick
+    window.showResults = async function() {
+      // Tally scores
+      var scores = { warm: 0, woody: 0, oriental: 0, fresh: 0 };
+      Object.values(answers).forEach(function(v) {
+        if (scores[v] !== undefined) scores[v]++;
+      });
+
+      // Find winner
+      var winner = Object.keys(scores).reduce(function(a, b) {
+        return scores[a] >= scores[b] ? a : b;
+      });
+
+      // Switch screens
+      document.getElementById('quizContainer').classList.remove('active');
+      document.getElementById('resultsScreen').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Show category banner
+      var cat = catInfo[winner];
+      document.getElementById('matchCatName').innerHTML = cat.emoji + ' ' + cat.name;
+      document.getElementById('matchCatDesc').textContent = cat.desc;
+
+      // Show loading
+      var resultsList = document.getElementById('resultsList');
+      resultsList.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gold-dim);"><div style="font-size:1.5rem;margin-bottom:12px;">✨</div><p style="font-size:0.78rem;">Finding your perfect matches...</p></div>';
+
+      // Fetch from Firebase
+      try {
+        var snapshot = await getDocs(collection(db, 'products'));
+        var allProducts = [];
+        snapshot.forEach(function(d) { allProducts.push(Object.assign({ id: d.id }, d.data())); });
+
+        // Filter by winning category
+        var matched = allProducts.filter(function(p) {
+          return (p.cat || '').toLowerCase() === winner;
+        }).slice(0, 3);
+
+        // Fallback: show any products if category empty
+        if (matched.length === 0) {
+          matched = allProducts.slice(0, 3);
+        }
+
+        if (matched.length === 0) {
+          resultsList.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gold-dim);"><div style="font-size:2rem;margin-bottom:12px;">🍾</div><p>No fragrances available yet.</p><a href="shop.html" style="color:var(--gold);font-size:0.78rem;">Browse All Fragrances →</a></div>';
+          return;
+        }
+
+        var matchPcts = ['98% Match', '94% Match', '89% Match'];
+        resultsList.innerHTML = matched.map(function(p, i) {
+          return '<div class="result-card fade-up">' +
+            '<div class="rank-badge rank-' + (i+1) + '">' + (i+1) + '</div>' +
+            '<div class="result-img-wrap">' +
+              '<img src="' + (p.img || 'assets/warm.jpg') + '" alt="' + p.name + '" onerror="this.src=\'assets/warm.jpg\'" style="width:60px;height:70px;object-fit:cover;border-radius:10px;border:1px solid rgba(201,168,76,0.20);" />' +
+            '</div>' +
+            '<div class="result-info">' +
+              '<div class="result-name">' + p.name + '</div>' +
+              '<div class="result-notes">' + (p.notes || '') + '</div>' +
+              '<div class="result-match">' + (matchPcts[i] || '') + '</div>' +
+            '</div>' +
+            '<div class="result-price">UGX ' + Number(p.price).toLocaleString() + '</div>' +
+          '</div>';
+        }).join('');
+
+      } catch(err) {
+        console.error('Firebase error:', err);
+        resultsList.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gold-dim);"><div style="font-size:2rem;margin-bottom:12px;">⚠️</div><p>Could not load recommendations.</p><a href="shop.html" style="color:var(--gold);font-size:0.78rem;">Browse All Fragrances →</a></div>';
+      }
+    };
+  </script>
+</body>
+</html>
