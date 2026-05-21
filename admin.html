@@ -1568,8 +1568,7 @@ Total: {total}
 
 <script type="module">
   import { db, collection, addDoc, getDocs,
-    updateDoc, deleteDoc, doc, onSnapshot, setDoc,
-    storage, ref, uploadBytes, getDownloadURL }
+    updateDoc, deleteDoc, doc, onSnapshot, setDoc }
     from './js/firebase.js';
 
   const ADMIN_EMAIL    = 'habaperfumes@gmail.com';
@@ -2110,19 +2109,34 @@ function renderBarChart() {}
         if (status)   status.textContent = 'Uploading image...';
 
         try {
-          var fileName   = 'products/' + Date.now() + '_' + file.name.replace(/\s/g, '_');
-          var storageRef = ref(storage, fileName);
-          await uploadBytes(storageRef, file);
-          if (bar) bar.style.width = '80%';
-          if (status) status.textContent = 'Getting image URL...';
+          // Upload to Cloudinary
+          var CLOUD_NAME    = 'debuiz7fc';
+          var UPLOAD_PRESET = 'haba_perfumes';
 
-          var downloadURL = await getDownloadURL(storageRef);
+          var formData = new FormData();
+          formData.append('file', file);
+          formData.append('upload_preset', UPLOAD_PRESET);
+          formData.append('folder', 'haba_products');
+
+          if (bar) bar.style.width = '40%';
+          if (status) status.textContent = 'Uploading to Cloudinary...';
+
+          var response = await fetch(
+            'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload',
+            { method: 'POST', body: formData }
+          );
+
+          if (!response.ok) throw new Error('Upload failed: ' + response.status);
+
+          var data = await response.json();
+          var downloadURL = data.secure_url;
+
           uploadedImageUrl = downloadURL;
           var pImg = document.getElementById('pImg');
           if (pImg) pImg.value = downloadURL;
 
           if (bar)    bar.style.width = '100%';
-          if (status) { status.textContent = 'Image uploaded!'; status.style.color = '#4ecb9e'; }
+          if (status) { status.textContent = '✓ Image uploaded!'; status.style.color = '#4ecb9e'; }
           setTimeout(function() {
             if (progress) progress.style.display = 'none';
             if (bar)      bar.style.width = '0%';
@@ -2130,8 +2144,8 @@ function renderBarChart() {}
           }, 2000);
 
         } catch(err) {
-          console.error('Upload error:', err);
-          if (status) { status.textContent = 'Upload failed — use URL instead'; status.style.color = '#ff6b6b'; }
+          console.error('Cloudinary upload error:', err);
+          if (status) { status.textContent = '✕ Upload failed — paste URL instead'; status.style.color = '#ff6b6b'; }
           if (bar)    bar.style.width = '0%';
         }
       });
