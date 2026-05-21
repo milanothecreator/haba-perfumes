@@ -1527,9 +1527,22 @@ Total: {total}
         id="pNotes" placeholder="e.g. Amber · Musk · Vanilla" />
     </div>
     <div class="form-field">
-      <label class="form-label">Image URL or filename</label>
-      <input type="text" class="form-input"
-        id="pImg" placeholder="assets/warm.jpg" />
+      <label class="form-label">Product Image</label>
+      <div id="imgPreview" style="width:100%;height:140px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);display:flex;align-items:center;justify-content:center;margin-bottom:10px;overflow:hidden;position:relative;cursor:pointer;" onclick="document.getElementById('imgFileInput').click()">
+        <img id="imgPreviewImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;" />
+        <div id="imgPreviewPlaceholder" style="text-align:center;color:#8A8A98;">
+          <div style="font-size:1.5rem;margin-bottom:8px;">📷</div>
+          <div style="font-size:0.72rem;letter-spacing:0.10em;">Tap to select image</div>
+        </div>
+      </div>
+      <input type="file" id="imgFileInput" accept="image/*" style="display:none;" />
+      <input type="text" class="form-input" id="pImg" placeholder="Or paste image URL / assets/warm.jpg" style="margin-top:8px;" />
+      <div id="uploadProgress" style="display:none;margin-top:8px;">
+        <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;">
+          <div id="uploadBar" style="height:100%;width:0%;background:#FFFFFF;border-radius:999px;transition:width 0.3s ease;"></div>
+        </div>
+        <p id="uploadStatus" style="font-size:0.65rem;color:#8A8A98;margin-top:6px;letter-spacing:0.08em;">Uploading...</p>
+      </div>
     </div>
     <div class="form-field">
       <label class="form-label">Badge</label>
@@ -1555,7 +1568,8 @@ Total: {total}
 
 <script type="module">
   import { db, collection, addDoc, getDocs,
-    updateDoc, deleteDoc, doc, onSnapshot, setDoc }
+    updateDoc, deleteDoc, doc, onSnapshot, setDoc,
+    storage, ref, uploadBytes, getDownloadURL }
     from './js/firebase.js';
 
   const ADMIN_EMAIL    = 'habaperfumes@gmail.com';
@@ -2067,6 +2081,89 @@ function renderBarChart() {}
       }
     });
   });
+
+    // ── Image Upload Handler ──
+    var uploadedImageUrl = '';
+
+    var fileInput = document.getElementById('imgFileInput');
+    if (fileInput) {
+      fileInput.addEventListener('change', async function() {
+        var file = this.files[0];
+        if (!file) return;
+
+        // Show local preview immediately
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var previewImg   = document.getElementById('imgPreviewImg');
+          var placeholder  = document.getElementById('imgPreviewPlaceholder');
+          if (previewImg)  { previewImg.src = e.target.result; previewImg.style.display = 'block'; }
+          if (placeholder) { placeholder.style.display = 'none'; }
+        };
+        reader.readAsDataURL(file);
+
+        // Show progress bar
+        var progress = document.getElementById('uploadProgress');
+        var bar      = document.getElementById('uploadBar');
+        var status   = document.getElementById('uploadStatus');
+        if (progress) progress.style.display = 'block';
+        if (bar)      bar.style.width = '30%';
+        if (status)   status.textContent = 'Uploading image...';
+
+        try {
+          var fileName   = 'products/' + Date.now() + '_' + file.name.replace(/\s/g, '_');
+          var storageRef = ref(storage, fileName);
+          await uploadBytes(storageRef, file);
+          if (bar) bar.style.width = '80%';
+          if (status) status.textContent = 'Getting image URL...';
+
+          var downloadURL = await getDownloadURL(storageRef);
+          uploadedImageUrl = downloadURL;
+          var pImg = document.getElementById('pImg');
+          if (pImg) pImg.value = downloadURL;
+
+          if (bar)    bar.style.width = '100%';
+          if (status) { status.textContent = 'Image uploaded!'; status.style.color = '#4ecb9e'; }
+          setTimeout(function() {
+            if (progress) progress.style.display = 'none';
+            if (bar)      bar.style.width = '0%';
+            if (status)   { status.style.color = '#8A8A98'; }
+          }, 2000);
+
+        } catch(err) {
+          console.error('Upload error:', err);
+          if (status) { status.textContent = 'Upload failed — use URL instead'; status.style.color = '#ff6b6b'; }
+          if (bar)    bar.style.width = '0%';
+        }
+      });
+    }
+
+    // ── Reset preview on modal close ──
+    var _origClose = window.closeProductModal;
+    window.closeProductModal = function() {
+      uploadedImageUrl = '';
+      var previewImg  = document.getElementById('imgPreviewImg');
+      var placeholder = document.getElementById('imgPreviewPlaceholder');
+      var progress    = document.getElementById('uploadProgress');
+      if (previewImg)  { previewImg.src = ''; previewImg.style.display = 'none'; }
+      if (placeholder) { placeholder.style.display = 'flex'; }
+      if (progress)    { progress.style.display = 'none'; }
+      if (_origClose)  _origClose();
+    };
+
+    // ── Show existing image when editing ──
+    var _origOpen = window.openProductModal;
+    window.openProductModal = function(fireId) {
+      _origOpen(fireId);
+      if (fireId) {
+        var p = allProducts.find(function(x) { return x.fireId === fireId; });
+        if (p && p.img) {
+          var previewImg  = document.getElementById('imgPreviewImg');
+          var placeholder = document.getElementById('imgPreviewPlaceholder');
+          if (previewImg)  { previewImg.src = p.img; previewImg.style.display = 'block'; }
+          if (placeholder) { placeholder.style.display = 'none'; }
+        }
+      }
+    };
 </script>
 </body>
 </html>
