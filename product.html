@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Haba Perfumes — Product</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --silver: #C8C8D0; --silver-light: #E8E8F0;
+      --silver-dim: #8A8A98; --charcoal: #0E0E12;
+      --charcoal-card: #141418; --white-pure: #FFFFFF;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--charcoal); color: var(--silver-light); font-family: 'Montserrat', sans-serif; min-height: 100vh; }
+
+    /* NAVBAR */
+    .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; background: rgba(14,14,18,0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(200,200,208,0.08); }
+    .navbar-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 300; letter-spacing: 0.18em; color: var(--white-pure); text-transform: uppercase; }
+    .navbar-logo span { font-size: 0.58rem; letter-spacing: 0.28em; color: var(--silver-dim); text-transform: lowercase; margin-left: 4px; }
+    .nav-back { background: none; border: none; color: var(--silver); font-size: 1rem; cursor: pointer; padding: 4px; transition: color 0.2s; }
+    .nav-back:hover { color: var(--white-pure); }
+
+    /* HERO IMAGE */
+    .product-hero {
+      position: relative; width: 100%;
+      height: 55vh; min-height: 320px;
+      margin-top: 62px; overflow: hidden;
+    }
+    .product-hero-img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(0.85);
+      transition: transform 0.6s ease;
+    }
+    .product-hero::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(14,14,18,0.05) 0%, rgba(14,14,18,0.92) 100%);
+    }
+    .product-badge-hero {
+      position: absolute; top: 20px; left: 20px; z-index: 2;
+      padding: 5px 14px; border-radius: 999px;
+      font-size: 0.60rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .badge-best { background: var(--white-pure); color: var(--charcoal); }
+    .badge-new { background: rgba(40,180,120,0.20); border: 1px solid rgba(40,180,120,0.40); color: #4ecb9e; }
+
+    /* SHARE BTN */
+    .share-btn {
+      position: absolute; top: 20px; right: 20px; z-index: 2;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(14,14,18,0.60); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--white-pure); font-size: 0.85rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .share-btn:hover { background: rgba(255,255,255,0.12); }
+
+    /* PRODUCT INFO */
+    .product-info {
+      position: relative; z-index: 1;
+      padding: 24px 24px 0;
+      margin-top: -60px;
+    }
+    .product-cat {
+      font-size: 0.60rem; color: var(--silver-dim);
+      letter-spacing: 0.20em; text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .product-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 8vw, 2.8rem);
+      font-weight: 300; color: var(--white-pure);
+      line-height: 1.0; margin-bottom: 6px;
+    }
+    .product-notes {
+      font-size: 0.72rem; color: var(--silver-dim);
+      letter-spacing: 0.08em; margin-bottom: 20px;
+    }
+
+    /* PRICE ROW */
+    .price-row {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 24px;
+    }
+    .product-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; color: var(--white-pure);
+    }
+    .product-size {
+      font-size: 0.68rem; color: var(--silver-dim);
+      letter-spacing: 0.10em; text-transform: uppercase;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 999px;
+    }
+
+    /* TABS */
+    .detail-tabs {
+      display: flex; gap: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 20px;
+    }
+    .detail-tab {
+      padding: 12px 20px; font-size: 0.68rem;
+      font-weight: 500; letter-spacing: 0.10em;
+      text-transform: uppercase; color: var(--silver-dim);
+      cursor: pointer; border: none; background: none;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease; margin-bottom: -1px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .detail-tab.active { color: var(--white-pure); border-bottom-color: var(--white-pure); }
+
+    /* TAB CONTENT */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* DESCRIPTION */
+    .product-description {
+      font-size: 0.80rem; color: var(--silver-dim);
+      line-height: 1.8; letter-spacing: 0.03em;
+      margin-bottom: 20px;
+    }
+
+    /* SCENT NOTES PILLS */
+    .notes-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .note-pill {
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 999px; font-size: 0.68rem;
+      color: var(--silver-light); letter-spacing: 0.06em;
+    }
+
+    /* DETAILS LIST */
+    .details-list { display: flex; flex-direction: column; gap: 0; }
+    .detail-row {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.78rem;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-key { color: var(--silver-dim); letter-spacing: 0.06em; }
+    .detail-val { color: var(--white-pure); font-weight: 400; }
+
+    /* RELATED PRODUCTS */
+    .related-section { padding: 0 24px; margin-bottom: 20px; }
+    .related-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 300; color: var(--white-pure);
+      margin-bottom: 16px;
+    }
+    .related-scroll { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+    .related-scroll::-webkit-scrollbar { display: none; }
+    .related-card {
+      flex-shrink: 0; width: 140px;
+      background: var(--charcoal-card);
+      border: 1px solid rgba(200,200,208,0.08);
+      border-radius: 16px; overflow: hidden;
+      cursor: pointer; transition: all 0.3s ease;
+      position: relative;
+    }
+    .related-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
+    }
+    .related-card:hover { border-color: rgba(200,200,208,0.22); transform: translateY(-2px); }
+    .related-img { width: 100%; height: 100px; object-fit: cover; filter: brightness(0.82); }
+    .related-info { padding: 10px; }
+    .related-name { font-family: 'Cormorant Garamond', serif; font-size: 0.90rem; color: var(--white-pure); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .related-price { font-size: 0.68rem; color: var(--silver-dim); }
+
+    /* STICKY BOTTOM */
+    .sticky-bottom {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 500;
+      padding: 16px 24px 32px;
+      background: rgba(14,14,18,0.97);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; gap: 12px; align-items: center;
+    }
+    .wish-product-btn {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--silver); font-size: 1rem;
+      cursor: pointer; display: flex; align-items: center;
+      justify-content: center; transition: all 0.2s ease; flex-shrink: 0;
+    }
+    .wish-product-btn:hover, .wish-product-btn.wished {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.25); color: var(--white-pure);
+    }
+    .add-to-cart-btn {
+      flex: 1; padding: 15px;
+      background: var(--white-pure); border: none; border-radius: 999px;
+      color: var(--charcoal); font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .add-to-cart-btn:hover { transform: scale(0.98); }
+    .add-to-cart-btn.added { background: rgba(40,180,120,0.20); border: 1px solid rgba(40,180,120,0.45); color: #4ecb9e; }
+
+    /* BOTTOM NAV */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-around; padding: 12px 0 22px; background: rgba(14,14,18,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid rgba(200,200,208,0.07); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 4px 14px; border-radius: 12px; transition: all 0.2s ease; text-decoration: none; color: var(--silver-dim); }
+    .nav-item:hover, .nav-item.active { color: var(--white-pure); }
+    .nav-item i { font-size: 1.05rem; }
+    .nav-label { font-size: 0.55rem; font-weight: 500; letter-spacing: 0.10em; text-transform: uppercase; }
+    .nav-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--silver-light); margin-top: 2px; opacity: 0; transition: opacity 0.2s ease; }
+    .nav-item.active .nav-dot { opacity: 1; }
+
+    /* LOADING */
+    .product-loading { text-align: center; padding: 100px 24px; color: var(--silver-dim); }
+    .product-loading-icon { font-size: 2.5rem; margin-bottom: 16px; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .fade-up { animation: fadeUp 0.6s ease forwards; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <button class="nav-back" onclick="history.back()">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <div class="navbar-logo">HABA <span>perfumes</span></div>
+    <button class="share-btn" id="shareBtn" style="position:relative;top:0;right:0;background:rgba(255,255,255,0.05);">
+      <i class="fa-solid fa-share-nodes"></i>
+    </button>
+  </nav>
+
+  <!-- LOADING STATE -->
+  <div class="product-loading" id="productLoading">
+    <div class="product-loading-icon">🍾</div>
+    <p style="font-size:0.78rem;">Loading fragrance...</p>
+  </div>
+
+  <!-- PRODUCT PAGE (hidden until loaded) -->
+  <div id="productPage" style="display:none;padding-bottom:160px;">
+
+    <!-- Hero Image -->
+    <div class="product-hero">
+      <img id="heroImg" class="product-hero-img" src="" alt="" onerror="this.src='assets/warm.jpg'" />
+      <div id="heroBadge" class="product-badge-hero" style="display:none;"></div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-info fade-up">
+      <div class="product-cat" id="productCat"></div>
+      <h1 class="product-name" id="productName"></h1>
+      <p class="product-notes" id="productNotes"></p>
+
+      <div class="price-row">
+        <div class="product-price" id="productPrice"></div>
+        <div class="product-size" id="productSize"></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="detail-tabs">
+        <button class="detail-tab active" onclick="switchTab('description', this)">Description</button>
+        <button class="detail-tab" onclick="switchTab('notes', this)">Scent Notes</button>
+        <button class="detail-tab" onclick="switchTab('details', this)">Details</button>
+      </div>
+
+      <!-- Description Tab -->
+      <div class="tab-content active" id="tab-description">
+        <p class="product-description" id="productDescription"></p>
+      </div>
+
+      <!-- Scent Notes Tab -->
+      <div class="tab-content" id="tab-notes">
+        <div class="notes-wrap" id="notesWrap"></div>
+      </div>
+
+      <!-- Details Tab -->
+      <div class="tab-content" id="tab-details">
+        <div class="details-list" id="detailsList"></div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="related-section" id="relatedSection" style="display:none;">
+      <h2 class="related-title">You May Also Like</h2>
+      <div class="related-scroll" id="relatedScroll"></div>
+    </div>
+
+  </div>
+
+  <!-- STICKY ADD TO CART -->
+  <div class="sticky-bottom" id="stickyBottom" style="display:none;">
+    <button class="wish-product-btn" id="wishBtn">
+      <i class="fa-regular fa-heart"></i>
+    </button>
+    <button class="add-to-cart-btn" id="addToCartBtn">
+      <i class="fa-solid fa-bag-shopping"></i> Add to Bag
+    </button>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span><div class="nav-dot"></div></a>
+    <a href="shop.html" class="nav-item active"><i class="fa-solid fa-store"></i><span class="nav-label">Shop</span><div class="nav-dot"></div></a>
+    <a href="quiz.html" class="nav-item"><i class="fa-solid fa-flask"></i><span class="nav-label">Quiz</span><div class="nav-dot"></div></a>
+    <a href="cart.html" class="nav-item"><i class="fa-solid fa-bag-shopping"></i><span class="nav-label">Bag</span><div class="nav-dot"></div></a>
+    <a href="profile.html" class="nav-item nav-account"><i class="fa-regular fa-circle-user"></i><span class="nav-label">Account</span><div class="nav-dot"></div></a>
+  </nav>
+
+  <script src="js/main.js"></script>
+
+  <script type="module">
+    import { db, collection, getDocs, doc, getDoc, auth, onAuthStateChanged }
+      from './js/firebase.js';
+
+    var showAuthPopup;
+    try { var m = await import('./js/auth.js'); showAuthPopup = m.showAuthPopup; }
+    catch(e) { showAuthPopup = function() { window.location.href = 'login.html'; }; }
+
+    var loggedIn = false;
+    onAuthStateChanged(auth, function(user) { loggedIn = !!user; });
+
+    function fmtUGX(n) { return 'UGX ' + Number(n).toLocaleString(); }
+
+    var catEmoji = { warm:'🔥', woody:'🌿', oriental:'🌙', fresh:'💨' };
+    var catDescriptions = {
+      warm: 'A rich, enveloping fragrance that radiates warmth and sensuality. Perfect for those who love to leave a lasting impression with a cosy, comforting trail.',
+      woody: 'A bold, grounded fragrance inspired by the deep forests of Africa. Cedar, vetiver and oud create a powerful, natural signature.',
+      oriental: 'A mysterious, exotic blend of rich florals, precious incense and luxurious oud. For those who dare to be unforgettable.',
+      fresh: 'A bright, uplifting fragrance with clean citrus and aquatic notes. Modern, effortless and perfect for everyday wear.'
+    };
+
+    // Get product ID from URL
+    var params = new URLSearchParams(window.location.search);
+    var productId = params.get('id');
+
+    if (!productId) {
+      window.location.href = 'shop.html';
+    } else {
+      loadProduct(productId);
+    }
+
+    async function loadProduct(id) {
+      try {
+        var snap = await getDoc(doc(db, 'products', id));
+        if (!snap.exists()) { window.location.href = 'shop.html'; return; }
+        var p = Object.assign({ id: snap.id }, snap.data());
+        renderProduct(p);
+        loadRelated(p);
+      } catch(err) {
+        console.error('Error loading product:', err);
+        window.location.href = 'shop.html';
+      }
+    }
+
+    function renderProduct(p) {
+      document.title = p.name + ' — Haba Perfumes';
+
+      // Hero image
+      var heroImg = document.getElementById('heroImg');
+      heroImg.src = p.img || 'assets/warm.jpg';
+      heroImg.alt = p.name;
+
+      // Badge
+      if (p.badge) {
+        var badge = document.getElementById('heroBadge');
+        badge.style.display = 'block';
+        badge.textContent = p.badge === 'best' ? 'Best Seller' : 'New';
+        badge.className = 'product-badge-hero ' + (p.badge === 'best' ? 'badge-best' : 'badge-new');
+      }
+
+      // Category
+      var emoji = catEmoji[p.cat] || '✨';
+      var catName = p.cat ? p.cat.charAt(0).toUpperCase() + p.cat.slice(1) : '';
+      document.getElementById('productCat').innerHTML = '<span>' + emoji + '</span> ' + catName;
+
+      // Name, notes, price, size
+      document.getElementById('productName').textContent = p.name;
+      document.getElementById('productNotes').textContent = p.notes || '';
+      document.getElementById('productPrice').textContent = fmtUGX(p.price);
+      document.getElementById('productSize').textContent = p.size || '';
+
+      // Description
+      var desc = catDescriptions[p.cat] || 'A premium African fragrance crafted with the finest ingredients, designed to leave a lasting impression.';
+      document.getElementById('productDescription').textContent = desc;
+
+      // Scent notes pills
+      var notes = (p.notes || '').split('·').map(function(n) { return n.trim(); }).filter(Boolean);
+      document.getElementById('notesWrap').innerHTML = notes.map(function(note) {
+        return '<span class="note-pill">' + note + '</span>';
+      }).join('');
+
+      // Details
+      document.getElementById('detailsList').innerHTML =
+        '<div class="detail-row"><span class="detail-key">Category</span><span class="detail-val">' + catName + '</span></div>' +
+        '<div class="detail-row"><span class="detail-key">Size</span><span class="detail-val">' + (p.size || '—') + '</span></div>' +
+        '<div class="detail-row"><span class="detail-key">Price</span><span class="detail-val">' + fmtUGX(p.price) + '</span></div>' +
+        '<div class="detail-row"><span class="detail-key">Scent Family</span><span class="detail-val">' + emoji + ' ' + catName + '</span></div>' +
+        '<div class="detail-row"><span class="detail-key">Origin</span><span class="detail-val">African Collection</span></div>' +
+        '<div class="detail-row"><span class="detail-key">Brand</span><span class="detail-val">Haba Perfumes</span></div>';
+
+      // Show page
+      document.getElementById('productLoading').style.display = 'none';
+      document.getElementById('productPage').style.display = 'block';
+      document.getElementById('stickyBottom').style.display = 'flex';
+
+      // Add to cart
+      document.getElementById('addToCartBtn').addEventListener('click', function() {
+        if (!loggedIn) { showAuthPopup(); return; }
+        var cart = JSON.parse(localStorage.getItem('habaCart') || '[]');
+        var existing = cart.find(function(i) { return i.name === p.name; });
+        if (existing) { existing.qty++; }
+        else { cart.push({ name: p.name, price: p.price, img: p.img, cat: p.cat, qty: 1 }); }
+        localStorage.setItem('habaCart', JSON.stringify(cart));
+        var btn = document.getElementById('addToCartBtn');
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Added to Bag!';
+        btn.classList.add('added');
+        setTimeout(function() {
+          btn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Add to Bag';
+          btn.classList.remove('added');
+        }, 2000);
+      });
+
+      // Wishlist
+      document.getElementById('wishBtn').addEventListener('click', function() {
+        if (!loggedIn) { showAuthPopup(); return; }
+        this.classList.toggle('wished');
+        this.querySelector('i').className = this.classList.contains('wished')
+          ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+      });
+
+      // Share
+      document.getElementById('shareBtn').addEventListener('click', function() {
+        if (navigator.share) {
+          navigator.share({
+            title: p.name + ' — Haba Perfumes',
+            text: 'Check out ' + p.name + ' on Haba Perfumes! ' + fmtUGX(p.price),
+            url: window.location.href
+          });
+        } else {
+          navigator.clipboard.writeText(window.location.href);
+          alert('Link copied!');
+        }
+      });
+    }
+
+    // Load related products (same category)
+    async function loadRelated(currentProduct) {
+      try {
+        var snapshot = await getDocs(collection(db, 'products'));
+        var related = [];
+        snapshot.forEach(function(d) {
+          var p = Object.assign({ id: d.id }, d.data());
+          if (p.cat === currentProduct.cat && p.id !== currentProduct.id) related.push(p);
+        });
+        related = related.slice(0, 6);
+        if (related.length === 0) return;
+
+        var section = document.getElementById('relatedSection');
+        var scroll  = document.getElementById('relatedScroll');
+        section.style.display = 'block';
+
+        scroll.innerHTML = related.map(function(p) {
+          return '<div class="related-card" onclick="window.location.href=\'product.html?id=' + p.id + '\'">' +
+            '<img class="related-img" src="' + (p.img || 'assets/warm.jpg') + '" alt="' + p.name + '" onerror="this.src=\'assets/warm.jpg\'" />' +
+            '<div class="related-info">' +
+              '<div class="related-name">' + p.name + '</div>' +
+              '<div class="related-price">' + fmtUGX(p.price) + '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      } catch(err) {
+        console.error('Related products error:', err);
+      }
+    }
+
+    // Tab switching
+    window.switchTab = function(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.detail-tab').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('tab-' + tabId).classList.add('active');
+      btn.classList.add('active');
+    };
+  </script>
+</body>
+</html>

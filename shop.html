@@ -555,7 +555,7 @@
         p.badge === 'new'  ? '<span class="card-badge badge-new">New</span>' : '';
       var imgSrc = p.img || 'assets/warm.jpg';
 
-      return '<div class="shop-card" style="animation:fadeUp 0.6s ' + (delay * 0.08) + 's ease both;">' +
+      return '<div class="shop-card" style="animation:fadeUp 0.6s ' + (delay * 0.08) + 's ease both;cursor:pointer;" onclick="window.location.href=\'product.html?id=' + p.id + '\'">' +
         '<div class="card-img-wrap">' +
           badgeHTML +
           '<button class="wish-btn" data-action="wish"><i class="fa-regular fa-heart"></i></button>' +
@@ -569,7 +569,7 @@
               '<div class="card-price">' + fmtUGX(p.price) + '</div>' +
               '<div class="card-size">' + (p.size || '') + '</div>' +
             '</div>' +
-            '<button class="add-btn" data-action="cart" data-name="' + p.name + '" data-price="' + p.price + '" data-img="' + imgSrc + '" data-cat="' + p.cat + '">' +
+           '<button class="add-btn" data-action="cart" data-name="' + p.name + '" onclick="event.stopPropagation()"
               '<i class="fa-solid fa-plus"></i>' +
             '</button>' +
           '</div>' +
