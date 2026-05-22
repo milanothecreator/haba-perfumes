@@ -1131,6 +1131,9 @@
       <div class="nav-link" onclick="showSection('products')">
         <i class="fa-solid fa-bottle-droplet"></i> Products
       </div>
+      <div class="nav-link" onclick="showSection('featured')">
+        <i class="fa-solid fa-star"></i> Featured
+      </div>
       <div class="nav-link" onclick="showSection('analytics')">
   <i class="fa-solid fa-chart-line"></i> Analytics
 </div>
@@ -1272,6 +1275,93 @@
       </div>
       <div class="products-grid" id="productsGrid"></div>
     </div>
+
+  <!-- ── FEATURED SECTION ── -->
+  <div class="admin-section" id="section-featured">
+    <div class="page-header">
+      <div>
+        <h2>Featured</h2>
+        <p>Up to 3 featured images shown on the home page — separate from products</p>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-bottom:20px;">
+      <button class="add-product-btn" onclick="openFeaturedModal()" id="addFeaturedBtn">
+        <i class="fa-solid fa-plus"></i> Add Featured
+      </button>
+    </div>
+
+    <div id="featuredAdminGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+      <div style="text-align:center;padding:40px;color:#8A8A98;grid-column:span 3;font-size:0.78rem;">
+        Loading featured items...
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Modal -->
+  <div class="product-modal" id="featuredModal" style="display:none;">
+    <div class="modal-overlay" onclick="closeFeaturedModal()"></div>
+    <div class="modal-content" style="max-width:480px;">
+      <div class="modal-header">
+        <h3 id="featuredModalTitle">Add Featured Item</h3>
+        <button class="modal-close" onclick="closeFeaturedModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+
+        <!-- Image upload -->
+        <div>
+          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Featured Image</label>
+          <div id="fImgPreview" onclick="document.getElementById('fImgFile').click()" style="width:100%;height:160px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;">
+            <img id="fImgPreviewImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;" />
+            <div id="fImgPlaceholder" style="text-align:center;color:#8A8A98;">
+              <div style="font-size:2rem;margin-bottom:8px;">🖼️</div>
+              <div style="font-size:0.72rem;">Tap to select image</div>
+            </div>
+          </div>
+          <input type="file" id="fImgFile" accept="image/*" style="display:none;" />
+          <input type="text" id="fImg" placeholder="Or paste image URL" style="width:100%;margin-top:8px;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;color:#E8E8F0;font-family:'Montserrat',sans-serif;font-size:0.80rem;outline:none;" />
+          <div id="fUploadProgress" style="display:none;margin-top:8px;">
+            <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;">
+              <div id="fUploadBar" style="height:100%;width:0%;background:#FFFFFF;border-radius:999px;transition:width 0.3s;"></div>
+            </div>
+            <p id="fUploadStatus" style="font-size:0.65rem;color:#8A8A98;margin-top:6px;"></p>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div>
+          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Title</label>
+          <input type="text" id="fTitle" placeholder="e.g. Summer Collection" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;color:#E8E8F0;font-family:'Montserrat',sans-serif;font-size:0.80rem;outline:none;" />
+        </div>
+
+        <!-- Subtitle -->
+        <div>
+          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Subtitle / Description</label>
+          <input type="text" id="fSubtitle" placeholder="e.g. Explore fresh African scents" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;color:#E8E8F0;font-family:'Montserrat',sans-serif;font-size:0.80rem;outline:none;" />
+        </div>
+
+        <!-- Price (optional) -->
+        <div>
+          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Price (optional)</label>
+          <input type="number" id="fPrice" placeholder="e.g. 70000" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;color:#E8E8F0;font-family:'Montserrat',sans-serif;font-size:0.80rem;outline:none;" />
+        </div>
+
+        <!-- Order -->
+        <div>
+          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Display Order (1 = first)</label>
+          <input type="number" id="fOrder" placeholder="1" min="1" max="3" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;color:#E8E8F0;font-family:'Montserrat',sans-serif;font-size:0.80rem;outline:none;" />
+        </div>
+
+        <input type="hidden" id="fFireId" />
+
+        <button onclick="saveFeatured()" style="width:100%;padding:16px;background:#FFFFFF;border:none;border-radius:999px;color:#0E0E12;font-family:'Montserrat',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;">
+          <i class="fa-solid fa-floppy-disk"></i> Save Featured Item
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div class="admin-section" id="section-analytics">
   <div class="page-header">
@@ -2178,6 +2268,176 @@ function renderBarChart() {}
         }
       }
     };
+
+    // ════════════════════════════════
+    // FEATURED PANEL — separate collection
+    // ════════════════════════════════
+    var CLOUD_NAME_F    = 'debuiz7fc';
+    var UPLOAD_PRESET_F = 'haba_perfumes';
+    var featuredItems   = [];
+
+    // Load featured from Firebase
+    onSnapshot(collection(db, 'featured'), function(snap) {
+      featuredItems = [];
+      snap.forEach(function(d) { featuredItems.push(Object.assign({ fireId: d.id }, d.data())); });
+      featuredItems.sort(function(a,b) { return (a.order||0) - (b.order||0); });
+      renderFeaturedAdmin();
+
+      // Update add button — max 3
+      var addBtn = document.getElementById('addFeaturedBtn');
+      if (addBtn) addBtn.style.display = featuredItems.length >= 3 ? 'none' : 'flex';
+    });
+
+    function renderFeaturedAdmin() {
+      var grid = document.getElementById('featuredAdminGrid');
+      if (!grid) return;
+
+      if (featuredItems.length === 0) {
+        grid.innerHTML = '<div style="text-align:center;padding:60px;color:#8A8A98;grid-column:span 3;">' +
+          '<div style="font-size:2rem;margin-bottom:12px;">🌟</div>' +
+          '<p style="font-size:0.78rem;">No featured items yet. Add up to 3.</p>' +
+          '</div>';
+        return;
+      }
+
+      grid.innerHTML = featuredItems.map(function(item) {
+        return '<div style="background:#141418;border:1px solid rgba(255,255,255,0.08);border-radius:18px;overflow:hidden;">' +
+          '<div style="height:140px;overflow:hidden;position:relative;">' +
+            '<img src="' + (item.img || '') + '" alt="' + (item.title||'') + '" onerror="this.style.display=\'none\'" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8);" />' +
+            '<div style="position:absolute;top:8px;right:8px;background:rgba(14,14,18,0.70);border-radius:8px;padding:3px 8px;font-size:0.60rem;color:#8A8A98;letter-spacing:0.10em;">#' + (item.order||1) + '</div>' +
+          '</div>' +
+          '<div style="padding:14px;">' +
+            '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.0rem;color:#FFFFFF;margin-bottom:4px;">' + (item.title||'—') + '</div>' +
+            '<div style="font-size:0.65rem;color:#8A8A98;margin-bottom:12px;">' + (item.subtitle||'') + '</div>' +
+            '<div style="display:flex;gap:8px;">' +
+              '<button onclick="editFeatured(\'' + item.fireId + '\')" style="flex:1;padding:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#E8E8F0;font-size:0.72rem;cursor:pointer;"><i class="fa-solid fa-pen"></i> Edit</button>' +
+              '<button onclick="deleteFeatured(\'' + item.fireId + '\')" style="width:36px;height:36px;background:rgba(255,80,80,0.08);border:1px solid rgba(255,80,80,0.20);border-radius:10px;color:#ff6b6b;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-trash"></i></button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    // Open modal for new featured
+    window.openFeaturedModal = function() {
+      document.getElementById('featuredModalTitle').textContent = 'Add Featured Item';
+      document.getElementById('fFireId').value = '';
+      document.getElementById('fTitle').value = '';
+      document.getElementById('fSubtitle').value = '';
+      document.getElementById('fPrice').value = '';
+      document.getElementById('fOrder').value = featuredItems.length + 1;
+      document.getElementById('fImg').value = '';
+      var pi = document.getElementById('fImgPreviewImg');
+      var ph = document.getElementById('fImgPlaceholder');
+      if (pi) { pi.src = ''; pi.style.display = 'none'; }
+      if (ph) ph.style.display = 'flex';
+      document.getElementById('featuredModal').style.display = 'flex';
+    };
+
+    // Edit existing featured
+    window.editFeatured = function(fireId) {
+      var item = featuredItems.find(function(f) { return f.fireId === fireId; });
+      if (!item) return;
+      document.getElementById('featuredModalTitle').textContent = 'Edit Featured Item';
+      document.getElementById('fFireId').value = fireId;
+      document.getElementById('fTitle').value = item.title || '';
+      document.getElementById('fSubtitle').value = item.subtitle || '';
+      document.getElementById('fPrice').value = item.price || '';
+      document.getElementById('fOrder').value = item.order || 1;
+      document.getElementById('fImg').value = item.img || '';
+      var pi = document.getElementById('fImgPreviewImg');
+      var ph = document.getElementById('fImgPlaceholder');
+      if (item.img) {
+        if (pi) { pi.src = item.img; pi.style.display = 'block'; }
+        if (ph) ph.style.display = 'none';
+      }
+      document.getElementById('featuredModal').style.display = 'flex';
+    };
+
+    // Close modal
+    window.closeFeaturedModal = function() {
+      document.getElementById('featuredModal').style.display = 'none';
+    };
+
+    // Save featured item
+    window.saveFeatured = async function() {
+      var fireId   = document.getElementById('fFireId').value;
+      var imgUrl   = document.getElementById('fImg').value.trim();
+      var title    = document.getElementById('fTitle').value.trim();
+      var subtitle = document.getElementById('fSubtitle').value.trim();
+      var price    = parseFloat(document.getElementById('fPrice').value) || 0;
+      var order    = parseInt(document.getElementById('fOrder').value) || 1;
+
+      if (!title) { alert('Please enter a title'); return; }
+      if (!imgUrl) { alert('Please add an image'); return; }
+
+      var data = { img: imgUrl, title: title, subtitle: subtitle, price: price, order: order };
+
+      try {
+        if (fireId) {
+          await updateDoc(doc(db, 'featured', fireId), data);
+        } else {
+          await addDoc(collection(db, 'featured'), data);
+        }
+        closeFeaturedModal();
+        showAdminToast('Featured item saved!');
+      } catch(err) {
+        console.error('Save featured error:', err);
+        alert('Failed to save. Try again.');
+      }
+    };
+
+    // Delete featured
+    window.deleteFeatured = async function(fireId) {
+      if (!confirm('Delete this featured item?')) return;
+      try {
+        await deleteDoc(doc(db, 'featured', fireId));
+        showAdminToast('Featured item deleted');
+      } catch(err) {
+        alert('Failed to delete');
+      }
+    };
+
+    // Featured image upload via Cloudinary
+    var fImgFile = document.getElementById('fImgFile');
+    if (fImgFile) {
+      fImgFile.addEventListener('change', async function() {
+        var file = this.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var pi = document.getElementById('fImgPreviewImg');
+          var ph = document.getElementById('fImgPlaceholder');
+          if (pi) { pi.src = e.target.result; pi.style.display = 'block'; }
+          if (ph) ph.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+
+        var progress = document.getElementById('fUploadProgress');
+        var bar      = document.getElementById('fUploadBar');
+        var status   = document.getElementById('fUploadStatus');
+        if (progress) progress.style.display = 'block';
+        if (bar)      bar.style.width = '30%';
+        if (status)   status.textContent = 'Uploading...';
+
+        try {
+          var fd = new FormData();
+          fd.append('file', file);
+          fd.append('upload_preset', UPLOAD_PRESET_F);
+          fd.append('folder', 'haba_featured');
+          if (bar) bar.style.width = '60%';
+          var res  = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME_F + '/image/upload', { method:'POST', body:fd });
+          var data = await res.json();
+          document.getElementById('fImg').value = data.secure_url;
+          if (bar)    bar.style.width = '100%';
+          if (status) { status.textContent = '✓ Uploaded!'; status.style.color = '#4ecb9e'; }
+          setTimeout(function() { if (progress) progress.style.display = 'none'; }, 2000);
+        } catch(err) {
+          if (status) { status.textContent = '✕ Failed — paste URL instead'; status.style.color = '#ff6b6b'; }
+        }
+      });
+    }
+
 </script>
 </body>
 </html>

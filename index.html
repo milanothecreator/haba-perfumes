@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Haba Perfumes — Find Your Signature Scent</title>
-  <!-- Fonts only -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     /* ══════════════════════════════
@@ -611,9 +609,9 @@
         <a href="shop.html" class="btn-silver">
           <i class="fa-solid fa-store"></i> Shop Now
         </a>
-        <a href="quiz.html" class="btn-silver" id="quizBtn">
-  <i class="fa-solid fa-flask"></i> Take Quiz
-</a>
+        <a href="quiz.html" class="btn-outline" id="quizBtn">
+          Take Quiz
+        </a>
       </div>
     </div>
   </section>
@@ -730,15 +728,7 @@
     </a>
   </nav>
 
-  <!-- main.js not needed - index is self contained -->
-  <script>
-    // Page fade in
-    window.addEventListener('load', function() {
-      document.body.style.opacity = '0';
-      document.body.style.transition = 'opacity 0.6s ease';
-      setTimeout(function() { document.body.style.opacity = '1'; }, 50);
-    });
-  </script>
+  <script src="js/main.js"></script>
   <script type="module">
     import { db, collection, onSnapshot, auth, onAuthStateChanged }
       from './js/firebase.js';
@@ -783,38 +773,41 @@
     var catEmoji = { warm:'🔥', woody:'🌿', oriental:'🌙', fresh:'💨' };
     var allProducts = [];
 
-    // ── Firebase products ──
+    // ── Firebase products (for search + stats) ──
     onSnapshot(collection(db, 'products'), function(snapshot) {
       allProducts = [];
       snapshot.forEach(function(d) { allProducts.push(Object.assign({ id: d.id }, d.data())); });
-      renderFeatured(allProducts);
       var countEl = document.getElementById('statProductCount');
       if (countEl) countEl.textContent = allProducts.length || '0';
     });
 
-    // ── Featured grid ──
-    function renderFeatured(products) {
+    // ── Featured — loads from separate 'featured' collection ──
+    onSnapshot(collection(db, 'featured'), function(snapshot) {
+      var featuredItems = [];
+      snapshot.forEach(function(d) { featuredItems.push(Object.assign({ id: d.id }, d.data())); });
+      // Sort by order field
+      featuredItems.sort(function(a,b) { return (a.order||0) - (b.order||0); });
+      renderFeatured(featuredItems);
+    });
+
+    function renderFeatured(items) {
       var grid = document.getElementById('featuredGrid');
       if (!grid) return;
 
-      var featured = products.filter(function(p) { return p.badge === 'best'; }).slice(0, 4);
-      if (featured.length === 0) featured = products.slice(0, 4);
-      if (featured.length === 0) {
-        grid.innerHTML = '<p style="color:var(--silver-dim);font-size:0.78rem;padding:20px;grid-column:span 2;">No products yet. Add from admin panel.</p>';
+      if (items.length === 0) {
+        grid.innerHTML = '<p style="color:var(--silver-dim);font-size:0.78rem;padding:20px;grid-column:span 2;text-align:center;">No featured items yet.<br>Add from admin panel.</p>';
         return;
       }
 
-      grid.innerHTML = featured.map(function(p) {
-        var emoji = catEmoji[p.cat] || '✨';
-        var cat   = p.cat ? p.cat.charAt(0).toUpperCase() + p.cat.slice(1) : '';
-        return '<div class="product-card" onclick="window.location.href=\'shop.html\'">' +
+      grid.innerHTML = items.slice(0, 4).map(function(item) {
+        return '<div class="product-card" onclick="window.location.href=\'shop.html\'" style="cursor:pointer;">' +
           '<div class="product-card-img">' +
-            '<img src="' + (p.img || 'assets/warm.jpg') + '" alt="' + p.name + '" onerror="this.src=\'assets/warm.jpg\'" />' +
+            '<img src="' + (item.img || 'assets/warm.jpg') + '" alt="' + (item.title||'') + '" onerror="this.src=\'assets/warm.jpg\'" />' +
           '</div>' +
           '<div class="product-card-body">' +
-            '<div class="product-name">' + p.name + '</div>' +
-            '<div class="product-brand">' + emoji + ' ' + cat + '</div>' +
-            '<div class="product-price">' + fmtUGX(p.price) + '</div>' +
+            '<div class="product-name">' + (item.title || 'Featured') + '</div>' +
+            '<div class="product-brand">' + (item.subtitle || '') + '</div>' +
+            '<div class="product-price">' + (item.price ? 'UGX ' + Number(item.price).toLocaleString() : '') + '</div>' +
           '</div>' +
         '</div>';
       }).join('');
