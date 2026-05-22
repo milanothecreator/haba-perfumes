@@ -1299,42 +1299,38 @@
   </div>
 
   <!-- Featured Modal -->
-  <div class="product-modal" id="featuredModal" style="display:none;">
-    <div class="modal-overlay" onclick="closeFeaturedModal()"></div>
-    <div class="modal-content" style="max-width:480px;">
-      <div class="modal-header">
-        <h3 id="featuredModalTitle">Add Featured Item</h3>
-        <button class="modal-close" onclick="closeFeaturedModal()">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+  <div id="featuredModal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;">
+    <!-- Backdrop -->
+    <div onclick="closeFeaturedModal()" style="position:absolute;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);"></div>
+    <!-- Sheet -->
+    <div style="position:relative;z-index:1;width:90%;max-width:480px;max-height:90vh;overflow-y:auto;background:#1A1A22;border:1px solid rgba(255,255,255,0.12);border-radius:24px;">
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid rgba(255,255,255,0.08);">
+        <h3 id="featuredModalTitle" style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#FFFFFF;">Add Featured Item</h3>
+        <button onclick="closeFeaturedModal()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:50%;width:32px;height:32px;color:#E8E8F0;cursor:pointer;font-size:0.90rem;">✕</button>
       </div>
+      <!-- Body -->
       <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
 
-        <!-- Image upload -->
+        <!-- Image area -->
         <div>
           <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Featured Image</label>
-
-          <!-- Preview area -->
-          <div id="fImgPreview" style="width:100%;height:160px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);overflow:hidden;position:relative;margin-bottom:10px;">
+          <!-- Preview -->
+          <div id="fImgPreview" style="width:100%;height:160px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);overflow:hidden;position:relative;margin-bottom:10px;display:flex;align-items:center;justify-content:center;">
             <img id="fImgPreviewImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;" />
-            <div id="fImgPlaceholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;color:#8A8A98;">
+            <div id="fImgPlaceholder" style="text-align:center;color:#8A8A98;">
               <div style="font-size:2rem;margin-bottom:8px;">🖼️</div>
-              <div style="font-size:0.72rem;">No image selected</div>
+              <div style="font-size:0.72rem;">No image yet</div>
             </div>
           </div>
-
-          <!-- Visible upload button -->
-          <button type="button" onclick="document.getElementById('fImgFile').click()" style="width:100%;padding:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:12px;color:#FFFFFF;font-family:'Montserrat',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.12em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;">
-            <i class="fa-solid fa-upload"></i> Choose Photo / File
+          <!-- Upload button -->
+          <button type="button" onclick="document.getElementById('fImgFile').click()" style="width:100%;padding:13px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.20);border-radius:12px;color:#FFFFFF;font-family:'Montserrat',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.10em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;">
+            📁 Choose Photo or File
           </button>
-
-          <!-- Hidden file input -->
-          <input type="file" id="fImgFile" accept="image/*" style="display:none;" />
-
-          <!-- URL fallback -->
+          <input type="file" id="fImgFile" accept="image/*" style="display:none;" onchange="handleFeaturedImage(this)" />
+          <!-- URL input -->
           <input type="text" id="fImg" placeholder="Or paste image URL here" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;color:#E8E8F0;font-family:'Montserrat',sans-serif;font-size:0.80rem;outline:none;" />
-
-          <!-- Progress bar -->
+          <!-- Progress -->
           <div id="fUploadProgress" style="display:none;margin-top:10px;">
             <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;">
               <div id="fUploadBar" style="height:100%;width:0%;background:#FFFFFF;border-radius:999px;transition:width 0.3s;"></div>
@@ -1345,19 +1341,19 @@
 
         <!-- Title -->
         <div>
-          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Title</label>
+          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Title *</label>
           <input type="text" id="fTitle" placeholder="e.g. Summer Collection" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;color:#E8E8F0;font-family:'Montserrat',sans-serif;font-size:0.80rem;outline:none;" />
         </div>
 
         <!-- Subtitle -->
         <div>
-          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Subtitle / Description</label>
+          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Subtitle</label>
           <input type="text" id="fSubtitle" placeholder="e.g. Explore fresh African scents" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;color:#E8E8F0;font-family:'Montserrat',sans-serif;font-size:0.80rem;outline:none;" />
         </div>
 
-        <!-- Price (optional) -->
+        <!-- Price -->
         <div>
-          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Price (optional)</label>
+          <label style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#8A8A98;display:block;margin-bottom:8px;">Price (UGX, optional)</label>
           <input type="number" id="fPrice" placeholder="e.g. 70000" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;color:#E8E8F0;font-family:'Montserrat',sans-serif;font-size:0.80rem;outline:none;" />
         </div>
 
@@ -1369,8 +1365,9 @@
 
         <input type="hidden" id="fFireId" />
 
+        <!-- Save button -->
         <button onclick="saveFeatured()" style="width:100%;padding:16px;background:#FFFFFF;border:none;border-radius:999px;color:#0E0E12;font-family:'Montserrat',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;">
-          <i class="fa-solid fa-floppy-disk"></i> Save Featured Item
+          💾 Save Featured Item
         </button>
       </div>
     </div>
@@ -2422,6 +2419,53 @@ function renderBarChart() {}
         showAdminToast('Featured item deleted');
       } catch(err) {
         alert('Failed to delete');
+      }
+    };
+
+    // ── Featured image handler (called from onchange) ──
+    window.handleFeaturedImage = async function(input) {
+      var file = input.files[0];
+      if (!file) return;
+
+      // Show preview immediately
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var pi = document.getElementById('fImgPreviewImg');
+        var ph = document.getElementById('fImgPlaceholder');
+        if (pi) { pi.src = e.target.result; pi.style.display = 'block'; }
+        if (ph) ph.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+
+      // Upload to Cloudinary
+      var progress = document.getElementById('fUploadProgress');
+      var bar      = document.getElementById('fUploadBar');
+      var status   = document.getElementById('fUploadStatus');
+      if (progress) progress.style.display = 'block';
+      if (bar)      bar.style.width = '30%';
+      if (status)   status.textContent = 'Uploading image...';
+
+      try {
+        var fd = new FormData();
+        fd.append('file', file);
+        fd.append('upload_preset', UPLOAD_PRESET_F);
+        fd.append('folder', 'haba_featured');
+
+        if (bar) bar.style.width = '60%';
+        var res  = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME_F + '/image/upload', { method:'POST', body:fd });
+        var data = await res.json();
+
+        document.getElementById('fImg').value = data.secure_url;
+        if (bar)    bar.style.width = '100%';
+        if (status) { status.textContent = '✓ Uploaded successfully!'; status.style.color = '#4ecb9e'; }
+        setTimeout(function() {
+          if (progress) progress.style.display = 'none';
+          if (bar)      bar.style.width = '0%';
+        }, 2000);
+      } catch(err) {
+        console.error('Featured upload error:', err);
+        if (status) { status.textContent = '✕ Upload failed — paste URL instead'; status.style.color = '#ff6b6b'; }
+        if (bar)    bar.style.width = '0%';
       }
     };
 
