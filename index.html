@@ -369,55 +369,128 @@
     }
     .section-link:hover { color: var(--white-pure); }
 
-    /* 2-column grid */
-    .featured-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+    /* ── FEATURED — Premium Editorial Style ── */
+    .featured-section { padding: 0 0 32px; }
+    .featured-header {
+      display: flex; align-items: baseline;
+      justify-content: space-between;
+      padding: 0 24px; margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; color: var(--white-pure);
+      letter-spacing: -0.01em;
+    }
+    .section-link {
+      font-size: 0.65rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--silver-dim); text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .section-link:hover { color: var(--white-pure); }
+
+    /* Horizontal scroll row */
+    .featured-scroll {
+      display: flex;
       gap: 14px;
+      overflow-x: auto;
+      padding: 8px 24px 16px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      cursor: grab;
     }
-    .product-card {
-      background: var(--charcoal-card);
-      border: 1px solid rgba(200,200,208,0.08);
-      border-radius: 20px; overflow: hidden;
-      cursor: pointer; transition: all 0.35s ease;
+    .featured-scroll::-webkit-scrollbar { display: none; }
+    .featured-scroll:active { cursor: grabbing; }
+
+    /* Featured card — tall editorial */
+    .feat-card {
+      flex-shrink: 0;
+      width: 200px;
+      height: 280px;
+      border-radius: 22px;
+      overflow: hidden;
       position: relative;
+      scroll-snap-align: center;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94),
+                  box-shadow 0.4s ease;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.40);
     }
-    .product-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg,
-        transparent, rgba(200,200,208,0.20), transparent);
+    /* Center card is bigger */
+    .feat-card.active-card {
+      width: 230px;
+      height: 310px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.70);
+      z-index: 2;
     }
-    .product-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(200,200,208,0.25);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.50);
+    .feat-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.65);
     }
-    .product-card-img {
-      width: 100%; height: 130px;
-      overflow: hidden; position: relative;
+    .feat-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.75) saturate(0.85);
     }
-    .product-card-img img {
-      width: 100%; height: 100%; object-fit: cover;
-      filter: brightness(0.80) saturate(0.90);
-      transition: all 0.5s ease;
+    .feat-card:hover img {
+      transform: scale(1.06);
+      filter: brightness(0.90) saturate(1.0);
     }
-    .product-card:hover .product-card-img img {
-      filter: brightness(0.95) saturate(1.0);
-      transform: scale(1.04);
-    }
-    .product-card-img::after {
-      content: '';
+    /* Dark gradient overlay */
+    .feat-card-overlay {
       position: absolute; inset: 0;
       background: linear-gradient(180deg,
-        transparent 40%, rgba(14,14,18,0.75) 100%);
+        rgba(0,0,0,0.05) 0%,
+        rgba(0,0,0,0.10) 40%,
+        rgba(0,0,0,0.75) 100%);
+      z-index: 1;
     }
-    .product-card-body { padding: 12px 14px 14px; }
-    .product-name {
+    /* Category tag */
+    .feat-card-tag {
+      position: absolute; top: 14px; left: 14px; z-index: 2;
+      padding: 4px 12px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.20);
+      border-radius: 999px;
+      font-size: 0.58rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--white-pure);
+    }
+    /* Label at bottom */
+    .feat-card-label {
+      position: absolute; bottom: 18px; left: 16px; right: 16px; z-index: 2;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.0rem; font-weight: 400;
-      color: var(--white-pure); margin-bottom: 3px;
-      line-height: 1.2;
+      font-size: 1.1rem; font-weight: 400;
+      color: var(--white-pure); line-height: 1.2;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.60);
+    }
+
+    /* Scroll indicator dots */
+    .feat-dots {
+      display: flex; justify-content: center; gap: 6px;
+      margin-top: 16px;
+    }
+    .feat-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,0.20);
+      transition: all 0.3s ease;
+    }
+    .feat-dot.active {
+      width: 20px; border-radius: 999px;
+      background: var(--white-pure);
+    }
+
+    /* Empty state */
+    .featured-empty {
+      padding: 0 24px;
+      text-align: center;
+      color: var(--silver-dim);
+      font-size: 0.78rem;
+    }
     }
     .product-brand {
       font-size: 0.58rem; letter-spacing: 0.12em;
@@ -552,6 +625,7 @@
       0%, 100% { transform: translateY(0) scale(1); opacity: 0.5; }
       50%       { transform: translateY(-10px) scale(1.2); opacity: 1; }
     }
+    @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:0.6} }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -661,29 +735,21 @@
 
   <div class="section-divider"></div>
 
-  <!-- ── FEATURED ── -->
+  <!-- ── FEATURED — Premium Editorial ── -->
   <section class="featured-section" style="padding-top:28px;">
-    <div class="section-header">
+    <div class="featured-header">
       <h2 class="section-title">Featured</h2>
       <a href="shop.html" class="section-link">See All →</a>
     </div>
-    <div class="featured-grid" id="featuredGrid">
-      <!-- Skeleton loaders -->
-      <div class="product-card" style="opacity:0.35;">
-        <div class="product-card-img" style="background:rgba(200,200,208,0.04);"></div>
-        <div class="product-card-body">
-          <div style="height:14px;background:rgba(255,255,255,0.05);border-radius:4px;margin-bottom:8px;"></div>
-          <div style="height:10px;background:rgba(255,255,255,0.03);border-radius:4px;width:60%;"></div>
-        </div>
-      </div>
-      <div class="product-card" style="opacity:0.25;">
-        <div class="product-card-img" style="background:rgba(200,200,208,0.04);"></div>
-        <div class="product-card-body">
-          <div style="height:14px;background:rgba(255,255,255,0.05);border-radius:4px;margin-bottom:8px;"></div>
-          <div style="height:10px;background:rgba(255,255,255,0.03);border-radius:4px;width:60%;"></div>
-        </div>
-      </div>
+    <!-- Horizontal scroll -->
+    <div class="featured-scroll" id="featuredScroll">
+      <!-- Skeleton cards while loading -->
+      <div class="feat-card" style="background:rgba(200,200,208,0.06);animation:pulse 1.5s ease-in-out infinite;"></div>
+      <div class="feat-card active-card" style="background:rgba(200,200,208,0.04);animation:pulse 1.5s 0.2s ease-in-out infinite;"></div>
+      <div class="feat-card" style="background:rgba(200,200,208,0.06);animation:pulse 1.5s 0.4s ease-in-out infinite;"></div>
     </div>
+    <!-- Dots -->
+    <div class="feat-dots" id="featDots"></div>
   </section>
 
   <div class="section-divider" style="margin:4px 0 28px;"></div>
@@ -736,7 +802,7 @@
     var showAuthPopup;
     try {
       var m = await import('./js/auth.js');
-      showAuthPopup = m.showAuthPopup || function() { window.location.href = 'login.html'; };
+      showAuthPopup = m.showAuthPopup;
     } catch(e) {
       showAuthPopup = function() { window.location.href = 'login.html'; };
     }
@@ -784,33 +850,79 @@
     // ── Featured — loads from separate 'featured' collection ──
     onSnapshot(collection(db, 'featured'), function(snapshot) {
       var featuredItems = [];
-      snapshot.forEach(function(d) { featuredItems.push(Object.assign({ id: d.id }, d.data())); });
-      // Sort by order field
+      snapshot.forEach(function(d) {
+        featuredItems.push(Object.assign({ id: d.id }, d.data()));
+      });
       featuredItems.sort(function(a,b) { return (a.order||0) - (b.order||0); });
       renderFeatured(featuredItems);
     });
 
     function renderFeatured(items) {
-      var grid = document.getElementById('featuredGrid');
-      if (!grid) return;
+      var scroll = document.getElementById('featuredScroll');
+      var dots   = document.getElementById('featDots');
+      if (!scroll) return;
 
       if (items.length === 0) {
-        grid.innerHTML = '<p style="color:var(--silver-dim);font-size:0.78rem;padding:20px;grid-column:span 2;text-align:center;">No featured items yet.<br>Add from admin panel.</p>';
+        scroll.innerHTML =
+          '<div class="featured-empty" style="width:100%;padding:40px 0;">' +
+          '<div style="font-size:2rem;margin-bottom:10px;">🌟</div>' +
+          '<p>No featured items yet.</p></div>';
+        if (dots) dots.innerHTML = '';
         return;
       }
 
-      grid.innerHTML = items.slice(0, 4).map(function(item) {
-        return '<div class="product-card" onclick="window.location.href=\'shop.html\'" style="cursor:pointer;">' +
-          '<div class="product-card-img">' +
-            '<img src="' + (item.img || 'assets/warm.jpg') + '" alt="' + (item.title||'') + '" onerror="this.src=\'assets/warm.jpg\'" />' +
-          '</div>' +
-          '<div class="product-card-body">' +
-            '<div class="product-name">' + (item.title || 'Featured') + '</div>' +
-            '<div class="product-brand">' + (item.subtitle || '') + '</div>' +
-            '<div class="product-price">' + (item.price ? 'UGX ' + Number(item.price).toLocaleString() : '') + '</div>' +
-          '</div>' +
+      scroll.innerHTML = items.map(function(item, i) {
+        var isCenter = i === Math.floor(items.length / 2);
+        return '<div class="feat-card' + (isCenter ? ' active-card' : '') + '" ' +
+          'onclick="window.location.href=\'shop.html\'" ' +
+          'data-index="' + i + '">' +
+          '<img src="' + (item.img || 'assets/warm.jpg') + '" ' +
+               'alt="' + (item.label || item.title || '') + '" ' +
+               'onerror="this.src=\'assets/warm.jpg\'" />' +
+          '<div class="feat-card-overlay"></div>' +
+          (item.label || item.title ?
+            '<div class="feat-card-label">' + (item.label || item.title) + '</div>' : '') +
         '</div>';
       }).join('');
+
+      // Build dots
+      if (dots) {
+        dots.innerHTML = items.map(function(_, i) {
+          var isCenter = i === Math.floor(items.length / 2);
+          return '<div class="feat-dot' + (isCenter ? ' active' : '') + '"></div>';
+        }).join('');
+      }
+
+      // Apple-like scroll with dot tracking
+      scroll.addEventListener('scroll', function() {
+        var cards = scroll.querySelectorAll('.feat-card');
+        var dotEls = dots ? dots.querySelectorAll('.feat-dot') : [];
+        var center = scroll.scrollLeft + scroll.offsetWidth / 2;
+        var closest = 0, minDist = Infinity;
+        cards.forEach(function(card, i) {
+          var cardCenter = card.offsetLeft + card.offsetWidth / 2;
+          var dist = Math.abs(center - cardCenter);
+          if (dist < minDist) { minDist = dist; closest = i; }
+          card.classList.remove('active-card');
+        });
+        cards[closest].classList.add('active-card');
+        dotEls.forEach(function(d, i) {
+          d.classList.toggle('active', i === closest);
+        });
+      }, { passive: true });
+
+      // Drag to scroll on desktop
+      var isDown = false, startX, scrollLeft;
+      scroll.addEventListener('mousedown', function(e) {
+        isDown = true; startX = e.pageX - scroll.offsetLeft;
+        scrollLeft = scroll.scrollLeft; scroll.style.cursor = 'grabbing';
+      });
+      scroll.addEventListener('mouseleave', function() { isDown = false; scroll.style.cursor = 'grab'; });
+      scroll.addEventListener('mouseup',    function() { isDown = false; scroll.style.cursor = 'grab'; });
+      scroll.addEventListener('mousemove',  function(e) {
+        if (!isDown) return; e.preventDefault();
+        scroll.scrollLeft = scrollLeft - (e.pageX - scroll.offsetLeft - startX) * 1.5;
+      });
     }
 
     // ── Live Search ──
