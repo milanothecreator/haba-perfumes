@@ -153,14 +153,12 @@
       auth, onAuthStateChanged
     } from './js/firebase.js';
 
-    // Auth popup
-    var showAuthPopup;
+    // Auth popup — safe import
+    var showAuthPopup = function() { window.location.href = 'login.html'; };
     try {
-      var m = await import('./js/auth.js');
-      showAuthPopup = m.showAuthPopup;
-    } catch(e) {
-      showAuthPopup = function() { window.location.href = 'login.html'; };
-    }
+      var authMod = await import('./js/auth.js');
+      if (authMod && authMod.showAuthPopup) showAuthPopup = authMod.showAuthPopup;
+    } catch(e) { /* use fallback */ }
 
     var shopBody    = document.getElementById('shopBody');
     var cartCountEl = document.getElementById('cartCount');

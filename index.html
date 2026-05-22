@@ -736,7 +736,7 @@
     var showAuthPopup;
     try {
       var m = await import('./js/auth.js');
-      showAuthPopup = m.showAuthPopup;
+      showAuthPopup = m.showAuthPopup || function() { window.location.href = 'login.html'; };
     } catch(e) {
       showAuthPopup = function() { window.location.href = 'login.html'; };
     }

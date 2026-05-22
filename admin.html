@@ -2157,127 +2157,7 @@ function renderBarChart() {}
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
   };
-</script>
-<script>
-  // Fallback login for non-module context
-  document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('loginBtn');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        if (window.adminLogin) {
-          window.adminLogin();
-        }
-      });
-    }
 
-    // Enter key support
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        const screen = document.getElementById('loginScreen');
-        if (screen && screen.style.display !== 'none') {
-          if (window.adminLogin) window.adminLogin();
-        }
-      }
-    });
-  });
-
-    // ── Image Upload Handler ──
-    var uploadedImageUrl = '';
-
-    var fileInput = document.getElementById('imgFileInput');
-    if (fileInput) {
-      fileInput.addEventListener('change', async function() {
-        var file = this.files[0];
-        if (!file) return;
-
-        // Show local preview immediately
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          var previewImg   = document.getElementById('imgPreviewImg');
-          var placeholder  = document.getElementById('imgPreviewPlaceholder');
-          if (previewImg)  { previewImg.src = e.target.result; previewImg.style.display = 'block'; }
-          if (placeholder) { placeholder.style.display = 'none'; }
-        };
-        reader.readAsDataURL(file);
-
-        // Show progress bar
-        var progress = document.getElementById('uploadProgress');
-        var bar      = document.getElementById('uploadBar');
-        var status   = document.getElementById('uploadStatus');
-        if (progress) progress.style.display = 'block';
-        if (bar)      bar.style.width = '30%';
-        if (status)   status.textContent = 'Uploading image...';
-
-        try {
-          // Upload to Cloudinary
-          var CLOUD_NAME    = 'debuiz7fc';
-          var UPLOAD_PRESET = 'haba_perfumes';
-
-          var formData = new FormData();
-          formData.append('file', file);
-          formData.append('upload_preset', UPLOAD_PRESET);
-          formData.append('folder', 'haba_products');
-
-          if (bar) bar.style.width = '40%';
-          if (status) status.textContent = 'Uploading to Cloudinary...';
-
-          var response = await fetch(
-            'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload',
-            { method: 'POST', body: formData }
-          );
-
-          if (!response.ok) throw new Error('Upload failed: ' + response.status);
-
-          var data = await response.json();
-          var downloadURL = data.secure_url;
-
-          uploadedImageUrl = downloadURL;
-          var pImg = document.getElementById('pImg');
-          if (pImg) pImg.value = downloadURL;
-
-          if (bar)    bar.style.width = '100%';
-          if (status) { status.textContent = '✓ Image uploaded!'; status.style.color = '#4ecb9e'; }
-          setTimeout(function() {
-            if (progress) progress.style.display = 'none';
-            if (bar)      bar.style.width = '0%';
-            if (status)   { status.style.color = '#8A8A98'; }
-          }, 2000);
-
-        } catch(err) {
-          console.error('Cloudinary upload error:', err);
-          if (status) { status.textContent = '✕ Upload failed — paste URL instead'; status.style.color = '#ff6b6b'; }
-          if (bar)    bar.style.width = '0%';
-        }
-      });
-    }
-
-    // ── Reset preview on modal close ──
-    var _origClose = window.closeProductModal;
-    window.closeProductModal = function() {
-      uploadedImageUrl = '';
-      var previewImg  = document.getElementById('imgPreviewImg');
-      var placeholder = document.getElementById('imgPreviewPlaceholder');
-      var progress    = document.getElementById('uploadProgress');
-      if (previewImg)  { previewImg.src = ''; previewImg.style.display = 'none'; }
-      if (placeholder) { placeholder.style.display = 'flex'; }
-      if (progress)    { progress.style.display = 'none'; }
-      if (_origClose)  _origClose();
-    };
-
-    // ── Show existing image when editing ──
-    var _origOpen = window.openProductModal;
-    window.openProductModal = function(fireId) {
-      _origOpen(fireId);
-      if (fireId) {
-        var p = allProducts.find(function(x) { return x.fireId === fireId; });
-        if (p && p.img) {
-          var previewImg  = document.getElementById('imgPreviewImg');
-          var placeholder = document.getElementById('imgPreviewPlaceholder');
-          if (previewImg)  { previewImg.src = p.img; previewImg.style.display = 'block'; }
-          if (placeholder) { placeholder.style.display = 'none'; }
-        }
-      }
-    };
 
     // ════════════════════════════════
     // FEATURED PANEL — separate collection
@@ -2508,6 +2388,129 @@ function renderBarChart() {}
         }
       });
     }
+
+</script>
+<script>
+  // Fallback login for non-module context
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('loginBtn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        if (window.adminLogin) {
+          window.adminLogin();
+        }
+      });
+    }
+
+    // Enter key support
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const screen = document.getElementById('loginScreen');
+        if (screen && screen.style.display !== 'none') {
+          if (window.adminLogin) window.adminLogin();
+        }
+      }
+    });
+  });
+
+    // ── Image Upload Handler ──
+    var uploadedImageUrl = '';
+
+    var fileInput = document.getElementById('imgFileInput');
+    if (fileInput) {
+      fileInput.addEventListener('change', async function() {
+        var file = this.files[0];
+        if (!file) return;
+
+        // Show local preview immediately
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var previewImg   = document.getElementById('imgPreviewImg');
+          var placeholder  = document.getElementById('imgPreviewPlaceholder');
+          if (previewImg)  { previewImg.src = e.target.result; previewImg.style.display = 'block'; }
+          if (placeholder) { placeholder.style.display = 'none'; }
+        };
+        reader.readAsDataURL(file);
+
+        // Show progress bar
+        var progress = document.getElementById('uploadProgress');
+        var bar      = document.getElementById('uploadBar');
+        var status   = document.getElementById('uploadStatus');
+        if (progress) progress.style.display = 'block';
+        if (bar)      bar.style.width = '30%';
+        if (status)   status.textContent = 'Uploading image...';
+
+        try {
+          // Upload to Cloudinary
+          var CLOUD_NAME    = 'debuiz7fc';
+          var UPLOAD_PRESET = 'haba_perfumes';
+
+          var formData = new FormData();
+          formData.append('file', file);
+          formData.append('upload_preset', UPLOAD_PRESET);
+          formData.append('folder', 'haba_products');
+
+          if (bar) bar.style.width = '40%';
+          if (status) status.textContent = 'Uploading to Cloudinary...';
+
+          var response = await fetch(
+            'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload',
+            { method: 'POST', body: formData }
+          );
+
+          if (!response.ok) throw new Error('Upload failed: ' + response.status);
+
+          var data = await response.json();
+          var downloadURL = data.secure_url;
+
+          uploadedImageUrl = downloadURL;
+          var pImg = document.getElementById('pImg');
+          if (pImg) pImg.value = downloadURL;
+
+          if (bar)    bar.style.width = '100%';
+          if (status) { status.textContent = '✓ Image uploaded!'; status.style.color = '#4ecb9e'; }
+          setTimeout(function() {
+            if (progress) progress.style.display = 'none';
+            if (bar)      bar.style.width = '0%';
+            if (status)   { status.style.color = '#8A8A98'; }
+          }, 2000);
+
+        } catch(err) {
+          console.error('Cloudinary upload error:', err);
+          if (status) { status.textContent = '✕ Upload failed — paste URL instead'; status.style.color = '#ff6b6b'; }
+          if (bar)    bar.style.width = '0%';
+        }
+      });
+    }
+
+    // ── Reset preview on modal close ──
+    var _origClose = window.closeProductModal;
+    window.closeProductModal = function() {
+      uploadedImageUrl = '';
+      var previewImg  = document.getElementById('imgPreviewImg');
+      var placeholder = document.getElementById('imgPreviewPlaceholder');
+      var progress    = document.getElementById('uploadProgress');
+      if (previewImg)  { previewImg.src = ''; previewImg.style.display = 'none'; }
+      if (placeholder) { placeholder.style.display = 'flex'; }
+      if (progress)    { progress.style.display = 'none'; }
+      if (_origClose)  _origClose();
+    };
+
+    // ── Show existing image when editing ──
+    var _origOpen = window.openProductModal;
+    window.openProductModal = function(fireId) {
+      _origOpen(fireId);
+      if (fireId) {
+        var p = allProducts.find(function(x) { return x.fireId === fireId; });
+        if (p && p.img) {
+          var previewImg  = document.getElementById('imgPreviewImg');
+          var placeholder = document.getElementById('imgPreviewPlaceholder');
+          if (previewImg)  { previewImg.src = p.img; previewImg.style.display = 'block'; }
+          if (placeholder) { placeholder.style.display = 'none'; }
+        }
+      }
+    };
+
 
 </script>
 </body>
