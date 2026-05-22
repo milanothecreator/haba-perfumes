@@ -2284,7 +2284,7 @@ function renderBarChart() {}
           await addDoc(collection(db, 'featured'), data);
         }
         closeFeaturedModal();
-        showAdminToast('✓ Featured item saved!');
+        showToast('✓ Featured item saved!');
       } catch(err) {
         console.error('Save featured error:', err);
         alert('Failed to save: ' + err.message);
@@ -2296,7 +2296,7 @@ function renderBarChart() {}
       if (!confirm('Delete this featured item?')) return;
       try {
         await deleteDoc(doc(db, 'featured', fireId));
-        showAdminToast('Featured item deleted');
+        showToast('Featured item deleted');
       } catch(err) {
         alert('Failed to delete');
       }
