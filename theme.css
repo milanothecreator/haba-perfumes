@@ -1,0 +1,425 @@
+/* ============================================
+   HABA PERFUMES — Theme System
+   css/theme.css
+   Dark mode = default | Light mode = body.light-mode
+============================================ */
+
+/* ── LIGHT MODE VARIABLES ── */
+body.light-mode {
+  --silver:        #4A4A55;
+  --silver-light:  #1C1C1E;
+  --silver-dim:    #6C6C70;
+  --charcoal:      #F2F2F7;
+  --charcoal-mid:  #E5E5EA;
+  --charcoal-card: #FFFFFF;
+  --white-pure:    #1C1C1E;
+
+  background: #F2F2F7 !important;
+  color: #1C1C1E !important;
+}
+
+/* ── NAVBAR ── */
+body.light-mode .navbar {
+  background: rgba(242,242,247,0.92) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+}
+body.light-mode .navbar-logo { color: #1C1C1E !important; }
+body.light-mode .navbar-logo span { color: #6C6C70 !important; }
+body.light-mode .navbar-icons a,
+body.light-mode .navbar-icons button { color: #4A4A55 !important; }
+body.light-mode .navbar-icons a:hover,
+body.light-mode .navbar-icons button:hover { color: #1C1C1E !important; }
+
+/* Cart badge */
+body.light-mode .cart-count {
+  background: #1C1C1E !important;
+  color: #FFFFFF !important;
+}
+
+/* ── BACKGROUNDS ── */
+body.light-mode .quiz-bg,
+body.light-mode .shop-hero-bg,
+body.light-mode .profile-bg,
+body.light-mode .cart-bg {
+  background: linear-gradient(180deg, #EAEAF0 0%, #F2F2F7 100%) !important;
+}
+body.light-mode .quiz-bg::before,
+body.light-mode .shop-hero-bg::before {
+  background: repeating-linear-gradient(
+    90deg, transparent, transparent 120px,
+    rgba(0,0,0,0.02) 120px, rgba(0,0,0,0.02) 121px
+  ) !important;
+}
+
+/* ── HERO TEXT ── */
+body.light-mode .hero-title,
+body.light-mode .shop-hero h1,
+body.light-mode .results-title,
+body.light-mode .quiz-hero h1 { color: #1C1C1E !important; }
+body.light-mode .hero-title em,
+body.light-mode .shop-hero h1 em,
+body.light-mode .results-title em,
+body.light-mode .quiz-hero h1 em {
+  -webkit-text-stroke: 1px rgba(28,28,30,0.45) !important;
+}
+body.light-mode .hero-subtitle,
+body.light-mode .hero-eyebrow,
+body.light-mode .shop-eyebrow { color: #6C6C70 !important; }
+body.light-mode .hero-eyebrow::before,
+body.light-mode .hero-eyebrow::after,
+body.light-mode .shop-eyebrow::before,
+body.light-mode .shop-eyebrow::after { background: #6C6C70 !important; }
+
+/* ── CARDS ── */
+body.light-mode .shop-card,
+body.light-mode .product-card,
+body.light-mode .feat-card,
+body.light-mode .profile-card,
+body.light-mode .result-card,
+body.light-mode .cart-item,
+body.light-mode .match-banner,
+body.light-mode .dna-card,
+body.light-mode .start-card {
+  background: #FFFFFF !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08) !important;
+}
+body.light-mode .shop-card::before,
+body.light-mode .product-card::before,
+body.light-mode .cart-item::before,
+body.light-mode .profile-card::before,
+body.light-mode .result-card::before {
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.04), transparent) !important;
+}
+
+/* Card text */
+body.light-mode .card-name,
+body.light-mode .product-name,
+body.light-mode .item-name,
+body.light-mode .related-name { color: #1C1C1E !important; }
+body.light-mode .card-notes,
+body.light-mode .card-size,
+body.light-mode .item-category,
+body.light-mode .item-size { color: #6C6C70 !important; }
+body.light-mode .card-price,
+body.light-mode .item-price { color: #1C1C1E !important; }
+
+/* ── FILTER TABS / PILLS ── */
+body.light-mode .filter-tabs,
+body.light-mode .bottom-nav {
+  background: rgba(242,242,247,0.95) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .tab,
+body.light-mode .pill {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: #4A4A55 !important;
+}
+body.light-mode .tab.active,
+body.light-mode .pill.active {
+  background: #1C1C1E !important;
+  color: #FFFFFF !important;
+  border-color: transparent !important;
+}
+body.light-mode .tab:not(.active):hover,
+body.light-mode .pill:not(.active):hover {
+  background: rgba(0,0,0,0.07) !important;
+  color: #1C1C1E !important;
+}
+
+/* ── BOTTOM NAV ── */
+body.light-mode .nav-item { color: #6C6C70 !important; }
+body.light-mode .nav-item.active,
+body.light-mode .nav-item:hover { color: #1C1C1E !important; }
+body.light-mode .nav-dot { background: #1C1C1E !important; }
+
+/* ── SECTION TITLES ── */
+body.light-mode .section-title,
+body.light-mode .cat-title,
+body.light-mode .profile-name,
+body.light-mode .cart-hero-left h1,
+body.light-mode .product-name,
+body.light-mode .related-title { color: #1C1C1E !important; }
+body.light-mode .cat-count,
+body.light-mode .section-link,
+body.light-mode .profile-email,
+body.light-mode .profile-joined { color: #6C6C70 !important; }
+body.light-mode .cat-icon {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .cat-divider,
+body.light-mode .section-divider {
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent) !important;
+}
+
+/* ── BUTTONS ── */
+body.light-mode .btn-silver,
+body.light-mode .add-to-cart-btn,
+body.light-mode .save-field-btn,
+body.light-mode .checkout-btn {
+  background: #1C1C1E !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.20) !important;
+}
+body.light-mode .btn-outline,
+body.light-mode .btn-ghost-result {
+  border-color: rgba(0,0,0,0.15) !important;
+  color: #1C1C1E !important;
+}
+body.light-mode .add-btn {
+  background: #1C1C1E !important;
+  color: #FFFFFF !important;
+}
+body.light-mode .wish-btn,
+body.light-mode .wish-product-btn {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  color: #4A4A55 !important;
+}
+
+/* ── SEARCH ── */
+body.light-mode .search-input {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  color: #1C1C1E !important;
+}
+body.light-mode .search-input::placeholder { color: rgba(0,0,0,0.30) !important; }
+body.light-mode .search-input:focus {
+  background: rgba(0,0,0,0.07) !important;
+  border-color: rgba(0,0,0,0.25) !important;
+}
+body.light-mode .search-results {
+  background: rgba(242,242,247,0.98) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15) !important;
+}
+body.light-mode .search-result-item:hover { background: rgba(0,0,0,0.04) !important; }
+body.light-mode .search-result-name { color: #1C1C1E !important; }
+body.light-mode .search-result-cat { color: #6C6C70 !important; }
+body.light-mode .search-icon { color: #6C6C70 !important; }
+
+/* ── STATS ROW ── */
+body.light-mode .stats-row { background: rgba(0,0,0,0.06) !important; }
+body.light-mode .stat-item { background: #F2F2F7 !important; }
+body.light-mode .stat-number { color: #1C1C1E !important; }
+body.light-mode .stat-label { color: #6C6C70 !important; }
+
+/* ── PROFILE STATS ── */
+body.light-mode .profile-stat {
+  background: #FFFFFF !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .profile-stat-value { color: #1C1C1E !important; }
+body.light-mode .profile-stat-label { color: #6C6C70 !important; }
+body.light-mode .profile-avatar {
+  background: rgba(0,0,0,0.08) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #1C1C1E !important;
+}
+body.light-mode .profile-method {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  color: #6C6C70 !important;
+}
+
+/* ── PROFILE CARD BODY ── */
+body.light-mode .profile-card-header {
+  border-color: rgba(0,0,0,0.06) !important;
+}
+body.light-mode .profile-card-title { color: #1C1C1E !important; }
+body.light-mode .profile-card-title i { color: #6C6C70 !important; }
+body.light-mode .field-label { color: #6C6C70 !important; }
+body.light-mode .field-input {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  color: #1C1C1E !important;
+}
+body.light-mode .field-input:focus {
+  border-color: rgba(0,0,0,0.30) !important;
+  background: rgba(0,0,0,0.06) !important;
+}
+body.light-mode .order-item { border-color: rgba(0,0,0,0.05) !important; }
+body.light-mode .order-item-id { color: #1C1C1E !important; }
+body.light-mode .order-item-date { color: #6C6C70 !important; }
+body.light-mode .order-item-total { color: #1C1C1E !important; }
+
+/* ── CART SPECIFIC ── */
+body.light-mode .promo-input {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  color: #1C1C1E !important;
+}
+body.light-mode .promo-btn {
+  background: rgba(0,0,0,0.06) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #1C1C1E !important;
+}
+body.light-mode .order-summary {
+  background: rgba(242,242,247,0.97) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .summary-label { color: #6C6C70 !important; }
+body.light-mode .summary-value,
+body.light-mode .summary-total-label,
+body.light-mode .summary-total-value { color: #1C1C1E !important; }
+body.light-mode .summary-divider { background: rgba(0,0,0,0.08) !important; }
+body.light-mode .qty-btn {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  color: #1C1C1E !important;
+}
+body.light-mode .qty-num { color: #1C1C1E !important; }
+body.light-mode .cart-hero-left h1 { color: #1C1C1E !important; }
+body.light-mode .cart-hero-eyebrow { color: #6C6C70 !important; }
+body.light-mode .cart-item-count {
+  background: rgba(0,0,0,0.06) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #1C1C1E !important;
+}
+body.light-mode .continue-link { color: #6C6C70 !important; }
+body.light-mode .cart-toast {
+  background: rgba(242,242,247,0.97) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #1C1C1E !important;
+}
+
+/* ── QUIZ SPECIFIC ── */
+body.light-mode .quiz-hero h1,
+body.light-mode .results-title { color: #1C1C1E !important; }
+body.light-mode .quiz-hero p,
+body.light-mode .results-sub,
+body.light-mode .quiz-hero-icon { opacity: 0.85; }
+body.light-mode .progress-label { color: #6C6C70 !important; }
+body.light-mode .progress-count { color: #1C1C1E !important; }
+body.light-mode .progress-bar-track { background: rgba(0,0,0,0.08) !important; }
+body.light-mode .progress-bar-fill {
+  background: linear-gradient(90deg, rgba(28,28,30,0.5), #1C1C1E) !important;
+}
+body.light-mode .question-number { color: #6C6C70 !important; }
+body.light-mode .question-text { color: #1C1C1E !important; }
+body.light-mode .question-text em {
+  -webkit-text-stroke: 1px rgba(28,28,30,0.45) !important;
+}
+body.light-mode .option-card {
+  background: rgba(0,0,0,0.03) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .option-card:hover {
+  background: rgba(0,0,0,0.06) !important;
+  border-color: rgba(0,0,0,0.15) !important;
+}
+body.light-mode .option-card.selected {
+  background: rgba(28,28,30,0.08) !important;
+  border-color: rgba(28,28,30,0.40) !important;
+}
+body.light-mode .option-label { color: #1C1C1E !important; }
+body.light-mode .option-sub { color: #6C6C70 !important; }
+body.light-mode .btn-back {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  color: #6C6C70 !important;
+}
+body.light-mode .btn-next {
+  background: rgba(0,0,0,0.06) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  color: rgba(0,0,0,0.30) !important;
+}
+body.light-mode .btn-next.enabled {
+  background: #1C1C1E !important;
+  color: #FFFFFF !important;
+  border-color: transparent !important;
+}
+body.light-mode .start-feat-icon {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+}
+body.light-mode .start-feat-label,
+body.light-mode .start-note { color: #6C6C70 !important; }
+body.light-mode .btn-silver-result {
+  background: #1C1C1E !important;
+  color: #FFFFFF !important;
+}
+body.light-mode .btn-ghost-result {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #1C1C1E !important;
+}
+body.light-mode .match-category-label { color: #6C6C70 !important; }
+body.light-mode .match-category-name { color: #1C1C1E !important; }
+body.light-mode .match-category-desc { color: #6C6C70 !important; }
+body.light-mode .results-label { color: #6C6C70 !important; }
+body.light-mode .result-name { color: #1C1C1E !important; }
+body.light-mode .result-notes { color: #6C6C70 !important; }
+body.light-mode .result-price { color: #1C1C1E !important; }
+body.light-mode .rank-1 { background: #1C1C1E !important; color: #FFFFFF !important; }
+body.light-mode .rank-2 {
+  background: rgba(0,0,0,0.08) !important;
+  border-color: rgba(0,0,0,0.20) !important;
+  color: #1C1C1E !important;
+}
+body.light-mode .rank-3 {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #6C6C70 !important;
+}
+body.light-mode .dna-title { color: #6C6C70 !important; }
+
+/* ── QUIZ BANNER ── */
+body.light-mode .quiz-banner {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .quiz-banner-title { color: #1C1C1E !important; }
+body.light-mode .quiz-banner-sub { color: #6C6C70 !important; }
+
+/* ── FEATURED CARDS ── */
+body.light-mode .feat-card {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.20) !important;
+}
+body.light-mode .feat-card.active-card {
+  box-shadow: 0 20px 60px rgba(0,0,0,0.30) !important;
+}
+body.light-mode .feat-dot { background: rgba(0,0,0,0.20) !important; }
+body.light-mode .feat-dot.active { background: #1C1C1E !important; }
+
+/* ── TOAST ── */
+body.light-mode .profile-toast {
+  background: rgba(242,242,247,0.97) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #1C1C1E !important;
+}
+
+/* ── HERO BOTTLE GLOW ── */
+body.light-mode .bottle-glow {
+  background: radial-gradient(circle,
+    rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.02) 40%, transparent 70%
+  ) !important;
+}
+body.light-mode .bottle-img {
+  filter:
+    drop-shadow(0 0 40px rgba(0,0,0,0.15))
+    drop-shadow(0 30px 60px rgba(0,0,0,0.20)) !important;
+}
+
+/* ── THEME TOGGLE BUTTON ── */
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.theme-toggle:hover {
+  transform: rotate(20deg) scale(1.15);
+}
+.theme-toggle .icon-dark { display: block; }
+.theme-toggle .icon-light { display: none; }
+body.light-mode .theme-toggle .icon-dark { display: none; }
+body.light-mode .theme-toggle .icon-light { display: block; }

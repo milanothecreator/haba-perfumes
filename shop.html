@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Haba Perfumes — Premium Shop</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/theme.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -103,6 +104,10 @@
   <nav class="navbar">
     <div class="navbar-logo">HABA <span>perfumes</span></div>
     <div class="navbar-icons">
+      <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+  <span class="icon-dark">🌙</span>
+  <span class="icon-light">☀️</span>
+</button>
       <button aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
       <a href="profile.html" class="nav-account" style="color:var(--silver);font-size:1rem;"><i class="fa-regular fa-circle-user"></i></a>
       <a href="cart.html" style="position:relative;color:var(--silver);"><i class="fa-solid fa-bag-shopping"></i><span class="cart-count" id="cartCount"></span></a>
