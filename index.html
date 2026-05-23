@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="css/theme.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="js/theme.js" defer></script>
   <style>
     /* ══════════════════════════════
        SILVER & WHITE PREMIUM THEME
@@ -308,7 +311,7 @@
       letter-spacing: 0.08em; margin-top: 2px;
     }
 
-    /* ── CATEGORY PILLS — Apple glass style ── */
+    /* ── CATEGORY PILLS ── */
     .category-section {
       padding: 0 24px 28px;
     }
@@ -352,25 +355,6 @@
     .pill-emoji { font-size: 0.82rem; }
 
     /* ── FEATURED ── */
-    .featured-section { padding: 0 24px 32px; }
-    .section-header {
-      display: flex; align-items: baseline;
-      justify-content: space-between; margin-bottom: 20px;
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 300; color: var(--white-pure);
-      letter-spacing: -0.01em;
-    }
-    .section-link {
-      font-size: 0.65rem; font-weight: 500;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--silver-dim); text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    .section-link:hover { color: var(--white-pure); }
-
-    /* ── FEATURED — Premium Editorial Style ── */
     .featured-section { padding: 0 0 32px; }
     .featured-header {
       display: flex; align-items: baseline;
@@ -404,7 +388,7 @@
     .featured-scroll::-webkit-scrollbar { display: none; }
     .featured-scroll:active { cursor: grabbing; }
 
-    /* Featured card — tall editorial */
+    /* Featured card */
     .feat-card {
       flex-shrink: 0;
       width: 200px;
@@ -418,7 +402,6 @@
                   box-shadow 0.4s ease;
       box-shadow: 0 8px 32px rgba(0,0,0,0.40);
     }
-    /* Center card is bigger */
     .feat-card.active-card {
       width: 230px;
       height: 310px;
@@ -439,7 +422,6 @@
       transform: scale(1.06);
       filter: brightness(0.90) saturate(1.0);
     }
-    /* Dark gradient overlay */
     .feat-card-overlay {
       position: absolute; inset: 0;
       background: linear-gradient(180deg,
@@ -448,19 +430,6 @@
         rgba(0,0,0,0.75) 100%);
       z-index: 1;
     }
-    /* Category tag */
-    .feat-card-tag {
-      position: absolute; top: 14px; left: 14px; z-index: 2;
-      padding: 4px 12px;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.20);
-      border-radius: 999px;
-      font-size: 0.58rem; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--white-pure);
-    }
-    /* Label at bottom */
     .feat-card-label {
       position: absolute; bottom: 18px; left: 16px; right: 16px; z-index: 2;
       font-family: 'Cormorant Garamond', serif;
@@ -470,7 +439,7 @@
       text-shadow: 0 2px 12px rgba(0,0,0,0.60);
     }
 
-    /* Scroll indicator dots */
+    /* Dots */
     .feat-dots {
       display: flex; justify-content: center; gap: 6px;
       margin-top: 16px;
@@ -492,7 +461,7 @@
       color: var(--silver-dim);
       font-size: 0.78rem;
     }
-    }
+
     .product-brand {
       font-size: 0.58rem; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--silver-dim);
@@ -524,7 +493,7 @@
       text-transform: uppercase; color: var(--silver-dim);
     }
 
-    /* ── QUIZ BANNER — premium with image overlay ── */
+    /* ── QUIZ BANNER ── */
     .quiz-banner {
       margin: 0 24px 32px;
       border-radius: 28px;
@@ -535,7 +504,6 @@
       align-items: center; justify-content: center;
       padding: 40px 28px;
     }
-    /* Dark image background */
     .quiz-banner-bg {
       position: absolute; inset: 0; z-index: 0;
       background:
@@ -546,7 +514,6 @@
       border-radius: 28px;
       filter: saturate(0.4) brightness(0.7);
     }
-    /* Glass overlay */
     .quiz-banner-glass {
       position: absolute; inset: 0; z-index: 1;
       background: rgba(14,14,18,0.45);
@@ -644,6 +611,10 @@
   <nav class="navbar" id="navbar">
     <div class="navbar-logo">HABA <span>perfumes</span></div>
     <div class="navbar-icons">
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+        <span class="icon-dark">🌙</span>
+        <span class="icon-light">☀️</span>
+      </button>
       <a href="profile.html" class="nav-account" style="color:var(--silver);font-size:1rem;">
         <i class="fa-regular fa-circle-user"></i>
       </a>
@@ -736,20 +707,18 @@
 
   <div class="section-divider"></div>
 
-  <!-- ── FEATURED — Premium Editorial ── -->
+  <!-- ── FEATURED ── -->
   <section class="featured-section" style="padding-top:28px;">
     <div class="featured-header">
       <h2 class="section-title">Featured</h2>
       <a href="shop.html" class="section-link">See All →</a>
     </div>
-    <!-- Horizontal scroll -->
     <div class="featured-scroll" id="featuredScroll">
       <!-- Skeleton cards while loading -->
       <div class="feat-card" style="background:rgba(200,200,208,0.06);animation:pulse 1.5s ease-in-out infinite;"></div>
       <div class="feat-card active-card" style="background:rgba(200,200,208,0.04);animation:pulse 1.5s 0.2s ease-in-out infinite;"></div>
       <div class="feat-card" style="background:rgba(200,200,208,0.06);animation:pulse 1.5s 0.4s ease-in-out infinite;"></div>
     </div>
-    <!-- Dots -->
     <div class="feat-dots" id="featDots"></div>
   </section>
 
@@ -794,7 +763,7 @@
       <span class="nav-label nav-username">Account</span><div class="nav-dot"></div>
     </a>
   </nav>
-<script src="js/theme.js"></script>
+
   <script src="js/main.js"></script>
   <script type="module">
     import { db, collection, onSnapshot, auth, onAuthStateChanged }
@@ -802,9 +771,11 @@
 
     var showAuthPopup;
     try {
-      var m = await import('./js/auth.js');
-      showAuthPopup = m.showAuthPopup;
-    } catch(e) {
+      import('./js/auth.js').then(function(m) {
+        if (m && m.showAuthPopup) showAuthPopup = m.showAuthPopup;
+      }).catch(function() {});
+    }
+    catch(e) {
       showAuthPopup = function() { window.location.href = 'login.html'; };
     }
 
@@ -848,7 +819,7 @@
       if (countEl) countEl.textContent = allProducts.length || '0';
     });
 
-    // ── Featured — loads from separate 'featured' collection ──
+    // ── Featured ──
     onSnapshot(collection(db, 'featured'), function(snapshot) {
       var featuredItems = [];
       snapshot.forEach(function(d) {
@@ -886,7 +857,6 @@
         '</div>';
       }).join('');
 
-      // Build dots
       if (dots) {
         dots.innerHTML = items.map(function(_, i) {
           var isCenter = i === Math.floor(items.length / 2);
@@ -894,7 +864,6 @@
         }).join('');
       }
 
-      // Apple-like scroll with dot tracking
       scroll.addEventListener('scroll', function() {
         var cards = scroll.querySelectorAll('.feat-card');
         var dotEls = dots ? dots.querySelectorAll('.feat-dot') : [];
@@ -912,7 +881,6 @@
         });
       }, { passive: true });
 
-      // Drag to scroll on desktop
       var isDown = false, startX, scrollLeft;
       scroll.addEventListener('mousedown', function(e) {
         isDown = true; startX = e.pageX - scroll.offsetLeft;
@@ -979,7 +947,8 @@
         btn.addEventListener('click', function(e) {
           if (!auth.currentUser) {
             e.preventDefault();
-            showAuthPopup();
+            if (showAuthPopup) showAuthPopup();
+            else window.location.href = 'login.html';
           }
         });
       }

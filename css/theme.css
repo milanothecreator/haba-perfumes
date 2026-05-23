@@ -1,0 +1,190 @@
+/* ══════════════════════════════════════════
+   theme.css — Haba Perfumes
+   Light / Dark mode + toggle button styles
+══════════════════════════════════════════ */
+
+/* ── TOGGLE BUTTON ── */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--silver);
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+
+/* Default (dark mode): show moon, hide sun */
+.theme-toggle .icon-light { display: none; }
+.theme-toggle .icon-dark  { display: inline; }
+
+/* Light mode: show sun, hide moon */
+.theme-toggle.light-mode .icon-light { display: inline; }
+.theme-toggle.light-mode .icon-dark  { display: none; }
+
+
+/* ══════════════════════════════════════════
+   LIGHT MODE OVERRIDES
+   Applied when <html data-theme="light">
+══════════════════════════════════════════ */
+[data-theme="light"] {
+  --charcoal:      #F2F2F5;
+  --charcoal-mid:  #E5E5EA;
+  --charcoal-card: #FFFFFF;
+  --silver-light:  #1A1A22;
+  --silver:        #3A3A48;
+  --silver-dim:    #6A6A78;
+  --white-pure:    #0E0E12;
+}
+
+[data-theme="light"] body {
+  background: #F2F2F5;
+  color: #1A1A22;
+}
+
+/* Navbar */
+[data-theme="light"] .navbar {
+  background: rgba(242,242,245,0.92);
+  border-bottom-color: rgba(0,0,0,0.08);
+}
+[data-theme="light"] .navbar.scrolled {
+  background: rgba(242,242,245,0.98);
+}
+[data-theme="light"] .navbar-logo {
+  color: #0E0E12;
+}
+[data-theme="light"] .navbar-icons a,
+[data-theme="light"] .navbar-icons button {
+  color: #3A3A48;
+}
+
+/* Bottom nav */
+[data-theme="light"] .bottom-nav {
+  background: rgba(242,242,245,0.95);
+  border-top-color: rgba(0,0,0,0.08);
+}
+[data-theme="light"] .nav-item {
+  color: #6A6A78;
+}
+[data-theme="light"] .nav-item:hover,
+[data-theme="light"] .nav-item.active {
+  color: #0E0E12;
+}
+
+/* Hero background */
+[data-theme="light"] .hero-bg {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 15%,
+      rgba(100,100,120,0.07) 0%, transparent 65%),
+    linear-gradient(180deg, #EAEAEE 0%, #F2F2F5 50%, #EBEBEF 100%);
+}
+
+/* Cards */
+[data-theme="light"] .shop-card,
+[data-theme="light"] .cart-item,
+[data-theme="light"] .profile-card,
+[data-theme="light"] .profile-stat {
+  background: #FFFFFF;
+  border-color: rgba(0,0,0,0.08);
+}
+
+/* Filter tabs */
+[data-theme="light"] .filter-tabs {
+  background: rgba(242,242,245,0.95);
+  border-bottom-color: rgba(0,0,0,0.08);
+}
+[data-theme="light"] .tab {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.08);
+  color: rgba(0,0,0,0.45);
+}
+[data-theme="light"] .tab.active {
+  background: #0E0E12;
+  color: #FFFFFF;
+}
+
+/* Search */
+[data-theme="light"] .search-input {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.10);
+  color: #1A1A22;
+}
+[data-theme="light"] .search-input::placeholder {
+  color: rgba(0,0,0,0.28);
+}
+[data-theme="light"] .search-results {
+  background: rgba(255,255,255,0.98);
+  border-color: rgba(0,0,0,0.10);
+}
+
+/* Pills */
+[data-theme="light"] .pill {
+  background: rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.10);
+  color: rgba(0,0,0,0.55);
+}
+[data-theme="light"] .pill.active {
+  background: #0E0E12;
+  color: #FFFFFF;
+}
+
+/* Stats row */
+[data-theme="light"] .stats-row {
+  background: rgba(0,0,0,0.06);
+}
+[data-theme="light"] .stat-item {
+  background: #F2F2F5;
+}
+[data-theme="light"] .stat-number {
+  color: #0E0E12;
+}
+
+/* Section divider */
+[data-theme="light"] .section-divider {
+  background: linear-gradient(90deg,
+    transparent, rgba(0,0,0,0.08), transparent);
+}
+
+/* Text colours */
+[data-theme="light"] .hero-title,
+[data-theme="light"] .section-title,
+[data-theme="light"] .cat-title,
+[data-theme="light"] .card-name,
+[data-theme="light"] .item-name,
+[data-theme="light"] .profile-name,
+[data-theme="light"] .empty-title {
+  color: #0E0E12;
+}
+
+[data-theme="light"] .hero-subtitle,
+[data-theme="light"] .card-notes,
+[data-theme="light"] .item-category,
+[data-theme="light"] .profile-email,
+[data-theme="light"] .profile-joined,
+[data-theme="light"] .stat-label {
+  color: #6A6A78;
+}
+
+/* Cart count badge */
+[data-theme="light"] .cart-count {
+  background: #0E0E12;
+  color: #FFFFFF;
+}
+
+/* Form inputs on profile/login */
+[data-theme="light"] .field-input,
+[data-theme="light"] .form-input,
+[data-theme="light"] .login-input {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.10);
+  color: #1A1A22;
+}
+
+/* Quiz banner */
+[data-theme="light"] .quiz-banner-glass {
+  background: rgba(242,242,245,0.55);
+}

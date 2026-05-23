@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="css/theme.css" />
-  <style>
+   <script src="js/theme.js"></script>
+<link rel="stylesheet" href="css/theme.css" />
+   <style>
     /* ══════════════════════════════
        SILVER THEME — QUIZ PAGE
     ══════════════════════════════ */
@@ -438,9 +440,11 @@
     // Auth popup fallback
     var showAuthPopup;
     try {
-      var m = await import('./js/auth.js');
-      showAuthPopup = m.showAuthPopup;
-    } catch(e) {
+     import('./js/auth.js').then(function(m) {
+  if (m && m.showAuthPopup) showAuthPopup = m.showAuthPopup;
+}).catch(function() {});
+    } 
+    catch(e) {
       showAuthPopup = function() { window.location.href = 'login.html'; };
     }
 

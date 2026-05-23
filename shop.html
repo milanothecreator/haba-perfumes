@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="css/theme.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="js/theme.js"></script>
+<link rel="stylesheet" href="css/theme.css" />
   <style>
     :root {
       --silver: #C8C8D0; --silver-light: #E8E8F0;
@@ -161,9 +163,11 @@
     // Auth popup — safe import
     var showAuthPopup = function() { window.location.href = 'login.html'; };
     try {
-      var authMod = await import('./js/auth.js');
-      if (authMod && authMod.showAuthPopup) showAuthPopup = authMod.showAuthPopup;
-    } catch(e) { /* use fallback */ }
+ import('./js/auth.js').then(function(m) {
+  if (m && m.showAuthPopup) showAuthPopup = m.showAuthPopup;
+}).catch(function() {});
+    } 
+    catch(e) { /* use fallback */ }
 
     var shopBody    = document.getElementById('shopBody');
     var cartCountEl = document.getElementById('cartCount');
