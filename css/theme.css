@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════
    theme.css — Haba Perfumes
-   Light / Dark mode + toggle button styles
+   Premium Light / Dark toggle
 ══════════════════════════════════════════ */
 
 /* ── TOGGLE BUTTON ── */
@@ -16,319 +16,478 @@
   transition: opacity 0.2s ease;
   line-height: 1;
 }
-
-/* Default dark mode: show moon, hide sun */
 .theme-toggle .icon-light { display: none; }
 .theme-toggle .icon-dark  { display: inline; }
-
-/* Light mode: show sun, hide moon */
 .theme-toggle.light-mode .icon-light { display: inline; }
 .theme-toggle.light-mode .icon-dark  { display: none; }
 
+/* ══════════════════════════════════════════
+   LIGHT MODE — CSS Variable Override
+   This flips ALL elements that use var() automatically
+══════════════════════════════════════════ */
+[data-theme="light"] {
+  --silver:        #2A2A35;
+  --silver-light:  #1A1A20;
+  --silver-dim:    #6A6A7A;
+  --charcoal:      #F5F3EF;
+  --charcoal-mid:  #EAE7E1;
+  --charcoal-card: #FFFFFF;
+  --white-pure:    #1A1A20;
+}
+
+/* Fix elements that use var(--white-pure) as BACKGROUND not text */
+[data-theme="light"] .start-btn,
+[data-theme="light"] .btn-next.enabled,
+[data-theme="light"] .btn-silver-result,
+[data-theme="light"] .rank-1 {
+  background: #1A1A20 !important;
+  color: #FFFFFF !important;
+}
+
+/* Fix progress bar */
+[data-theme="light"] .progress-bar-track {
+  background: rgba(0,0,0,0.08) !important;
+}
+[data-theme="light"] .progress-bar-fill {
+  background: linear-gradient(90deg, rgba(0,0,0,0.30), rgba(0,0,0,0.70)) !important;
+}
+
+/* Fix option cards */
+[data-theme="light"] .option-card {
+  background: rgba(255,255,255,0.85) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+}
+[data-theme="light"] .option-card:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(0,0,0,0.15) !important;
+  transform: translateY(-2px) !important;
+}
+[data-theme="light"] .option-card.selected {
+  background: #1A1A20 !important;
+  border-color: #1A1A20 !important;
+  color: #FFFFFF !important;
+}
+[data-theme="light"] .option-label { color: #1A1A20 !important; }
+[data-theme="light"] .option-sub { color: #6A6A7A !important; }
+
+/* Fix start card glass */
+[data-theme="light"] .start-card {
+  background: rgba(255,255,255,0.80) !important;
+  border-color: rgba(0,0,0,0.07) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06) !important;
+}
+[data-theme="light"] .start-feat-icon {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+/* Fix match banner */
+[data-theme="light"] .match-banner {
+  background: rgba(255,255,255,0.85) !important;
+  border-color: rgba(0,0,0,0.07) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+}
+
+/* Fix result cards */
+[data-theme="light"] .result-card {
+  background: #FFFFFF !important;
+  border-color: rgba(0,0,0,0.07) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+}
+
+/* Fix back button */
+[data-theme="light"] .btn-back {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: #1A1A20 !important;
+}
+[data-theme="light"] .btn-next:not(.enabled) {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: rgba(0,0,0,0.28) !important;
+}
+
+/* Fix ghost button */
+[data-theme="light"] .btn-ghost-result {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+  color: #1A1A20 !important;
+}
+
+/* Fix DNA card */
+[data-theme="light"] .dna-card {
+  background: rgba(0,0,0,0.03) !important;
+  border-color: rgba(0,0,0,0.07) !important;
+}
+
+/* Fix quiz bg */
+[data-theme="light"] .quiz-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 20%,
+      rgba(200,185,165,0.10) 0%, transparent 60%),
+    linear-gradient(180deg, #EAE7E1 0%, #F5F3EF 100%) !important;
+}
+[data-theme="light"] .quiz-bg::before {
+  background: repeating-linear-gradient(
+    90deg, transparent, transparent 120px,
+    rgba(0,0,0,0.012) 120px, rgba(0,0,0,0.012) 121px
+  ) !important;
+}
+
+
+
 
 /* ══════════════════════════════════════════
-   LIGHT MODE — clean warm white
+   LIGHT MODE — Premium Warm White
 ══════════════════════════════════════════ */
+
+/* Base */
 [data-theme="light"] body {
-  background: #F7F6F3;
-  color: #1C1C22;
+  background: #F5F3EF;
+  color: #1A1A20;
 }
 
 /* ── Navbar ── */
 [data-theme="light"] .navbar {
-  background: rgba(247,246,243,0.94) !important;
-  border-bottom-color: rgba(0,0,0,0.07) !important;
+  background: rgba(245,243,239,0.96) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.06) !important;
 }
 [data-theme="light"] .navbar.scrolled {
-  background: rgba(247,246,243,0.99) !important;
+  background: rgba(245,243,239,1.0) !important;
 }
-[data-theme="light"] .navbar-logo {
-  color: #1C1C22 !important;
-}
-[data-theme="light"] .navbar-logo span {
-  color: #7A7A88 !important;
-}
+[data-theme="light"] .navbar-logo { color: #1A1A20 !important; }
+[data-theme="light"] .navbar-logo span { color: #888898 !important; }
 [data-theme="light"] .navbar-icons a,
-[data-theme="light"] .navbar-icons button {
-  color: #3A3A48 !important;
-}
+[data-theme="light"] .navbar-icons button { color: #2A2A32 !important; }
 
 /* ── Bottom nav ── */
 [data-theme="light"] .bottom-nav {
-  background: rgba(247,246,243,0.96) !important;
-  border-top-color: rgba(0,0,0,0.07) !important;
+  background: rgba(245,243,239,0.97) !important;
+  border-top: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05) !important;
 }
-[data-theme="light"] .nav-item {
-  color: #7A7A88 !important;
-}
+[data-theme="light"] .nav-item { color: #999 !important; }
 [data-theme="light"] .nav-item.active,
-[data-theme="light"] .nav-item:hover {
-  color: #1C1C22 !important;
-}
-[data-theme="light"] .nav-dot {
-  background: #1C1C22 !important;
-}
+[data-theme="light"] .nav-item:hover { color: #1A1A20 !important; }
+[data-theme="light"] .nav-dot { background: #1A1A20 !important; }
+[data-theme="light"] .nav-label { color: inherit !important; }
 
-/* ── Hero section ── */
+/* ── Hero ── */
 [data-theme="light"] .hero-bg {
   background:
-    radial-gradient(ellipse 90% 70% at 50% 15%,
-      rgba(180,170,160,0.12) 0%, transparent 65%),
-    linear-gradient(180deg, #EDECEA 0%, #F7F6F3 60%, #F0EEE9 100%) !important;
+    radial-gradient(ellipse 100% 60% at 50% 0%,
+      rgba(200,185,165,0.18) 0%, transparent 60%),
+    linear-gradient(180deg, #EAE7E1 0%, #F5F3EF 55%, #EEECEA 100%) !important;
 }
 [data-theme="light"] .hero-bg::before {
   background: repeating-linear-gradient(
     90deg, transparent, transparent 120px,
-    rgba(0,0,0,0.015) 120px, rgba(0,0,0,0.015) 121px
+    rgba(0,0,0,0.012) 120px, rgba(0,0,0,0.012) 121px
   ) !important;
 }
-[data-theme="light"] .hero-title {
-  color: #1C1C22 !important;
-}
+[data-theme="light"] .hero-title { color: #1A1A20 !important; }
 [data-theme="light"] .hero-title em {
-  -webkit-text-stroke: 1px rgba(30,30,40,0.40) !important;
+  color: transparent !important;
+  -webkit-text-stroke: 1.5px rgba(20,20,30,0.35) !important;
 }
-[data-theme="light"] .hero-subtitle {
-  color: #7A7A88 !important;
-}
-[data-theme="light"] .hero-eyebrow {
-  color: #7A7A88 !important;
-}
-[data-theme="light"] .hero-eyebrow::before {
-  background: #7A7A88 !important;
+[data-theme="light"] .hero-subtitle { color: #888898 !important; }
+[data-theme="light"] .hero-eyebrow { color: #888898 !important; }
+[data-theme="light"] .hero-eyebrow::before { background: #888898 !important; }
+[data-theme="light"] .btn-silver {
+  background: #1A1A20 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.18) !important;
 }
 [data-theme="light"] .btn-outline {
-  border-color: rgba(30,30,40,0.25) !important;
-  color: #3A3A48 !important;
+  border-color: rgba(20,20,30,0.20) !important;
+  color: #2A2A32 !important;
 }
 
 /* ── Section divider ── */
 [data-theme="light"] .section-divider {
   background: linear-gradient(90deg,
-    transparent, rgba(0,0,0,0.08), transparent) !important;
+    transparent, rgba(0,0,0,0.07), transparent) !important;
 }
 
 /* ── Stats row ── */
 [data-theme="light"] .stats-row {
-  background: rgba(0,0,0,0.05) !important;
+  background: rgba(0,0,0,0.04) !important;
 }
 [data-theme="light"] .stat-item {
-  background: #F7F6F3 !important;
+  background: #F5F3EF !important;
 }
-[data-theme="light"] .stat-number {
-  color: #1C1C22 !important;
-}
-[data-theme="light"] .stat-label {
-  color: #7A7A88 !important;
-}
+[data-theme="light"] .stat-number { color: #1A1A20 !important; }
+[data-theme="light"] .stat-label { color: #999 !important; }
 
 /* ── Search ── */
-[data-theme="light"] .search-section {
-  background: #F7F6F3 !important;
-}
+[data-theme="light"] .search-section { background: #F5F3EF !important; }
 [data-theme="light"] .search-input {
-  background: rgba(0,0,0,0.04) !important;
-  border-color: rgba(0,0,0,0.10) !important;
-  color: #1C1C22 !important;
+  background: rgba(255,255,255,0.85) !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+  color: #1A1A20 !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
 }
-[data-theme="light"] .search-input::placeholder {
-  color: rgba(0,0,0,0.28) !important;
-}
+[data-theme="light"] .search-input::placeholder { color: rgba(0,0,0,0.30) !important; }
 [data-theme="light"] .search-input:focus {
-  border-color: rgba(0,0,0,0.25) !important;
-  background: rgba(0,0,0,0.06) !important;
+  border-color: rgba(0,0,0,0.20) !important;
+  background: rgba(255,255,255,1.0) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
 }
-[data-theme="light"] .search-icon {
-  color: #7A7A88 !important;
-}
+[data-theme="light"] .search-icon { color: #999 !important; }
 [data-theme="light"] .search-results {
-  background: rgba(250,249,247,0.99) !important;
-  border-color: rgba(0,0,0,0.08) !important;
+  background: rgba(252,251,249,0.99) !important;
+  border-color: rgba(0,0,0,0.07) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.10) !important;
 }
-[data-theme="light"] .search-result-name {
-  color: #1C1C22 !important;
-}
-[data-theme="light"] .search-result-cat {
-  color: #7A7A88 !important;
-}
+[data-theme="light"] .search-result-name { color: #1A1A20 !important; }
+[data-theme="light"] .search-result-cat { color: #999 !important; }
 
 /* ── Pills ── */
 [data-theme="light"] .pill {
-  background: rgba(0,0,0,0.04) !important;
-  border-color: rgba(0,0,0,0.09) !important;
+  background: rgba(255,255,255,0.80) !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
   color: rgba(0,0,0,0.50) !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05) !important;
 }
 [data-theme="light"] .pill:hover {
-  background: rgba(0,0,0,0.07) !important;
+  background: rgba(255,255,255,1.0) !important;
   color: rgba(0,0,0,0.75) !important;
 }
 [data-theme="light"] .pill.active {
-  background: #1C1C22 !important;
+  background: #1A1A20 !important;
   color: #FFFFFF !important;
   border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18) !important;
 }
 
 /* ── Featured section ── */
-[data-theme="light"] .section-title {
-  color: #1C1C22 !important;
+[data-theme="light"] .section-title { color: #1A1A20 !important; }
+[data-theme="light"] .section-link { color: #999 !important; }
+
+/* Featured cards — keep images dark but add premium framing */
+[data-theme="light"] .feat-card {
+  box-shadow:
+    0 8px 30px rgba(0,0,0,0.14),
+    0 1px 0 rgba(255,255,255,0.8) inset !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
 }
-[data-theme="light"] .section-link {
-  color: #7A7A88 !important;
+[data-theme="light"] .feat-card.active-card {
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.20),
+    0 1px 0 rgba(255,255,255,0.8) inset !important;
+}
+[data-theme="light"] .feat-card img {
+  filter: brightness(0.88) saturate(0.90) !important;
+}
+[data-theme="light"] .feat-dot {
+  background: rgba(0,0,0,0.18) !important;
+}
+[data-theme="light"] .feat-dot.active {
+  background: #1A1A20 !important;
+}
+
+/* ── QUIZ BANNER — same dark amber in both modes ── */
+/* Light mode: keep the dark amber gradient, it looks premium */
+[data-theme="light"] .quiz-banner {
+  background:
+    radial-gradient(ellipse 80% 50% at 30% 40%,
+      rgba(210,160,80,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 70% 60%,
+      rgba(180,120,60,0.10) 0%, transparent 55%),
+    linear-gradient(145deg,
+      #2C1810 0%, #4A2818 28%, #3D2014 52%,
+      #5C3420 72%, #2A1A0E 100%) !important;
+  border-color: rgba(210,160,80,0.22) !important;
+}
+[data-theme="light"] .quiz-banner-title {
+  color: #F5EDD8 !important;
+}
+[data-theme="light"] .quiz-banner-sub {
+  color: rgba(245,237,216,0.60) !important;
+}
+[data-theme="light"] .quiz-banner .btn-silver {
+  background: rgba(245,237,216,0.95) !important;
+  color: #2C1810 !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.30) !important;
 }
 
 /* ── Shop page ── */
 [data-theme="light"] .shop-hero-bg {
   background:
     radial-gradient(ellipse 100% 80% at 50% 0%,
-      rgba(160,150,140,0.10) 0%, transparent 65%),
-    linear-gradient(180deg, #EDECEA 0%, #F7F6F3 100%) !important;
+      rgba(200,185,165,0.14) 0%, transparent 65%),
+    linear-gradient(180deg, #EAE7E1 0%, #F5F3EF 100%) !important;
 }
-[data-theme="light"] .shop-hero h1 {
-  color: #1C1C22 !important;
-}
+[data-theme="light"] .shop-hero h1 { color: #1A1A20 !important; }
 [data-theme="light"] .shop-hero h1 em {
-  -webkit-text-stroke: 1px rgba(30,30,40,0.40) !important;
+  -webkit-text-stroke: 1.5px rgba(20,20,30,0.35) !important;
 }
-[data-theme="light"] .shop-hero p {
-  color: #7A7A88 !important;
-}
-[data-theme="light"] .shop-eyebrow {
-  color: #7A7A88 !important;
-}
+[data-theme="light"] .shop-hero p { color: #888898 !important; }
+[data-theme="light"] .shop-eyebrow { color: #888898 !important; }
 
 /* Filter tabs */
 [data-theme="light"] .filter-tabs {
-  background: rgba(247,246,243,0.96) !important;
-  border-bottom-color: rgba(0,0,0,0.07) !important;
+  background: rgba(245,243,239,0.97) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04) !important;
 }
 [data-theme="light"] .tab {
-  background: rgba(0,0,0,0.04) !important;
-  border-color: rgba(0,0,0,0.08) !important;
+  background: rgba(255,255,255,0.75) !important;
+  border: 1px solid rgba(0,0,0,0.07) !important;
   color: rgba(0,0,0,0.45) !important;
 }
 [data-theme="light"] .tab.active {
-  background: #1C1C22 !important;
+  background: #1A1A20 !important;
   color: #FFFFFF !important;
   border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18) !important;
+}
+[data-theme="light"] .tab:not(.active):hover {
+  background: rgba(255,255,255,0.95) !important;
+  color: rgba(0,0,0,0.70) !important;
 }
 
 /* Shop cards */
 [data-theme="light"] .shop-card {
   background: #FFFFFF !important;
-  border-color: rgba(0,0,0,0.07) !important;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.06),
+    0 1px 0 rgba(255,255,255,1.0) inset !important;
 }
-[data-theme="light"] .card-name {
-  color: #1C1C22 !important;
+[data-theme="light"] .shop-card:hover {
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.12),
+    0 1px 0 rgba(255,255,255,1.0) inset !important;
 }
-[data-theme="light"] .card-notes {
-  color: #7A7A88 !important;
+[data-theme="light"] .shop-card::before {
+  background: linear-gradient(90deg,
+    transparent, rgba(0,0,0,0.04), transparent) !important;
 }
-[data-theme="light"] .card-price {
-  color: #1C1C22 !important;
+[data-theme="light"] .card-img-wrap::after {
+  background: linear-gradient(180deg,
+    transparent 40%, rgba(255,255,255,0.60) 100%) !important;
 }
-[data-theme="light"] .card-size {
-  color: #7A7A88 !important;
-}
-[data-theme="light"] .cat-title {
-  color: #1C1C22 !important;
-}
-[data-theme="light"] .cat-count {
-  color: #7A7A88 !important;
-}
+[data-theme="light"] .card-name { color: #1A1A20 !important; }
+[data-theme="light"] .card-notes { color: #888898 !important; }
+[data-theme="light"] .card-price { color: #1A1A20 !important; }
+[data-theme="light"] .card-size { color: #888898 !important; }
+[data-theme="light"] .cat-title { color: #1A1A20 !important; }
+[data-theme="light"] .cat-count { color: #888898 !important; }
 [data-theme="light"] .cat-header {
-  border-bottom-color: rgba(0,0,0,0.07) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+}
+[data-theme="light"] .cat-icon {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.07) !important;
+}
+[data-theme="light"] .add-btn {
+  background: #1A1A20 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.20) !important;
+}
+[data-theme="light"] .add-btn:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.28) !important;
+}
+[data-theme="light"] .wish-btn {
+  background: rgba(255,255,255,0.90) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: rgba(0,0,0,0.38) !important;
+}
+[data-theme="light"] .cart-toast {
+  background: rgba(26,26,32,0.97) !important;
+  color: #F5F3EF !important;
+  border-color: rgba(255,255,255,0.10) !important;
+}
+[data-theme="light"] .cat-divider {
+  background: linear-gradient(90deg,
+    transparent, rgba(0,0,0,0.07), transparent) !important;
 }
 
-/* ── Cart page ── */
+/* Cart page */
 [data-theme="light"] .cart-bg {
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%,
-      rgba(160,150,140,0.08) 0%, transparent 60%),
-    linear-gradient(180deg, #EDECEA 0%, #F7F6F3 100%) !important;
+      rgba(200,185,165,0.10) 0%, transparent 60%),
+    linear-gradient(180deg, #EAE7E1 0%, #F5F3EF 100%) !important;
 }
-[data-theme="light"] .cart-hero-left h1 {
-  color: #1C1C22 !important;
-}
+[data-theme="light"] .cart-hero-left h1 { color: #1A1A20 !important; }
 [data-theme="light"] .cart-item {
   background: #FFFFFF !important;
-  border-color: rgba(0,0,0,0.07) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
 }
-[data-theme="light"] .item-name {
-  color: #1C1C22 !important;
-}
+[data-theme="light"] .item-name { color: #1A1A20 !important; }
 [data-theme="light"] .item-category,
-[data-theme="light"] .item-size {
-  color: #7A7A88 !important;
-}
-[data-theme="light"] .item-price {
-  color: #1C1C22 !important;
-}
-[data-theme="light"] .qty-num {
-  color: #1C1C22 !important;
+[data-theme="light"] .item-size { color: #888898 !important; }
+[data-theme="light"] .item-price { color: #1A1A20 !important; }
+[data-theme="light"] .qty-num { color: #1A1A20 !important; }
+[data-theme="light"] .qty-btn {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: #1A1A20 !important;
 }
 [data-theme="light"] .order-summary {
-  background: rgba(247,246,243,0.98) !important;
-  border-top-color: rgba(0,0,0,0.07) !important;
+  background: rgba(245,243,239,0.99) !important;
+  border-top: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05) !important;
+}
+[data-theme="light"] .promo-input {
+  background: rgba(255,255,255,0.85) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: #1A1A20 !important;
 }
 
-/* ── Profile page ── */
+/* Profile page */
 [data-theme="light"] .profile-bg {
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%,
-      rgba(160,150,140,0.08) 0%, transparent 60%),
-    #F7F6F3 !important;
+      rgba(200,185,165,0.10) 0%, transparent 60%),
+    #F5F3EF !important;
 }
-[data-theme="light"] .profile-name {
-  color: #1C1C22 !important;
-}
+[data-theme="light"] .profile-name { color: #1A1A20 !important; }
 [data-theme="light"] .profile-email,
-[data-theme="light"] .profile-joined {
-  color: #7A7A88 !important;
-}
+[data-theme="light"] .profile-joined { color: #888898 !important; }
 [data-theme="light"] .profile-card,
 [data-theme="light"] .profile-stat {
   background: #FFFFFF !important;
-  border-color: rgba(0,0,0,0.07) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
 }
-[data-theme="light"] .profile-card-title {
-  color: #1C1C22 !important;
-}
-[data-theme="light"] .profile-stat-value {
-  color: #1C1C22 !important;
-}
-[data-theme="light"] .profile-stat-label {
-  color: #7A7A88 !important;
-}
+[data-theme="light"] .profile-card-title { color: #1A1A20 !important; }
+[data-theme="light"] .profile-stat-value { color: #1A1A20 !important; }
+[data-theme="light"] .profile-stat-label { color: #888898 !important; }
 [data-theme="light"] .field-input {
-  background: rgba(0,0,0,0.04) !important;
-  border-color: rgba(0,0,0,0.09) !important;
-  color: #1C1C22 !important;
+  background: rgba(255,255,255,0.85) !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+  color: #1A1A20 !important;
 }
 
-/* ── Quiz page ── */
+/* Quiz page */
 [data-theme="light"] .quiz-bg {
   background:
     radial-gradient(ellipse 80% 60% at 20% 20%,
-      rgba(160,150,140,0.08) 0%, transparent 60%),
-    linear-gradient(180deg, #EDECEA 0%, #F7F6F3 100%) !important;
+      rgba(200,185,165,0.10) 0%, transparent 60%),
+    linear-gradient(180deg, #EAE7E1 0%, #F5F3EF 100%) !important;
 }
-[data-theme="light"] .quiz-hero h1 {
-  color: #1C1C22 !important;
-}
+[data-theme="light"] .quiz-hero h1 { color: #1A1A20 !important; }
 [data-theme="light"] .option-card {
-  background: rgba(0,0,0,0.04) !important;
-  border-color: rgba(0,0,0,0.09) !important;
+  background: rgba(255,255,255,0.80) !important;
+  border: 1px solid rgba(0,0,0,0.07) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
 }
 [data-theme="light"] .option-card:hover,
 [data-theme="light"] .option-card.selected {
-  background: #1C1C22 !important;
-  border-color: #1C1C22 !important;
+  background: #1A1A20 !important;
+  border-color: #1A1A20 !important;
   color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.20) !important;
 }
 
-/* ── Cart badge ── */
+/* Cart badge */
 [data-theme="light"] .cart-count {
-  background: #1C1C22 !important;
+  background: #1A1A20 !important;
   color: #FFFFFF !important;
 }

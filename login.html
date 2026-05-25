@@ -410,6 +410,8 @@
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
       signInWithPopup,
+      signInWithRedirect,
+      getRedirectResult,
       onAuthStateChanged,
       updateProfile,
       db, doc, setDoc, getDoc
@@ -421,6 +423,18 @@
         const redirect = sessionStorage.getItem('authRedirect') || 'index.html';
         sessionStorage.removeItem('authRedirect');
         window.location.href = redirect;
+      }
+    });
+
+    // ── Handle Google redirect result (mobile Safari) ──
+    getRedirectResult(auth).then(async result => {
+      if (result && result.user) {
+        await saveUserToFirestore(result.user);
+        showSuccess('Welcome! Redirecting...');
+      }
+    }).catch(err => {
+      if (err && err.code && err.code !== 'auth/null-user') {
+        showError('Google sign in failed. Please try again.');
       }
     });
 
@@ -538,12 +552,31 @@
 
     // ── Google Sign In/Up ──
     async function googleAuth() {
+      // Mobile Safari blocks popups — use redirect on mobile
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        try {
+          await signInWithRedirect(auth, provider);
+          // Page will reload — result handled by getRedirectResult above
+        } catch (err) {
+          showError('Google sign in failed. Try again.');
+        }
+        return;
+      }
+
+      // Desktop — use popup with redirect fallback
       try {
         const result = await signInWithPopup(auth, provider);
         await saveUserToFirestore(result.user);
         showSuccess('Welcome! Redirecting...');
       } catch (err) {
-        showError('Google sign in failed. Try again.');
+        if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user') {
+          try { await signInWithRedirect(auth, provider); }
+          catch (e) { showError('Google sign in failed. Try again.'); }
+        } else if (err.code !== 'auth/cancelled-popup-request') {
+          showError('Google sign in failed. Try again.');
+        }
       }
     }
 

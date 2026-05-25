@@ -98,6 +98,14 @@
     .nav-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--silver-light); margin-top: 2px; opacity: 0; transition: opacity 0.2s ease; }
     .nav-item.active .nav-dot { opacity: 1; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    #shopSearchInput::placeholder { color:rgba(200,200,208,0.30); }
+    #shopSearchInput:focus { border-color:rgba(200,200,208,0.35);background:rgba(255,255,255,0.10); }
+    .search-result-row { display:flex;align-items:center;gap:12px;padding:11px 10px;border-radius:12px;cursor:pointer;transition:background 0.2s;border-bottom:1px solid rgba(200,200,208,0.06); }
+    .search-result-row:last-child { border-bottom:none; }
+    .search-result-row:hover { background:rgba(255,255,255,0.06); }
+    .search-result-icon { width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(200,200,208,0.10);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0; }
+    .search-result-name { font-size:0.82rem;color:#E8E8F0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .search-result-meta { font-size:0.62rem;color:#8A8A98;margin-top:2px;letter-spacing:0.05em; }
   </style>
 </head>
 <body>
@@ -109,13 +117,51 @@
   <span class="icon-dark">🌙</span>
   <span class="icon-light">☀️</span>
 </button>
-      <button aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button id="searchBtn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
       <a href="profile.html" class="nav-account" style="color:var(--silver);font-size:1rem;"><i class="fa-regular fa-circle-user"></i></a>
       <a href="cart.html" style="position:relative;color:var(--silver);"><i class="fa-solid fa-bag-shopping"></i><span class="cart-count" id="cartCount"></span></a>
     </div>
   </nav>
 
   <div class="cart-toast" id="cartToast"></div>
+
+  <!-- SEARCH PANEL -->
+  <div id="searchPanel" style="
+    position:fixed;top:62px;left:0;right:0;z-index:998;
+    padding:14px 20px 16px;
+    background:rgba(14,14,18,0.97);
+    backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+    border-bottom:1px solid rgba(200,200,208,0.10);
+    box-shadow:0 12px 40px rgba(0,0,0,0.55);
+    transform:translateY(-120%);
+    transition:transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
+    pointer-events:none;
+  ">
+    <div style="position:relative;">
+      <i class="fa-solid fa-magnifying-glass" style="
+        position:absolute;left:16px;top:50%;transform:translateY(-50%);
+        color:#8A8A98;font-size:0.85rem;pointer-events:none;
+      "></i>
+      <input id="shopSearchInput" type="text"
+        placeholder="Search fragrances, notes, moods..."
+        autocomplete="off"
+        style="
+          width:100%;padding:13px 44px 13px 42px;
+          background:rgba(255,255,255,0.07);
+          border:1px solid rgba(200,200,208,0.14);
+          border-radius:999px;color:#E8E8F0;
+          font-family:'Montserrat',sans-serif;
+          font-size:0.82rem;letter-spacing:0.04em;outline:none;
+        "
+      />
+      <button id="searchCloseBtn" style="
+        position:absolute;right:14px;top:50%;transform:translateY(-50%);
+        background:none;border:none;color:#8A8A98;
+        font-size:1rem;cursor:pointer;padding:4px;line-height:1;
+      ">✕</button>
+    </div>
+    <div id="shopSearchResults" style="margin-top:8px;max-height:320px;overflow-y:auto;"></div>
+  </div>
 
   <div style="padding-bottom:90px;">
     <section class="shop-hero">
@@ -330,6 +376,80 @@
         if (section) setTimeout(function() { section.scrollIntoView({ behavior:'smooth' }); }, 300);
       }
     }
+
+    // ══ SEARCH PANEL ══
+    var allProductsForSearch = [];
+    var searchIsOpen = false;
+    var catEmoji = { warm:'🔥', woody:'🌿', oriental:'🌙', fresh:'💨' };
+
+    // Cache all products for instant search
+    onSnapshot(collection(db, 'products'), function(snap) {
+      allProductsForSearch = [];
+      snap.forEach(function(d) { allProductsForSearch.push(Object.assign({ id: d.id }, d.data())); });
+    });
+
+    function openSearch() {
+      searchIsOpen = true;
+      var panel = document.getElementById('searchPanel');
+      panel.style.transform = 'translateY(0)';
+      panel.style.pointerEvents = 'all';
+      setTimeout(function() { document.getElementById('shopSearchInput').focus(); }, 320);
+    }
+
+    function closeSearch() {
+      searchIsOpen = false;
+      var panel = document.getElementById('searchPanel');
+      panel.style.transform = 'translateY(-120%)';
+      panel.style.pointerEvents = 'none';
+      document.getElementById('shopSearchInput').value = '';
+      document.getElementById('shopSearchResults').innerHTML = '';
+    }
+
+    document.getElementById('searchBtn').addEventListener('click', function() {
+      searchIsOpen ? closeSearch() : openSearch();
+    });
+
+    document.getElementById('searchCloseBtn').addEventListener('click', closeSearch);
+
+    document.getElementById('shopSearchInput').addEventListener('input', function() {
+      var q = this.value.trim().toLowerCase();
+      var resultsEl = document.getElementById('shopSearchResults');
+      if (!q) { resultsEl.innerHTML = ''; return; }
+
+      var hits = allProductsForSearch.filter(function(p) {
+        return (p.name  || '').toLowerCase().includes(q) ||
+               (p.cat   || '').toLowerCase().includes(q) ||
+               (p.notes || '').toLowerCase().includes(q);
+      }).slice(0, 7);
+
+      if (hits.length === 0) {
+        resultsEl.innerHTML = '<div style="padding:14px 4px;font-size:0.78rem;color:#8A8A98;text-align:center;">No results for &ldquo;' + q + '&rdquo;</div>';
+        return;
+      }
+
+      resultsEl.innerHTML = hits.map(function(p) {
+        var emoji = catEmoji[p.cat] || '✨';
+        var cat   = p.cat ? p.cat.charAt(0).toUpperCase() + p.cat.slice(1) : '';
+        var price = 'UGX ' + Number(p.price).toLocaleString();
+        return '<div class="search-result-row" onclick="closeSearch();window.location.href='product.html?id=' + p.id + ''">' +
+          '<div class="search-result-icon">' + emoji + '</div>' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div class="search-result-name">' + p.name + '</div>' +
+            '<div class="search-result-meta">' + cat + ' · ' + price + '</div>' +
+          '</div>' +
+          '<i class="fa-solid fa-arrow-right" style="color:#8A8A98;font-size:0.72rem;flex-shrink:0;"></i>' +
+        '</div>';
+      }).join('');
+    });
+
+    // Close search when tapping outside
+    document.addEventListener('click', function(e) {
+      if (!searchIsOpen) return;
+      var panel = document.getElementById('searchPanel');
+      var btn   = document.getElementById('searchBtn');
+      if (!panel.contains(e.target) && !btn.contains(e.target)) closeSearch();
+    });
+
   </script>
 </body>
 </html>
