@@ -1,4 +1,6 @@
 // firebase.js — Haba Perfumes
+// ⚠️ DO NOT use this file as-is — paste your REAL config below.
+
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import {
   getFirestore,
@@ -29,14 +31,20 @@ import {
   updateProfile
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-// ── Your Firebase config ──
+// ════════════════════════════════════════════════════════════
+// ⚠️  REPLACE THIS WITH YOUR REAL FIREBASE CONFIG
+//
+// Get it from:
+//   Firebase Console → ⚙️ Project Settings → General
+//   → Your apps → Web app → SDK setup and configuration → Config
+// ════════════════════════════════════════════════════════════
 const firebaseConfig = {
-  apiKey:            "AIzaSyDLhkPFsJMdPbGwDL6pVvf0LXnQJIEqMhM",
-  authDomain:        "haba-perfumes.firebaseapp.com",
-  projectId:         "haba-perfumes",
-  storageBucket:     "haba-perfumes.appspot.com",
-  messagingSenderId: "123456789",
-  appId:             "1:123456789:web:abcdef123456"
+  apiKey: "AIzaSyCm_m0MPyu9giTRNa1cRLFBy0P0ZENbnY0",
+  authDomain: "haba-perfumes.firebaseapp.com",
+  projectId: "haba-perfumes",
+  storageBucket: "haba-perfumes.firebasestorage.app",
+  messagingSenderId: "854612991096",
+  appId: "1:854612991096:web:1f59468d4ad67af1fc618d"
 };
 
 const app      = initializeApp(firebaseConfig);
