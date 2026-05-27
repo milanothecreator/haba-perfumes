@@ -336,6 +336,11 @@ img {
 .fade-up-delay-3 { animation-delay: 0.45s; opacity: 0; }
 .fade-up-delay-4 { animation-delay: 0.60s; opacity: 0; }
 
+/* Disable SVG noise filter on mobile — feTurbulence is GPU-intensive on iOS Safari */
+@media (max-width: 768px) {
+  body { background-image: none !important; }
+}
+
 /* --- Glow Orb Background Decoration --- */
 .glow-orb {
   position: absolute;

@@ -11,9 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="js/theme.js" defer></script>
   <style>
-    /* ══════════════════════════════
-       SILVER & WHITE PREMIUM THEME
-    ══════════════════════════════ */
     :root {
       --silver:        #C8C8D0;
       --silver-light:  #E8E8F0;
@@ -33,9 +30,9 @@
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
+      padding-bottom: 100px;
     }
 
-    /* ── NAVBAR ── */
     .navbar {
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 1000;
@@ -64,9 +61,7 @@
       letter-spacing: 0.28em; color: var(--silver-dim);
       text-transform: lowercase; margin-left: 4px;
     }
-    .navbar-icons {
-      display: flex; align-items: center; gap: 18px;
-    }
+    .navbar-icons { display: flex; align-items: center; gap: 18px; }
     .navbar-icons a, .navbar-icons button {
       background: none; border: none;
       color: var(--silver); font-size: 1rem;
@@ -74,9 +69,7 @@
       transition: color 0.2s ease; text-decoration: none;
       display: flex; align-items: center;
     }
-    .navbar-icons a:hover, .navbar-icons button:hover {
-      color: var(--white-pure);
-    }
+    .navbar-icons a:hover, .navbar-icons button:hover { color: var(--white-pure); }
     .cart-count {
       position: absolute; top: -5px; right: -5px;
       width: 16px; height: 16px;
@@ -88,39 +81,28 @@
     }
     .cart-count.visible { opacity: 1; }
 
-    /* ── HERO ── */
     .hero {
       position: relative; min-height: 100vh;
       display: flex; flex-direction: column;
       justify-content: flex-end;
       padding: 0 24px 48px;
       overflow: hidden;
-      padding-top: 68vh;
+      padding-top: 58vh;
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 90% 70% at 50% 15%,
-          rgba(200,200,208,0.07) 0%, transparent 65%),
-        radial-gradient(ellipse 50% 40% at 80% 80%,
-          rgba(255,255,255,0.03) 0%, transparent 60%),
-        linear-gradient(180deg, #0A0A0E 0%, #0E0E12 50%, #080808 100%);
-    }
-    /* Silver shimmer lines */
-    .hero-bg::before {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 120px,
-          rgba(200,200,208,0.015) 120px,
-          rgba(200,200,208,0.015) 121px
-        );
+        linear-gradient(
+          180deg,
+          rgba(8, 8, 12, 0.28) 0%,
+          rgba(8, 8, 12, 0.42) 42%,
+          rgba(8, 8, 12, 0.80) 66%,
+          rgba(14, 14, 18, 1.00) 100%
+        ),
+        url('assets/backgroud.JPG') center top / cover no-repeat;
+      background-color: #0E0E12;
     }
 
-    /* Bottle */
     .hero-image-wrap {
       position: absolute; top: 0; left: 0; right: 0;
       height: 72vh; z-index: 1;
@@ -147,9 +129,7 @@
       border-radius: 50%;
       background: radial-gradient(circle,
         rgba(200,200,208,0.16) 0%,
-        rgba(200,200,208,0.06) 40%,
-        transparent 70%
-      );
+        rgba(200,200,208,0.06) 40%, transparent 70%);
       filter: blur(40px); z-index: 1;
       animation: glowPulse 3s ease-in-out infinite;
     }
@@ -159,9 +139,7 @@
       width: 50px; height: 55%;
       background: linear-gradient(180deg,
         rgba(255,255,255,0.10) 0%,
-        rgba(255,255,255,0.03) 50%,
-        transparent 100%
-      );
+        rgba(255,255,255,0.03) 50%, transparent 100%);
       border-radius: 999px; z-index: 3;
       pointer-events: none;
       animation: shimmer 3s ease-in-out infinite;
@@ -176,7 +154,6 @@
     .p3 { width:4px; height:4px; top:120px; right:10px; animation-delay:1.4s; }
     .p4 { width:2px; height:2px; top:60px; left:30px; animation-delay:2s; }
 
-    /* Hero text */
     .hero-content { position: relative; z-index: 2; }
     .hero-eyebrow {
       font-family: 'Montserrat', sans-serif;
@@ -186,9 +163,7 @@
       display: flex; align-items: center; gap: 10px;
     }
     .hero-eyebrow::before {
-      content: '';
-      width: 24px; height: 1px;
-      background: var(--silver-dim);
+      content: ''; width: 24px; height: 1px; background: var(--silver-dim);
     }
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
@@ -198,8 +173,7 @@
       letter-spacing: -0.01em;
     }
     .hero-title em {
-      font-style: italic;
-      color: transparent;
+      font-style: italic; color: transparent;
       -webkit-text-stroke: 1px rgba(200,200,208,0.60);
     }
     .hero-subtitle {
@@ -211,58 +185,40 @@
     .btn-silver {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 14px 28px;
-      background: var(--white-pure);
-      border: none; border-radius: 999px;
-      color: var(--charcoal);
-      font-family: 'Montserrat', sans-serif;
+      background: var(--white-pure); border: none; border-radius: 999px;
+      color: var(--charcoal); font-family: 'Montserrat', sans-serif;
       font-size: 0.72rem; font-weight: 700;
       letter-spacing: 0.18em; text-transform: uppercase;
       cursor: pointer; transition: all 0.3s ease;
-      text-decoration: none;
-      box-shadow: 0 4px 20px rgba(255,255,255,0.15);
+      text-decoration: none; box-shadow: 0 4px 20px rgba(255,255,255,0.15);
     }
     .btn-silver:hover { transform: scale(0.97); box-shadow: 0 4px 30px rgba(255,255,255,0.25); }
     .btn-outline {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 13px 24px;
-      background: transparent;
-      border: 1px solid rgba(200,200,208,0.30);
-      border-radius: 999px;
-      color: var(--silver-light);
+      background: transparent; border: 1px solid rgba(200,200,208,0.30);
+      border-radius: 999px; color: var(--silver-light);
       font-family: 'Montserrat', sans-serif;
       font-size: 0.72rem; font-weight: 400;
       letter-spacing: 0.15em; text-transform: uppercase;
-      cursor: pointer; transition: all 0.3s ease;
-      text-decoration: none;
+      cursor: pointer; transition: all 0.3s ease; text-decoration: none;
     }
-    .btn-outline:hover {
-      border-color: rgba(200,200,208,0.70);
-      color: var(--white-pure);
-    }
+    .btn-outline:hover { border-color: rgba(200,200,208,0.70); color: var(--white-pure); }
 
-    /* ── DIVIDER ── */
     .section-divider {
       width: 100%; height: 1px;
-      background: linear-gradient(90deg,
-        transparent, rgba(200,200,208,0.12), transparent);
+      background: linear-gradient(90deg, transparent, rgba(200,200,208,0.12), transparent);
       margin: 0;
     }
 
-    /* ── SEARCH ── */
-    .search-section {
-      padding: 28px 24px;
-      background: var(--charcoal);
-      position: relative; z-index: 2;
-    }
+    .search-section { padding: 28px 24px; background: var(--charcoal); position: relative; z-index: 2; }
     .search-wrap { position: relative; }
     .search-input {
       width: 100%; padding: 16px 52px 16px 22px;
       background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(200,200,208,0.12);
-      border-radius: 999px;
-      color: var(--silver-light);
+      border-radius: 999px; color: var(--silver-light);
       font-family: 'Montserrat', sans-serif;
       font-size: 0.82rem; letter-spacing: 0.05em;
       outline: none; transition: all 0.3s ease;
@@ -283,8 +239,7 @@
       display: none; position: absolute;
       top: calc(100% + 8px); left: 0; right: 0;
       background: rgba(18,18,24,0.98);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(200,200,208,0.12);
       border-radius: 18px; overflow: hidden;
       z-index: 100; box-shadow: 0 20px 60px rgba(0,0,0,0.60);
@@ -306,32 +261,21 @@
       font-size: 0.85rem; flex-shrink: 0;
     }
     .search-result-name { font-size: 0.82rem; color: var(--silver-light); }
-    .search-result-cat {
-      font-size: 0.65rem; color: var(--silver-dim);
-      letter-spacing: 0.08em; margin-top: 2px;
-    }
+    .search-result-cat { font-size: 0.65rem; color: var(--silver-dim); letter-spacing: 0.08em; margin-top: 2px; }
 
-    /* ── CATEGORY PILLS ── */
-    .category-section {
-      padding: 0 24px 28px;
-    }
+    .category-section { padding: 0 24px 28px; }
     .category-label {
       font-size: 0.58rem; letter-spacing: 0.26em;
       text-transform: uppercase; color: var(--silver-dim);
       margin-bottom: 16px;
     }
-    .pills-row {
-      display: flex; gap: 8px;
-      overflow-x: auto; padding-bottom: 4px;
-      scrollbar-width: none;
-    }
+    .pills-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
     .pills-row::-webkit-scrollbar { display: none; }
     .pill {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 10px 20px;
       background: rgba(255,255,255,0.06);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255,255,255,0.10);
       border-radius: 999px;
       font-family: 'Montserrat', sans-serif;
@@ -341,24 +285,17 @@
       transition: all 0.3s ease; text-decoration: none;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
     }
-    .pill:hover {
-      background: rgba(255,255,255,0.10);
-      border-color: rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.85);
-    }
+    .pill:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.18); color: rgba(255,255,255,0.85); }
     .pill.active {
-      background: rgba(255,255,255,0.95);
-      border-color: transparent;
+      background: rgba(255,255,255,0.95); border-color: transparent;
       color: var(--charcoal); font-weight: 600;
       box-shadow: 0 4px 16px rgba(255,255,255,0.15);
     }
     .pill-emoji { font-size: 0.82rem; }
 
-    /* ── FEATURED ── */
     .featured-section { padding: 0 0 32px; }
     .featured-header {
-      display: flex; align-items: baseline;
-      justify-content: space-between;
+      display: flex; align-items: baseline; justify-content: space-between;
       padding: 0 24px; margin-bottom: 20px;
     }
     .section-title {
@@ -374,60 +311,37 @@
     }
     .section-link:hover { color: var(--white-pure); }
 
-    /* Horizontal scroll row */
     .featured-scroll {
-      display: flex;
-      gap: 14px;
-      overflow-x: auto;
-      padding: 8px 24px 16px;
+      display: flex; gap: 24px;
+      overflow-x: auto; padding: 32px 32px 48px;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      cursor: grab;
+      scrollbar-width: none; cursor: grab;
     }
     .featured-scroll::-webkit-scrollbar { display: none; }
     .featured-scroll:active { cursor: grabbing; }
 
-    /* Featured card */
     .feat-card {
-      flex-shrink: 0;
-      width: 200px;
-      height: 280px;
-      border-radius: 22px;
-      overflow: hidden;
-      position: relative;
-      scroll-snap-align: center;
-      cursor: pointer;
-      transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94),
-                  box-shadow 0.4s ease;
+      flex-shrink: 0; width: 200px; height: 280px;
+      border-radius: 22px; overflow: hidden;
+      position: relative; scroll-snap-align: center; cursor: pointer;
+      transform-origin: center center;
+      transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.4s ease;
       box-shadow: 0 8px 32px rgba(0,0,0,0.40);
+      will-change: transform;
     }
-    .feat-card.active-card {
-      width: 230px;
-      height: 310px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.70);
-      z-index: 2;
-    }
-    .feat-card:hover {
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.65);
-    }
+    .feat-card.active-card { transform: scale(1.15); box-shadow: 0 20px 60px rgba(0,0,0,0.70); z-index: 2; }
+    .feat-card:hover { box-shadow: 0 24px 60px rgba(0,0,0,0.65); }
+    .feat-card.active-card:hover { transform: scale(1.18); }
     .feat-card img {
-      width: 100%; height: 100%;
-      object-fit: cover;
+      width: 100%; height: 100%; object-fit: cover;
       transition: transform 0.6s ease;
       filter: brightness(0.75) saturate(0.85);
     }
-    .feat-card:hover img {
-      transform: scale(1.06);
-      filter: brightness(0.90) saturate(1.0);
-    }
+    .feat-card:hover img { transform: scale(1.06); filter: brightness(0.90) saturate(1.0); }
     .feat-card-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(180deg,
-        rgba(0,0,0,0.05) 0%,
-        rgba(0,0,0,0.10) 40%,
-        rgba(0,0,0,0.75) 100%);
+      background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.10) 40%, rgba(0,0,0,0.75) 100%);
       z-index: 1;
     }
     .feat-card-label {
@@ -439,61 +353,33 @@
       text-shadow: 0 2px 12px rgba(0,0,0,0.60);
     }
 
-    /* Dots */
-    .feat-dots {
-      display: flex; justify-content: center; gap: 6px;
-      margin-top: 16px;
-    }
+    .feat-dots { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
     .feat-dot {
       width: 5px; height: 5px; border-radius: 50%;
       background: rgba(255,255,255,0.20);
       transition: all 0.3s ease;
     }
-    .feat-dot.active {
-      width: 20px; border-radius: 999px;
-      background: var(--white-pure);
-    }
+    .feat-dot.active { width: 20px; border-radius: 999px; background: var(--white-pure); }
 
-    /* Empty state */
-    .featured-empty {
-      padding: 0 24px;
-      text-align: center;
-      color: var(--silver-dim);
-      font-size: 0.78rem;
-    }
+    .featured-empty { padding: 0 24px; text-align: center; color: var(--silver-dim); font-size: 0.78rem; }
 
-    .product-brand {
-      font-size: 0.58rem; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--silver-dim);
-      margin-bottom: 8px;
-    }
-    .product-price {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.0rem; color: var(--silver-light);
-    }
+    .product-brand { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--silver-dim); margin-bottom: 8px; }
+    .product-price { font-family: 'Cormorant Garamond', serif; font-size: 1.0rem; color: var(--silver-light); }
 
-    /* ── STATS ROW ── */
     .stats-row {
       display: grid; grid-template-columns: repeat(3, 1fr);
       gap: 1px; background: rgba(200,200,208,0.08);
       margin: 0 0 32px;
     }
-    .stat-item {
-      background: var(--charcoal);
-      padding: 22px 16px; text-align: center;
-    }
+    .stat-item { background: var(--charcoal); padding: 22px 16px; text-align: center; }
     .stat-number {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.8rem; font-weight: 300;
       color: var(--white-pure); line-height: 1;
       margin-bottom: 4px;
     }
-    .stat-label {
-      font-size: 0.58rem; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--silver-dim);
-    }
+    .stat-label { font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--silver-dim); }
 
-    /* ── QUIZ BANNER ── */
     .quiz-banner {
       margin: 0 24px 32px;
       border-radius: 28px;
@@ -503,26 +389,17 @@
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       padding: 44px 28px;
-      /* Background directly on container — no z-index issues */
       background:
-        radial-gradient(ellipse 80% 50% at 30% 40%,
-          rgba(210,160,80,0.14) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 70% 60%,
-          rgba(180,120,60,0.10) 0%, transparent 55%),
-        linear-gradient(145deg,
-          #1A0E08 0%, #2E1A10 28%, #261408 52%,
-          #3A2014 72%, #180E06 100%);
+        radial-gradient(ellipse 80% 50% at 30% 40%, rgba(210,160,80,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 70% 60%, rgba(180,120,60,0.10) 0%, transparent 55%),
+        linear-gradient(145deg, #1A0E08 0%, #2E1A10 28%, #261408 52%, #3A2014 72%, #180E06 100%);
       border: 1px solid rgba(210,160,80,0.18);
-      box-shadow: inset 0 1px 0 rgba(210,160,80,0.20),
-                  0 20px 60px rgba(0,0,0,0.30);
+      box-shadow: inset 0 1px 0 rgba(210,160,80,0.20), 0 20px 60px rgba(0,0,0,0.30);
     }
     .quiz-banner::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg,
-        transparent, rgba(210,160,80,0.40), transparent);
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(210,160,80,0.40), transparent);
     }
-    /* Hide old child divs — background is now on parent */
     .quiz-banner-bg { display: none; }
     .quiz-banner-glass { display: none; }
     .quiz-banner-icon {
@@ -548,16 +425,12 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.35) !important;
     }
 
-    /* ── BOTTOM NAV ── */
     .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      z-index: 1000;
-      display: flex; align-items: center;
-      justify-content: space-around;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-around;
       padding: 12px 0 22px;
       background: rgba(14,14,18,0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border-top: 1px solid rgba(200,200,208,0.08);
     }
     .nav-item {
@@ -569,10 +442,7 @@
     }
     .nav-item:hover, .nav-item.active { color: var(--white-pure); }
     .nav-item i { font-size: 1.05rem; }
-    .nav-label {
-      font-size: 0.55rem; font-weight: 500;
-      letter-spacing: 0.10em; text-transform: uppercase;
-    }
+    .nav-label { font-size: 0.55rem; font-weight: 500; letter-spacing: 0.10em; text-transform: uppercase; }
     .nav-dot {
       width: 3px; height: 3px; border-radius: 50%;
       background: var(--silver-light);
@@ -580,7 +450,6 @@
     }
     .nav-item.active .nav-dot { opacity: 1; }
 
-    /* ── ANIMATIONS ── */
     @keyframes float {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-12px); }
@@ -606,11 +475,27 @@
     .fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; }
     .fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; }
     .fade-up-delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+    /* ═══════════════════════════════════════════════════
+       MOBILE PERFORMANCE — iPhone 13 crash prevention
+       Kills the memory-hungry effects on phones only.
+    ═══════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .feat-card { animation: none !important; will-change: auto !important; }
+      .navbar, .bottom-nav, .search-input, .search-results, .pill, .feat-card {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+      .navbar     { background: rgba(14,14,18,0.96); }
+      .bottom-nav { background: rgba(14,14,18,0.98); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- ── NAVBAR ── -->
   <nav class="navbar" id="navbar">
     <div class="navbar-logo">HABA <span>perfumes</span></div>
     <div class="navbar-icons">
@@ -628,24 +513,8 @@
     </div>
   </nav>
 
-  <!-- ── HERO ── -->
   <section class="hero">
     <div class="hero-bg"></div>
-
-    <!-- Bottle -->
-    <div class="hero-image-wrap fade-up">
-      <div class="hero-bottle-placeholder">
-        <div class="bottle-glow"></div>
-        <img src="assets/bottle.PNG" alt="Haba Perfume" class="bottle-img" loading="eager" decoding="async" onerror="this.style.opacity='0'" />
-        <div class="bottle-overlay"></div>
-        <div class="particle p1"></div>
-        <div class="particle p2"></div>
-        <div class="particle p3"></div>
-        <div class="particle p4"></div>
-      </div>
-    </div>
-
-    <!-- Text -->
     <div class="hero-content">
       <p class="hero-eyebrow fade-up fade-up-delay-1">Premium Collection</p>
       <h1 class="hero-title fade-up fade-up-delay-2">
@@ -658,16 +527,13 @@
         <a href="shop.html" class="btn-silver">
           <i class="fa-solid fa-store"></i> Shop Now
         </a>
-        <a href="quiz.html" class="btn-outline" id="quizBtn">
-          Take Quiz
-        </a>
+        <a href="quiz.html" class="btn-outline" id="quizBtn">Take Quiz</a>
       </div>
     </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- ── STATS ROW ── -->
   <div class="stats-row fade-up">
     <div class="stat-item">
       <div class="stat-number" id="statProductCount">24</div>
@@ -685,18 +551,15 @@
 
   <div class="section-divider"></div>
 
-  <!-- ── SEARCH ── -->
   <section class="search-section fade-up fade-up-delay-1">
     <div class="search-wrap">
       <input type="text" class="search-input" id="searchInput"
-        placeholder="Search fragrances, notes, moods..."
-        autocomplete="off" />
+        placeholder="Search fragrances, notes, moods..." autocomplete="off" />
       <i class="fa-solid fa-magnifying-glass search-icon"></i>
       <div class="search-results" id="searchResults"></div>
     </div>
   </section>
 
-  <!-- ── CATEGORY PILLS ── -->
   <section class="category-section">
     <p class="category-label">Browse by Scent</p>
     <div class="pills-row">
@@ -710,14 +573,12 @@
 
   <div class="section-divider"></div>
 
-  <!-- ── FEATURED ── -->
   <section class="featured-section" style="padding-top:28px;">
     <div class="featured-header">
       <h2 class="section-title">Featured</h2>
       <a href="shop.html" class="section-link">See All →</a>
     </div>
     <div class="featured-scroll" id="featuredScroll">
-      <!-- Skeleton cards while loading -->
       <div class="feat-card" style="background:rgba(200,200,208,0.06);animation:pulse 1.5s ease-in-out infinite;"></div>
       <div class="feat-card active-card" style="background:rgba(200,200,208,0.04);animation:pulse 1.5s 0.2s ease-in-out infinite;"></div>
       <div class="feat-card" style="background:rgba(200,200,208,0.06);animation:pulse 1.5s 0.4s ease-in-out infinite;"></div>
@@ -727,7 +588,6 @@
 
   <div class="section-divider" style="margin:4px 0 28px;"></div>
 
-  <!-- ── QUIZ BANNER ── -->
   <div class="quiz-banner fade-up">
     <div class="quiz-banner-bg"></div>
     <div class="quiz-banner-glass"></div>
@@ -743,33 +603,32 @@
 
   <div style="height:90px;"></div>
 
-  <!-- ── BOTTOM NAV ── -->
   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item active">
-      <i class="fa-solid fa-house"></i>
-      <span class="nav-label">Home</span><div class="nav-dot"></div>
-    </a>
-    <a href="shop.html" class="nav-item">
-      <i class="fa-solid fa-store"></i>
-      <span class="nav-label">Shop</span><div class="nav-dot"></div>
-    </a>
-    <a href="quiz.html" class="nav-item">
-      <i class="fa-solid fa-flask"></i>
-      <span class="nav-label">Quiz</span><div class="nav-dot"></div>
-    </a>
-    <a href="cart.html" class="nav-item">
-      <i class="fa-solid fa-bag-shopping"></i>
-      <span class="nav-label">Bag</span><div class="nav-dot"></div>
-    </a>
-    <a href="profile.html" class="nav-item nav-account">
-      <i class="fa-regular fa-circle-user"></i>
-      <span class="nav-label nav-username">Account</span><div class="nav-dot"></div>
-    </a>
+    <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i><span class="nav-label">Home</span><div class="nav-dot"></div></a>
+    <a href="shop.html" class="nav-item"><i class="fa-solid fa-store"></i><span class="nav-label">Shop</span><div class="nav-dot"></div></a>
+    <a href="quiz.html" class="nav-item"><i class="fa-solid fa-flask"></i><span class="nav-label">Quiz</span><div class="nav-dot"></div></a>
+    <a href="cart.html" class="nav-item"><i class="fa-solid fa-bag-shopping"></i><span class="nav-label">Bag</span><div class="nav-dot"></div></a>
+    <a href="profile.html" class="nav-item nav-account"><i class="fa-regular fa-circle-user"></i><span class="nav-label nav-username">Account</span><div class="nav-dot"></div></a>
   </nav>
 
   <script src="js/main.js"></script>
   <script type="module">
-    import { db, collection, onSnapshot, auth, onAuthStateChanged }
+    /* ════════════════════════════════════════════════════════════
+       MEMORY-LEAK FIX: getDocs instead of onSnapshot
+       
+       Before: onSnapshot kept a live Firestore connection. Every time
+       it fired, renderFeatured() got called and re-attached 5 event
+       listeners on the same scroll element. After ~30s of accumulated
+       listeners, iPhone Safari crashed.
+       
+       After: getDocs fetches ONCE. renderFeatured() runs ONCE.
+       Listeners attach ONCE. No accumulation = no crash.
+       
+       Trade-off: if you add/edit featured items in admin, regular users
+       won't see them until they refresh. That's fine for an e-commerce
+       site — products don't change every minute.
+    ════════════════════════════════════════════════════════════ */
+    import { db, collection, getDocs, auth, onAuthStateChanged }
       from './js/firebase.js';
 
     var showAuthPopup;
@@ -777,18 +636,15 @@
       import('./js/auth.js').then(function(m) {
         if (m && m.showAuthPopup) showAuthPopup = m.showAuthPopup;
       }).catch(function() {});
-    }
-    catch(e) {
+    } catch(e) {
       showAuthPopup = function() { window.location.href = 'login.html'; };
     }
 
-    // Navbar scroll
     window.addEventListener('scroll', function() {
       var nb = document.getElementById('navbar');
       if (nb) nb.classList.toggle('scrolled', window.scrollY > 60);
     });
 
-    // Cart badge
     function refreshCartBadge() {
       var cart  = JSON.parse(localStorage.getItem('habaCart') || '[]');
       var total = cart.reduce(function(s,i){ return s + i.qty; }, 0);
@@ -797,7 +653,6 @@
     }
     refreshCartBadge();
 
-    // Auth state
     onAuthStateChanged(auth, function(user) {
       document.querySelectorAll('.nav-account').forEach(function(el) {
         if (user) {
@@ -814,23 +669,33 @@
     var catEmoji = { warm:'🔥', woody:'🌿', oriental:'🌙', fresh:'💨' };
     var allProducts = [];
 
-    // ── Firebase products (for search + stats) ──
-    onSnapshot(collection(db, 'products'), function(snapshot) {
-      allProducts = [];
-      snapshot.forEach(function(d) { allProducts.push(Object.assign({ id: d.id }, d.data())); });
-      var countEl = document.getElementById('statProductCount');
-      if (countEl) countEl.textContent = allProducts.length || '0';
-    });
+    // One-time fetch of products for search and stat count
+    (async function loadProducts() {
+      try {
+        var snapshot = await getDocs(collection(db, 'products'));
+        allProducts = [];
+        snapshot.forEach(function(d) { allProducts.push(Object.assign({ id: d.id }, d.data())); });
+        var countEl = document.getElementById('statProductCount');
+        if (countEl) countEl.textContent = allProducts.length || '0';
+      } catch(err) {
+        console.error('Load products error:', err);
+      }
+    })();
 
-    // ── Featured ──
-    onSnapshot(collection(db, 'featured'), function(snapshot) {
-      var featuredItems = [];
-      snapshot.forEach(function(d) {
-        featuredItems.push(Object.assign({ id: d.id }, d.data()));
-      });
-      featuredItems.sort(function(a,b) { return (a.order||0) - (b.order||0); });
-      renderFeatured(featuredItems);
-    });
+    // One-time fetch of featured items
+    (async function loadFeatured() {
+      try {
+        var snapshot = await getDocs(collection(db, 'featured'));
+        var featuredItems = [];
+        snapshot.forEach(function(d) {
+          featuredItems.push(Object.assign({ id: d.id }, d.data()));
+        });
+        featuredItems.sort(function(a,b) { return (a.order||0) - (b.order||0); });
+        renderFeatured(featuredItems);
+      } catch(err) {
+        console.error('Load featured error:', err);
+      }
+    })();
 
     function renderFeatured(items) {
       var scroll = document.getElementById('featuredScroll');
@@ -851,9 +716,10 @@
         return '<div class="feat-card' + (isCenter ? ' active-card' : '') + '" ' +
           'onclick="window.location.href=\'shop.html\'" ' +
           'data-index="' + i + '">' +
-          '<img src="' + (item.img || 'assets/warm.jpg') + '" ' +
+          '<img src="' + (item.img || '') + '" ' +
                'alt="' + (item.label || item.title || '') + '" ' +
-               'onerror="this.src=\'assets/warm.jpg\'" />' +
+               'loading="lazy" decoding="async" ' +
+               'onerror="this.onerror=null;this.style.opacity=\'0\'" />' +
           '<div class="feat-card-overlay"></div>' +
           (item.label || item.title ?
             '<div class="feat-card-label">' + (item.label || item.title) + '</div>' : '') +
@@ -867,6 +733,7 @@
         }).join('');
       }
 
+      // Listeners attached ONCE because renderFeatured is called ONCE.
       scroll.addEventListener('scroll', function() {
         var cards = scroll.querySelectorAll('.feat-card');
         var dotEls = dots ? dots.querySelectorAll('.feat-dot') : [];
@@ -878,10 +745,8 @@
           if (dist < minDist) { minDist = dist; closest = i; }
           card.classList.remove('active-card');
         });
-        cards[closest].classList.add('active-card');
-        dotEls.forEach(function(d, i) {
-          d.classList.toggle('active', i === closest);
-        });
+        if (cards[closest]) cards[closest].classList.add('active-card');
+        dotEls.forEach(function(d, i) { d.classList.toggle('active', i === closest); });
       }, { passive: true });
 
       var isDown = false, startX, scrollLeft;
@@ -897,7 +762,6 @@
       });
     }
 
-    // ── Live Search ──
     var searchInput   = document.getElementById('searchInput');
     var searchResults = document.getElementById('searchResults');
 
@@ -935,7 +799,6 @@
       if (!e.target.closest('.search-wrap')) searchResults.classList.remove('active');
     });
 
-    // Pills active
     document.querySelectorAll('.pill').forEach(function(pill) {
       pill.addEventListener('click', function() {
         document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
@@ -943,7 +806,6 @@
       });
     });
 
-    // Auth guard on quiz buttons
     ['quizBtn','quizBannerBtn'].forEach(function(id) {
       var btn = document.getElementById(id);
       if (btn) {
